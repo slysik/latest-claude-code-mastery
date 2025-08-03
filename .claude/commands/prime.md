@@ -19,3 +19,4 @@ This command loads essential context for a new agent session by examining the co
 - Documentation: 
   - @ai_docs/cc_hooks_docs.md
   - @ai_docs/uv-single-file-scripts.md
+  - @ai_docs/anthropic_custom_slash_commands_2025-08-02.md
