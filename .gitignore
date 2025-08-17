@@ -111,3 +111,6 @@ output
 outputs/
 
 extras/
+
+# Claude Code data
+.claude/data/

@@ -81,6 +81,7 @@ def main():
         # Parse command line arguments
         parser = argparse.ArgumentParser()
         parser.add_argument('--chat', action='store_true', help='Copy transcript to chat.json')
+        parser.add_argument('--notify', action='store_true', help='Enable TTS completion announcement')
         args = parser.parse_args()
         
         # Read JSON input from stdin
@@ -135,8 +136,9 @@ def main():
                 except Exception:
                     pass  # Fail silently
 
-        # Announce subagent completion via TTS
-        announce_subagent_completion()
+        # Announce subagent completion via TTS (only if --notify flag is set)
+        if args.notify:
+            announce_subagent_completion()
 
         sys.exit(0)
 
