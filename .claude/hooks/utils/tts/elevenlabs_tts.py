@@ -62,9 +62,10 @@ def main():
         
         try:
             # Generate and play audio directly
+            # Using Lily voice - British English female voice
             audio = elevenlabs.text_to_speech.convert(
                 text=text,
-                voice_id="WejK3H1m7MI9CHnIjW9K",  # Specified voice
+                voice_id="pFZP5JQG7iQjIQuC4Bku",  # Lily - British English female voice
                 model_id="eleven_turbo_v2_5",
                 output_format="mp3_44100_128",
             )

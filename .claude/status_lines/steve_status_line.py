@@ -118,7 +118,7 @@ def generate_status_line(input_data):
     # Model display name
     model_info = input_data.get('model', {})
     model_name = model_info.get('display_name', 'Claude')
-    parts.append(f"\033[91m[{model_name}]\033[0m")  # Tonal red color
+    parts.append(f"\033[31m{model_name}\033[0m")  # More red color
     
     # Current directory
     workspace = input_data.get('workspace', {})
@@ -145,7 +145,7 @@ def generate_status_line(input_data):
         if version:
             version_parts.append(f"\033[90mv{version}\033[0m")  # Gray for version
         if output_style:
-            version_parts.append(f"\033[93m[{output_style}]\033[0m")  # Tonal yellow for output style
+            version_parts.append(f"\033[93m{output_style}\033[0m")  # Tonal yellow for output style
         parts.append(' | '.join(version_parts))
     
     return " | ".join(parts)
