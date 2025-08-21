@@ -1,0 +1,91 @@
+name: Update AI Documentation
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: 'Pages to update (comma-separated or "all")'
+        required: false
+        default: 'all'
+
+jobs:
+  update-docs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Install UV
+      uses: astral-sh/setup-uv@v3
+      with:
+        version: "latest"
+    
+    - name: Set up Python
+      run: uv python install 3.11
+    
+    - name: Update documentation
+      run: |
+        if [ "${{ github.event.inputs.pages }}" = "" ]; then
+          uv run update_ai_docs.py --all
+        else
+          IFS=',' read -ra PAGES <<< "${{ github.event.inputs.pages }}"
+          for page in "${PAGES[@]}"; do
+            page=$(echo "$page" | xargs)  # trim whitespace
+            if [ "$page" = "all" ]; then
+              uv run update_ai_docs.py --all
+              break
+            else
+              uv run update_ai_docs.py --page "$page"
+            fi
+          done
+        fi
+    
+    - name: Check for changes
+      id: verify-changed-files
+      run: |
+        if [ -n "$(git status --porcelain)" ]; then
+          echo "changed=true" >> $GITHUB_OUTPUT
+        else
+          echo "changed=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit and push changes
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "Documentation Update Bot"
+        git add ai_docs/
+        git commit -m "📚 Auto-update ai_docs from Anthropic documentation
+        
+        Updated: $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+        Workflow: ${{ github.workflow }}
+        Run ID: ${{ github.run_id }}"
+        git push
+    
+    - name: Create summary
+      if: steps.verify-changed-files.outputs.changed == 'true'
+      run: |
+        echo "## 📚 Documentation Updated" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "The following files were updated from Anthropic's official documentation:" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        git diff --name-only HEAD~1 HEAD ai_docs/ | while read file; do
+          echo "- \`$file\`" >> $GITHUB_STEP_SUMMARY
+        done
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+    
+    - name: No changes summary
+      if: steps.verify-changed-files.outputs.changed == 'false'
+      run: |
+        echo "## 📚 Documentation Check Complete" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "No changes detected. Documentation is up to date." >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Timestamp:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY

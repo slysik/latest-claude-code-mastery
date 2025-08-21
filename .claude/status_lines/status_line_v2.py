@@ -83,6 +83,8 @@ def generate_status_line(input_data):
     model_info = input_data.get('model', {})
     model_name = model_info.get('display_name', 'Claude')
     
+    # TODO(human): Extract and format cost information from input_data.get('cost', {})
+    
     # Get the last prompt
     prompt, error = get_last_prompt(session_id)
     
