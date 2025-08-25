@@ -1,181 +1,399 @@
-# Get started with Claude
+# Quick Start
 
-In this example, we'll have Claude write a Python function that checks if a string is a palindrome.
+> Updated from Anthropic's official documentation
+> Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
+> Last updated: 2025-08-25T09:10:09.826849
 
-## Prerequisites
+[Anthropic home page![light logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/light.svg)![dark logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/dark.svg)](/)
 
-You will need:
+English
 
-- An Anthropic [Console account](https://console.anthropic.com/)
-- An [API key](https://console.anthropic.com/settings/keys)
-- Python 3.7+ or TypeScript 4.5+
+Search...
 
-Anthropic provides [Python and TypeScript SDKs](https://docs.anthropic.com/en/api/client-sdks), although you can make direct HTTP requests to the API.
+* [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
-## Start with the Workbench
+Search...
 
-Any API call you make—regardless of the specific task—sends a well-configured prompt to the Anthropic API. As you're learning to make the most of Claude, we recommend that you start the development process in the Workbench, a web-based interface to Claude.
+Navigation
 
-Log into the [Anthropic Console](https://console.anthropic.com/) and click **Write a prompt from scratch**.
+Getting started
 
-In the middle section, under User, let's ask Claude a question.
+Quickstart
 
-User
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
-```text
-Why is the ocean salty?
+##### Getting started
+
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+
+##### Build with Claude Code
+
+* [Claude Code SDK](/en/docs/claude-code/sdk)
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Claude Code hooks](/en/docs/claude-code/hooks-guide)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+
+##### Configuration
+
+* [Settings](/en/docs/claude-code/settings)
+* [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
+
+##### Reference
+
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Hooks reference](/en/docs/claude-code/hooks)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
+
+Getting started
+
+Quickstart
+==========
+
+Copy page
+
+Welcome to Claude Code!
+
+This quickstart guide will have you using AI-powered coding assistance in just a few minutes. By the end, you’ll understand how to use Claude Code for common development tasks.
+
+[​](#before-you-begin) Before you begin
+---------------------------------------
+
+Make sure you have:
+
+* A terminal or command prompt open
+* A code project to work with
+
+[​](#step-1%3A-install-claude-code) Step 1: Install Claude Code
+---------------------------------------------------------------
+
+### [​](#npm-install) NPM Install
+
+If you have [Node.js 18 or newer installed](https://nodejs.org/en/download/):
+
+```
+npm install -g @anthropic-ai/claude-code
 ```
 
-Click **Run**. On the right side, you'll see output like
+### [​](#native-install) Native Install
 
-Response
+Alternatively, try our new native install, now in beta.
 
-```text
-The ocean is salty due to several factors:
+**macOS, Linux, WSL:**
 
-1. Weathering of rocks: Over millions of years, rain, rivers, and streams have eroded rocks containing mineral salts. These salts are carried into the ocean by water runoff.
-2. Volcanic activity: Underwater volcanoes and hydrothermal vents release minerals, including salts, into the ocean water.
-3. Atmospheric deposition: Salt particles from ocean spray can be carried by wind and deposited back into the ocean.
-4. Evaporation: As water evaporates from the surface of the ocean, it leaves behind dissolved salts, increasing the concentration of salt in the remaining water.
-5. Biological processes: Some marine organisms contribute to the ocean's salinity by releasing salt compounds as byproducts of their metabolism.
-
-Over time, these processes have continuously added salts to the ocean, while evaporation removes pure water, leading to the ocean's current salinity levels. It's important to note that the total amount of salt in the ocean remains relatively stable because the input of salts is balanced by the removal of salts through processes like the formation of evaporite deposits.
+```
+curl -fsSL claude.ai/install.sh | bash
 ```
 
-This is a good answer, but let's say we wanted to control the exact type of answer Claude gives. For example, only allowing Claude to respond to questions with poems. We can control the format, tone, and personality of the response by adding a System Prompt.
+**Windows PowerShell:**
 
-System prompt
-
-```text
-You are a world-class poet. Respond only with short poems.
+```
+irm https://claude.ai/install.ps1 | iex
 ```
 
-Click **Run** again.
+[​](#step-2%3A-start-your-first-session) Step 2: Start your first session
+-------------------------------------------------------------------------
 
-Response
+Open your terminal in any project directory and start Claude Code:
 
-```text
-The ocean's salty brine,
-A tale of time and elements combined.
-Rocks and rain, a slow erosion,
-Minerals carried in solution.
-Eons pass, the salt remains,
-In the vast, eternal watery domain.
+```
+cd /path/to/your/project
+claude
 ```
 
-See how Claude's response has changed? LLMs respond well to clear and direct instructions. You can put the role instructions in either the system prompt or the user message. We recommend testing to see which way yields the best results for your use case.
+You’ll see the Claude Code prompt inside a new interactive session:
 
-Once you've tweaked the inputs such that you're pleased with the output and have a good sense how to use Claude, convert your Workbench into an integration.
+```
+✻ Welcome to Claude Code!
 
-Click **Get Code** to copy the generated code representing your Workbench session.
+...
 
-## Install the SDK
-
-Anthropic provides SDKs for [Python](https://pypi.org/project/anthropic/) (3.7+), [TypeScript](https://www.npmjs.com/package/@anthropic-ai/sdk) (4.5+), and [Java](https://central.sonatype.com/artifact/com.anthropic/anthropic-java/) (8+). We also currently have a [Go](https://pkg.go.dev/github.com/anthropics/anthropic-sdk-go) SDK in beta.
-
-### Python
-
-In your project directory, create a virtual environment.
-
-```bash
-python -m venv claude-env
+> Try "create a util logging.py that..."
 ```
 
-Activate the virtual environment using
+Your credentials are securely stored on your system. Learn more in [Credential Management](/en/docs/claude-code/iam#credential-management).
 
-- On macOS or Linux, `source claude-env/bin/activate`
-- On Windows, `claude-env\Scripts\activate`
+[​](#step-3%3A-ask-your-first-question) Step 3: Ask your first question
+-----------------------------------------------------------------------
 
-```bash
-pip install anthropic
+Let’s start with understanding your codebase. Try one of these commands:
+
+```
+> what does this project do?
 ```
 
-### TypeScript
+Claude will analyze your files and provide a summary. You can also ask more specific questions:
 
-Install the SDK.
-
-```bash
-npm install @anthropic-ai/sdk
+```
+> what technologies does this project use?
 ```
 
-### Java
-
-First find the current version of the Java SDK on [Maven Central](https://central.sonatype.com/artifact/com.anthropic/anthropic-java).
-Declare the SDK as a dependency in your Gradle file:
-
-```gradle
-implementation("com.anthropic:anthropic-java:1.0.0")
+```
+> where is the main entry point?
 ```
 
-Or in your Maven file:
-
-```xml
-<dependency>
-  <groupId>com.anthropic</groupId>
-  <artifactId>anthropic-java</artifactId>
-  <version>1.0.0</version>
-</dependency>
+```
+> explain the folder structure
 ```
 
-## Set your API key
+You can also ask Claude about its own capabilities:
 
-Every API call requires a valid API key. The SDKs are designed to pull the API key from an environmental variable `ANTHROPIC_API_KEY`. You can also supply the key to the Anthropic client when initializing it.
-
-### macOS and Linux
-
-```bash
-export ANTHROPIC_API_KEY='your-api-key-here'
+```
+> what can Claude Code do?
 ```
 
-## Call the API
-
-Call the API by passing the proper parameters to the [/messages](https://docs.anthropic.com/en/api/messages) endpoint.
-
-Note that the code provided by the Workbench sets the API key in the constructor. If you set the API key as an environment variable, you can omit that line as below.
-
-### Python
-
-```python
-import anthropic
-
-client = anthropic.Anthropic()
-
-message = client.messages.create(
-    model="claude-opus-4-20250514",
-    max_tokens=1000,
-    temperature=1,
-    system="You are a world-class poet. Respond only with short poems.",
-    messages=[
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": "Why is the ocean salty?"
-                }
-            ]
-        }
-    ]
-)
-print(message.content)
+```
+> how do I use slash commands in Claude Code?
 ```
 
-Run the code using `python3 claude_quickstart.py` or `node claude_quickstart.js`.
-
-Output (Python)
-
-```python
-[TextBlock(text="The ocean's salty brine,\nA tale of time and design.\nRocks and rivers, their minerals shed,\nAccumulating in the ocean's bed.\nEvaporation leaves salt behind,\nIn the vast waters, forever enshrined.", type='text')]
+```
+> can Claude Code work with Docker?
 ```
 
-The Workbench and code examples use default model settings for: model (name), temperature, and max tokens to sample.
+Claude Code reads your files as needed - you don’t have to manually add context. Claude also has access to its own documentation and can answer questions about its features and capabilities.
 
-This quickstart shows how to develop a basic, but functional, Claude-powered application using the Console, Workbench, and API. You can use this same workflow as the foundation for much more powerful use cases.
+[​](#step-4%3A-make-your-first-code-change) Step 4: Make your first code change
+-------------------------------------------------------------------------------
 
-## Next steps
+Now let’s make Claude Code do some actual coding. Try a simple task:
 
-Now that you have made your first Anthropic API request, it's time to explore what else is possible:
+```
+> add a hello world function to the main file
+```
 
-- **Use Case Guides** - End to end implementation guides for common use cases.
-- **Anthropic Cookbook** - Learn with interactive Jupyter notebooks that demonstrate uploading PDFs, embeddings, and more.
-- **Prompt Library** - Explore dozens of example prompts for inspiration across use cases.
+Claude Code will:
+
+1. Find the appropriate file
+2. Show you the proposed changes
+3. Ask for your approval
+4. Make the edit
+
+Claude Code always asks for permission before modifying files. You can approve individual changes or enable “Accept all” mode for a session.
+
+[​](#step-5%3A-use-git-with-claude-code) Step 5: Use Git with Claude Code
+-------------------------------------------------------------------------
+
+Claude Code makes Git operations conversational:
+
+```
+> what files have I changed?
+```
+
+```
+> commit my changes with a descriptive message
+```
+
+You can also prompt for more complex Git operations:
+
+```
+> create a new branch called feature/quickstart
+```
+
+```
+> show me the last 5 commits
+```
+
+```
+> help me resolve merge conflicts
+```
+
+[​](#step-6%3A-fix-a-bug-or-add-a-feature) Step 6: Fix a bug or add a feature
+-----------------------------------------------------------------------------
+
+Claude is proficient at debugging and feature implementation.
+
+Describe what you want in natural language:
+
+```
+> add input validation to the user registration form
+```
+
+Or fix existing issues:
+
+```
+> there's a bug where users can submit empty forms - fix it
+```
+
+Claude Code will:
+
+* Locate the relevant code
+* Understand the context
+* Implement a solution
+* Run tests if available
+
+[​](#step-7%3A-test-out-other-common-workflows) Step 7: Test out other common workflows
+---------------------------------------------------------------------------------------
+
+There are a number of ways to work with Claude:
+
+**Refactor code**
+
+```
+> refactor the authentication module to use async/await instead of callbacks
+```
+
+**Write tests**
+
+```
+> write unit tests for the calculator functions
+```
+
+**Update documentation**
+
+```
+> update the README with installation instructions
+```
+
+**Code review**
+
+```
+> review my changes and suggest improvements
+```
+
+**Remember**: Claude Code is your AI pair programmer. Talk to it like you would a helpful colleague - describe what you want to achieve, and it will help you get there.
+
+[​](#essential-commands) Essential commands
+-------------------------------------------
+
+Here are the most important commands for daily use:
+
+| Command | What it does | Example |
+| --- | --- | --- |
+| `claude` | Start interactive mode | `claude` |
+| `claude "task"` | Run a one-time task | `claude "fix the build error"` |
+| `claude -p "query"` | Run one-off query, then exit | `claude -p "explain this function"` |
+| `claude -c` | Continue most recent conversation | `claude -c` |
+| `claude -r` | Resume a previous conversation | `claude -r` |
+| `claude commit` | Create a Git commit | `claude commit` |
+| `/clear` | Clear conversation history | `> /clear` |
+| `/help` | Show available commands | `> /help` |
+| `exit` or Ctrl+C | Exit Claude Code | `> exit` |
+
+See the [CLI reference](/en/docs/claude-code/cli-reference) for a complete list of commands.
+
+[​](#pro-tips-for-beginners) Pro tips for beginners
+---------------------------------------------------
+
+Be specific with your requests
+
+Instead of: “fix the bug”
+
+Try: “fix the login bug where users see a blank screen after entering wrong credentials”
+
+Use step-by-step instructions
+
+Break complex tasks into steps:
+
+```
+> 1. create a new database table for user profiles
+```
+
+```
+> 2. create an API endpoint to get and update user profiles
+```
+
+```
+> 3. build a webpage that allows users to see and edit their information
+```
+
+Let Claude explore first
+
+Before making changes, let Claude understand your code:
+
+```
+> analyze the database schema
+```
+
+```
+> build a dashboard showing products that are most frequently returned by our UK customers
+```
+
+Save time with shortcuts
+
+* Use Tab for command completion
+* Press ↑ for command history
+* Type `/` to see all slash commands
+
+[​](#what%E2%80%99s-next%3F) What’s next?
+-----------------------------------------
+
+Now that you’ve learned the basics, explore more advanced features:
+
+[Common workflows
+----------------
+
+Step-by-step guides for common tasks](/en/docs/claude-code/common-workflows)[CLI reference
+-------------
+
+Master all commands and options](/en/docs/claude-code/cli-reference)[Configuration
+-------------
+
+Customize Claude Code for your workflow](/en/docs/claude-code/settings)
+
+[​](#getting-help) Getting help
+-------------------------------
+
+* **In Claude Code**: Type `/help` or ask “how do I…”
+* **Documentation**: You’re here! Browse other guides
+* **Community**: Join our [Discord](https://www.anthropic.com/discord) for tips and support
+
+Was this page helpful?
+
+YesNo
+
+[Overview](/en/docs/claude-code/overview)[Common workflows](/en/docs/claude-code/common-workflows)
+
+[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
+
+On this page
+
+* [Before you begin](#before-you-begin)
+* [Step 1: Install Claude Code](#step-1%3A-install-claude-code)
+* [NPM Install](#npm-install)
+* [Native Install](#native-install)
+* [Step 2: Start your first session](#step-2%3A-start-your-first-session)
+* [Step 3: Ask your first question](#step-3%3A-ask-your-first-question)
+* [Step 4: Make your first code change](#step-4%3A-make-your-first-code-change)
+* [Step 5: Use Git with Claude Code](#step-5%3A-use-git-with-claude-code)
+* [Step 6: Fix a bug or add a feature](#step-6%3A-fix-a-bug-or-add-a-feature)
+* [Step 7: Test out other common workflows](#step-7%3A-test-out-other-common-workflows)
+* [Essential commands](#essential-commands)
+* [Pro tips for beginners](#pro-tips-for-beginners)
+* [What’s next?](#what%E2%80%99s-next%3F)
+* [Getting help](#getting-help)
