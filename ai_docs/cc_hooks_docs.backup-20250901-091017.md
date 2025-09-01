@@ -2,9 +2,9 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-09-01T09:10:17.857960
+> Last updated: 2025-08-25T09:10:08.731732
 
-[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=ce64069b841133111e8607800b983754)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=989a7daec9c66857ab4f6127a3cdec09)](/)
+[Anthropic home page![light logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/light.svg)![dark logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/dark.svg)](/)
 
 English
 
@@ -35,19 +35,13 @@ Hooks reference
 
 ##### Build with Claude Code
 
+* [Claude Code SDK](/en/docs/claude-code/sdk)
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Output styles](/en/docs/claude-code/output-styles)
-* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Claude Code hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
-
-##### Claude Code SDK
-
-* [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* [Python](/en/docs/claude-code/sdk/sdk-python)
-* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
@@ -73,7 +67,6 @@ Hooks reference
 * [Settings](/en/docs/claude-code/settings)
 * [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
-* [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
 * [Status line configuration](/en/docs/claude-code/statusline)
 
@@ -236,6 +229,18 @@ the stoppage occurred due to a user interrupt.
 
 Runs when a Claude Code subagent (Task tool call) has finished responding.
 
+### [​](#sessionend) SessionEnd
+
+Runs when a Claude Code session ends. Useful for cleanup tasks, logging session
+statistics, or saving session state.
+
+The `reason` field in the hook input will be one of:
+
+* `clear` - Session cleared with /clear command
+* `logout` - User logged out
+* `prompt_input_exit` - User exited while prompt input was visible
+* `other` - Other exit reasons
+
 ### [​](#precompact) PreCompact
 
 Runs before Claude Code is about to run a compact operation.
@@ -256,19 +261,6 @@ development context like existing issues or recent changes to your codebase.
 * `startup` - Invoked from startup
 * `resume` - Invoked from `--resume`, `--continue`, or `/resume`
 * `clear` - Invoked from `/clear`
-* `compact` - Invoked from auto or manual compact.
-
-### [​](#sessionend) SessionEnd
-
-Runs when a Claude Code session ends. Useful for cleanup tasks, logging session
-statistics, or saving session state.
-
-The `reason` field in the hook input will be one of:
-
-* `clear` - Session cleared with /clear command
-* `logout` - User logged out
-* `prompt_input_exit` - User exited while prompt input was visible
-* `other` - Other exit reasons
 
 [​](#hook-input) Hook Input
 ---------------------------
@@ -901,9 +893,9 @@ On this page
 * [UserPromptSubmit](#userpromptsubmit)
 * [Stop](#stop)
 * [SubagentStop](#subagentstop)
+* [SessionEnd](#sessionend)
 * [PreCompact](#precompact)
 * [SessionStart](#sessionstart)
-* [SessionEnd](#sessionend)
 * [Hook Input](#hook-input)
 * [PreToolUse Input](#pretooluse-input)
 * [PostToolUse Input](#posttooluse-input)

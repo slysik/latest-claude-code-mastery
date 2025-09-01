@@ -2,9 +2,9 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-09-01T09:10:18.111083
+> Last updated: 2025-08-25T09:10:09.015305
 
-[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=ce64069b841133111e8607800b983754)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=989a7daec9c66857ab4f6127a3cdec09)](/)
+[Anthropic home page![light logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/light.svg)![dark logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/dark.svg)](/)
 
 English
 
@@ -35,19 +35,13 @@ Subagents
 
 ##### Build with Claude Code
 
+* [Claude Code SDK](/en/docs/claude-code/sdk)
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Output styles](/en/docs/claude-code/output-styles)
-* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Claude Code hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
-
-##### Claude Code SDK
-
-* [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* [Python](/en/docs/claude-code/sdk/sdk-python)
-* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
@@ -73,7 +67,6 @@ Subagents
 * [Settings](/en/docs/claude-code/settings)
 * [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
-* [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
 * [Status line configuration](/en/docs/claude-code/statusline)
 
@@ -438,7 +431,7 @@ Was this page helpful?
 
 YesNo
 
-[Common workflows](/en/docs/claude-code/common-workflows)[Output styles](/en/docs/claude-code/output-styles)
+[Claude Code SDK](/en/docs/claude-code/sdk)[Output styles](/en/docs/claude-code/output-styles)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 

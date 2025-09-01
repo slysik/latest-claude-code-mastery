@@ -2,9 +2,9 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-09-01T09:10:19.108393
+> Last updated: 2025-08-25T09:10:10.344299
 
-[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=ce64069b841133111e8607800b983754)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=989a7daec9c66857ab4f6127a3cdec09)](/)
+[Anthropic home page![light logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/light.svg)![dark logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/dark.svg)](/)
 
 English
 
@@ -35,19 +35,13 @@ Claude Code settings
 
 ##### Build with Claude Code
 
+* [Claude Code SDK](/en/docs/claude-code/sdk)
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Output styles](/en/docs/claude-code/output-styles)
-* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Claude Code hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
-
-##### Claude Code SDK
-
-* [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* [Python](/en/docs/claude-code/sdk/sdk-python)
-* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
@@ -73,7 +67,6 @@ Claude Code settings
 * [Settings](/en/docs/claude-code/settings)
 * [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
-* [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
 * [Status line configuration](/en/docs/claude-code/statusline)
 
@@ -153,12 +146,9 @@ Example settings.json
 | `includeCoAuthoredBy` | Whether to include the `co-authored-by Claude` byline in git commits and pull requests (default: `true`) | `false` |
 | `permissions` | See table below for structure of permissions. |  |
 | `hooks` | Configure custom commands to run before or after tool executions. See [hooks documentation](hooks) | `{"PreToolUse": {"Bash": "echo 'Running command...'"}}` |
-| `disableAllHooks` | Disable all <hooks> | `true` |
 | `model` | Override the default model to use for Claude Code | `"claude-3-5-sonnet-20241022"` |
 | `statusLine` | Configure a custom status line to display context. See [statusLine documentation](statusline) | `{"type": "command", "command": "~/.claude/statusline.sh"}` |
-| `outputStyle` | Configure an output style to adjust the system prompt. See [output styles documentation](output-styles) | `"Explanatory"` |
 | `forceLoginMethod` | Use `claudeai` to restrict login to Claude.ai accounts, `console` to restrict login to Anthropic Console (API usage billing) accounts | `claudeai` |
-| `forceLoginOrgUUID` | Specify the UUID of an organization to automatically select it during login, bypassing the organization selection step. Requires `forceLoginMethod` to be set | `"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"` |
 | `enableAllProjectMcpServers` | Automatically approve all MCP servers defined in project `.mcp.json` files | `true` |
 | `enabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to approve | `["memory", "github"]` |
 | `disabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to reject | `["filesystem"]` |
@@ -254,12 +244,9 @@ All environment variables can also be configured in [`settings.json`](/_sites/do
 | `ANTHROPIC_API_KEY` | API key sent as `X-Api-Key` header, typically for the Claude SDK (for interactive usage, run `/login`) |
 | `ANTHROPIC_AUTH_TOKEN` | Custom value for the `Authorization` header (the value you set here will be prefixed with `Bearer` ) |
 | `ANTHROPIC_CUSTOM_HEADERS` | Custom headers you want to add to the request (in `Name: Value` format) |
-| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
-| `ANTHROPIC_DEFAULT_OPUS_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
-| `ANTHROPIC_DEFAULT_SONNET_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
-| `ANTHROPIC_MODEL` | Name of the model setting to use (see [Model Configuration](/en/docs/claude-code/model-config#environment-variables)) |
-| `ANTHROPIC_SMALL_FAST_MODEL` | [DEPRECATED] Name of [Haiku-class model for background tasks](/en/docs/claude-code/costs) |
-| `ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION` | Override AWS region for the Haiku-class model when using Bedrock |
+| `ANTHROPIC_MODEL` | Name of custom model to use (see [Model Configuration](/en/docs/claude-code/bedrock-vertex-proxies#model-configuration)) |
+| `ANTHROPIC_SMALL_FAST_MODEL` | Name of [Haiku-class model for background tasks](/en/docs/claude-code/costs) |
+| `ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION` | Override AWS region for the small/fast model when using Bedrock |
 | `AWS_BEARER_TOKEN_BEDROCK` | Bedrock API key for authentication (see [Bedrock API keys](https://aws.amazon.com/blogs/machine-learning/accelerate-ai-development-with-amazon-bedrock-api-keys/)) |
 | `BASH_DEFAULT_TIMEOUT_MS` | Default timeout for long-running bash commands |
 | `BASH_MAX_TIMEOUT_MS` | Maximum timeout the model can set for long-running bash commands |
@@ -274,7 +261,6 @@ All environment variables can also be configured in [`settings.json`](/_sites/do
 | `CLAUDE_CODE_SKIP_VERTEX_AUTH` | Skip Google authentication for Vertex (e.g. when using an LLM gateway) |
 | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | Equivalent of setting `DISABLE_AUTOUPDATER`, `DISABLE_BUG_COMMAND`, `DISABLE_ERROR_REPORTING`, and `DISABLE_TELEMETRY` |
 | `CLAUDE_CODE_DISABLE_TERMINAL_TITLE` | Set to `1` to disable automatic terminal title updates based on conversation context |
-| `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/en/docs/claude-code/model-config) |
 | `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. This takes precedence over the `autoUpdates` configuration setting. |
 | `DISABLE_BUG_COMMAND` | Set to `1` to disable the `/bug` command |
 | `DISABLE_COST_WARNINGS` | Set to `1` to disable cost warning messages |
@@ -286,8 +272,7 @@ All environment variables can also be configured in [`settings.json`](/_sites/do
 | `MAX_THINKING_TOKENS` | Force a thinking for the model budget |
 | `MCP_TIMEOUT` | Timeout in milliseconds for MCP server startup |
 | `MCP_TOOL_TIMEOUT` | Timeout in milliseconds for MCP tool execution |
-| `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses. Claude Code displays a warning when output exceeds 10,000 tokens (default: 25000) |
-| `NO_PROXY` | List of domains and IPs to which requests will be directly issued, bypassing proxy |
+| `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses (default: 25000) |
 | `USE_BUILTIN_RIPGREP` | Set to `0` to use system-installed `rg` intead of `rg` included with Claude Code |
 | `VERTEX_REGION_CLAUDE_3_5_HAIKU` | Override region for Claude 3.5 Haiku when using Vertex AI |
 | `VERTEX_REGION_CLAUDE_3_5_SONNET` | Override region for Claude Sonnet 3.5 when using Vertex AI |
@@ -315,7 +300,7 @@ To set a global configuration, use `claude config set -g <key> <value>`:
 
 | Key | Description | Example |
 | --- | --- | --- |
-| `autoUpdates` | **DEPRECATED.** Use the `DISABLE_AUTOUPDATER` environment variable instead. | `false` |
+| `autoUpdates` | Whether to enable automatic updates (default: `true`). When enabled, Claude Code automatically downloads and installs updates in the background. Updates are applied when you restart Claude Code. | `false` |
 | `preferredNotifChannel` | Where you want to receive notifications (default: `iterm2`) | `iterm2`, `iterm2_with_bell`, `terminal_bell`, or `notifications_disabled` |
 | `theme` | Color theme | `dark`, `light`, `light-daltonized`, or `dark-daltonized` |
 | `verbose` | Whether to show full bash and command outputs (default: `false`) | `true` |

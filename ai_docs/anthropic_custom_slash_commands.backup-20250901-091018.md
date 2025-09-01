@@ -2,9 +2,9 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-09-01T09:10:18.313383
+> Last updated: 2025-08-25T09:10:09.339415
 
-[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=ce64069b841133111e8607800b983754)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=989a7daec9c66857ab4f6127a3cdec09)](/)
+[Anthropic home page![light logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/light.svg)![dark logo](https://mintlify.s3.us-west-1.amazonaws.com/anthropic/logo/dark.svg)](/)
 
 English
 
@@ -35,19 +35,13 @@ Slash commands
 
 ##### Build with Claude Code
 
+* [Claude Code SDK](/en/docs/claude-code/sdk)
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Output styles](/en/docs/claude-code/output-styles)
-* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Claude Code hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
-
-##### Claude Code SDK
-
-* [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* [Python](/en/docs/claude-code/sdk/sdk-python)
-* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
@@ -73,7 +67,6 @@ Slash commands
 * [Settings](/en/docs/claude-code/settings)
 * [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
-* [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
 * [Status line configuration](/en/docs/claude-code/statusline)
 
@@ -185,39 +178,17 @@ Meanwhile, a file at `~/.claude/commands/component.md` creates the command `/com
 
 #### [​](#arguments) Arguments
 
-Pass dynamic values to commands using argument placeholders:
+Pass dynamic values to commands using the `$ARGUMENTS` placeholder.
 
-##### All arguments with `$ARGUMENTS`
-
-The `$ARGUMENTS` placeholder captures all arguments passed to the command:
+For example:
 
 ```
 # Command definition
 echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/fix-issue.md
 
 # Usage
-> /fix-issue 123 high-priority
-# $ARGUMENTS becomes: "123 high-priority"
+> /fix-issue 123
 ```
-
-##### Individual arguments with `$1`, `$2`, etc.
-
-Access specific arguments individually using positional parameters (similar to shell scripts):
-
-```
-# Command definition  
-echo 'Review PR #$1 with priority $2 and assign to $3' > .claude/commands/review-pr.md
-
-# Usage
-> /review-pr 456 high alice
-# $1 becomes "456", $2 becomes "high", $3 becomes "alice"
-```
-
-Use positional arguments when you need to:
-
-* Access arguments individually in different parts of your command
-* Provide defaults for missing arguments
-* Build more structured commands with specific parameter roles
 
 #### [​](#bash-command-execution) Bash command execution
 
@@ -284,19 +255,7 @@ description: Create a git commit
 model: claude-3-5-haiku-20241022
 ---
 
-Create a git commit with message: $ARGUMENTS
-```
-
-Example using positional arguments:
-
-```
----
-argument-hint: [pr-number] [priority] [assignee]
-description: Review pull request
----
-
-Review PR #$1 with priority $2 and assign to $3.
-Focus on security, performance, and code style.
+An example command
 ```
 
 [​](#mcp-slash-commands) MCP slash commands
@@ -351,20 +310,9 @@ Use the `/mcp` command to:
 * Clear authentication tokens
 * View available tools and prompts from each server
 
-### [​](#mcp-permissions-and-wildcards) MCP permissions and wildcards
-
-When configuring [permissions for MCP tools](/en/docs/claude-code/iam#tool-specific-permission-rules), note that **wildcards are not supported**:
-
-* ✅ **Correct**: `mcp__github` (approves ALL tools from the github server)
-* ✅ **Correct**: `mcp__github__get_issue` (approves specific tool)
-* ❌ **Incorrect**: `mcp__github__*` (wildcards not supported)
-
-To approve all tools from an MCP server, use just the server name: `mcp__servername`. To approve specific tools only, list each tool individually.
-
 [​](#see-also) See also
 -----------------------
 
-* [Identity and Access Management](/en/docs/claude-code/iam) - Complete guide to permissions, including MCP tool permissions
 * [Interactive mode](/en/docs/claude-code/interactive-mode) - Shortcuts, input modes, and interactive features
 * [CLI reference](/en/docs/claude-code/cli-reference) - Command-line flags and options
 * [Settings](/en/docs/claude-code/settings) - Configuration options
@@ -401,5 +349,4 @@ On this page
 * [Arguments](#arguments-2)
 * [Naming conventions](#naming-conventions)
 * [Managing MCP connections](#managing-mcp-connections)
-* [MCP permissions and wildcards](#mcp-permissions-and-wildcards)
 * [See also](#see-also)
