@@ -2,9 +2,9 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-09-08T09:10:02.222274
+> Last updated: 2025-09-01T09:10:18.682026
 
-[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=ce64069b841133111e8607800b983754)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?maxW=143&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=989a7daec9c66857ab4f6127a3cdec09)](/)
 
 English
 
@@ -126,19 +126,13 @@ Alternatively, try our new native install, now in beta.
 **macOS, Linux, WSL:**
 
 ```
-curl -fsSL https://claude.ai/install.sh | bash
+curl -fsSL claude.ai/install.sh | bash
 ```
 
 **Windows PowerShell:**
 
 ```
 irm https://claude.ai/install.ps1 | iex
-```
-
-**Windows CMD:**
-
-```
-curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
 
 [​](#step-2%3A-log-in-to-your-account) Step 2: Log in to your account
