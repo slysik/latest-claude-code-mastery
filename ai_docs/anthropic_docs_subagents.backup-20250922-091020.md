@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-09-22T09:10:20.028382
+> Last updated: 2025-09-08T09:10:01.535121
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Build with Claude Code
 
 Subagents
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Subagents
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,34 +88,6 @@ Subagents
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [What are subagents?](#what-are-subagents%3F)
-* [Key benefits](#key-benefits)
-* [Quick start](#quick-start)
-* [Subagent configuration](#subagent-configuration)
-* [File locations](#file-locations)
-* [File format](#file-format)
-* [Configuration fields](#configuration-fields)
-* [Model selection](#model-selection)
-* [Available tools](#available-tools)
-* [Managing subagents](#managing-subagents)
-* [Using the /agents command (Recommended)](#using-the-%2Fagents-command-recommended)
-* [Direct file management](#direct-file-management)
-* [Using subagents effectively](#using-subagents-effectively)
-* [Automatic delegation](#automatic-delegation)
-* [Explicit invocation](#explicit-invocation)
-* [Example subagents](#example-subagents)
-* [Code reviewer](#code-reviewer)
-* [Debugger](#debugger)
-* [Data scientist](#data-scientist)
-* [Best practices](#best-practices)
-* [Advanced usage](#advanced-usage)
-* [Chaining subagents](#chaining-subagents)
-* [Dynamic subagent selection](#dynamic-subagent-selection)
-* [Performance considerations](#performance-considerations)
-* [Related documentation](#related-documentation)
-
 Build with Claude Code
 
 Subagents
@@ -130,8 +96,6 @@ Subagents
 Copy page
 
 Create and use specialized AI subagents in Claude Code for task-specific workflows and improved context management.
-
-Copy page
 
 Custom subagents in Claude Code are specialized AI assistants that can be invoked to handle specific types of tasks. They enable more efficient problem-solving by providing task-specific configurations with customized system prompts, tools and a separate context window.
 
@@ -181,8 +145,6 @@ Open the subagents interface
 
 Run the following command:
 
-Copy
-
 ```
 /agents
 ```
@@ -209,8 +171,6 @@ Save and use
 
 Your subagent is now available! Claude will use it automatically when appropriate, or you can invoke it explicitly:
 
-Copy
-
 ```
 > Use the code-reviewer subagent to check my recent changes
 ```
@@ -233,14 +193,11 @@ When subagent names conflict, project-level subagents take precedence over user-
 
 Each subagent is defined in a Markdown file with this structure:
 
-Copy
-
 ```
 ---
 name: your-sub-agent-name
 description: Description of when this subagent should be invoked
 tools: tool1, tool2, tool3  # Optional - inherits all tools if omitted
-model: sonnet  # Optional - specify model alias or 'inherit'
 ---
 
 Your subagent's system prompt goes here. This can be multiple paragraphs
@@ -258,17 +215,6 @@ the subagent should follow.
 | `name` | Yes | Unique identifier using lowercase letters and hyphens |
 | `description` | Yes | Natural language description of the subagent’s purpose |
 | `tools` | No | Comma-separated list of specific tools. If omitted, inherits all tools from the main thread |
-| `model` | No | Model to use for this subagent. Can be a model alias (`sonnet`, `opus`, `haiku`) or `'inherit'` to use the main conversation’s model. If omitted, defaults to the [configured subagent model](/en/docs/claude-code/model-config) |
-
-### [​](#model-selection) Model selection
-
-The `model` field allows you to control which [AI model](/en/docs/claude-code/model-config) the subagent uses:
-
-* **Model alias**: Use one of the available aliases: `sonnet`, `opus`, or `haiku`
-* **`'inherit'`**: Use the same model as the main conversation (useful for consistency)
-* **Omitted**: If not specified, uses the default model configured for subagents (`sonnet`)
-
-Using `'inherit'` is particularly useful when you want your subagents to adapt to the model choice of the main conversation, ensuring consistent capabilities and response style throughout your session.
 
 ### [​](#available-tools) Available tools
 
@@ -290,8 +236,6 @@ You have two options for configuring tools:
 
 The `/agents` command provides a comprehensive interface for subagent management:
 
-Copy
-
 ```
 /agents
 ```
@@ -308,8 +252,6 @@ This opens an interactive menu where you can:
 ### [​](#direct-file-management) Direct file management
 
 You can also manage subagents by working directly with their files:
-
-Copy
 
 ```
 # Create a project subagent
@@ -343,8 +285,6 @@ To encourage more proactive subagent use, include phrases like “use PROACTIVEL
 
 Request a specific subagent by mentioning it in your command:
 
-Copy
-
 ```
 > Use the test-runner subagent to fix failing tests
 > Have the code-reviewer subagent look at my recent changes
@@ -356,14 +296,11 @@ Copy
 
 ### [​](#code-reviewer) Code reviewer
 
-Copy
-
 ```
 ---
 name: code-reviewer
 description: Expert code review specialist. Proactively reviews code for quality, security, and maintainability. Use immediately after writing or modifying code.
 tools: Read, Grep, Glob, Bash
-model: inherit
 ---
 
 You are a senior code reviewer ensuring high standards of code quality and security.
@@ -392,8 +329,6 @@ Include specific examples of how to fix issues.
 ```
 
 ### [​](#debugger) Debugger
-
-Copy
 
 ```
 ---
@@ -430,14 +365,11 @@ Focus on fixing the underlying issue, not just symptoms.
 
 ### [​](#data-scientist) Data scientist
 
-Copy
-
 ```
 ---
 name: data-scientist
 description: Data analysis expert for SQL queries, BigQuery operations, and data insights. Use proactively for data analysis tasks and queries.
 tools: Bash, Read, Write
-model: sonnet
 ---
 
 You are a data scientist specializing in SQL and BigQuery analysis.
@@ -481,8 +413,6 @@ Always ensure queries are efficient and cost-effective.
 
 For complex workflows, you can chain multiple subagents:
 
-Copy
-
 ```
 > First use the code-analyzer subagent to find performance issues, then use the optimizer subagent to fix them
 ```
@@ -512,6 +442,29 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [What are subagents?](#what-are-subagents%3F)
+* [Key benefits](#key-benefits)
+* [Quick start](#quick-start)
+* [Subagent configuration](#subagent-configuration)
+* [File locations](#file-locations)
+* [File format](#file-format)
+* [Configuration fields](#configuration-fields)
+* [Available tools](#available-tools)
+* [Managing subagents](#managing-subagents)
+* [Using the /agents command (Recommended)](#using-the-%2Fagents-command-recommended)
+* [Direct file management](#direct-file-management)
+* [Using subagents effectively](#using-subagents-effectively)
+* [Automatic delegation](#automatic-delegation)
+* [Explicit invocation](#explicit-invocation)
+* [Example subagents](#example-subagents)
+* [Code reviewer](#code-reviewer)
+* [Debugger](#debugger)
+* [Data scientist](#data-scientist)
+* [Best practices](#best-practices)
+* [Advanced usage](#advanced-usage)
+* [Chaining subagents](#chaining-subagents)
+* [Dynamic subagent selection](#dynamic-subagent-selection)
+* [Performance considerations](#performance-considerations)
+* [Related documentation](#related-documentation)

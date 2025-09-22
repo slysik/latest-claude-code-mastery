@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-09-22T09:10:19.612654
+> Last updated: 2025-09-08T09:10:01.239263
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Reference
 
 Hooks reference
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Hooks reference
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,58 +88,6 @@ Hooks reference
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [Configuration](#configuration)
-* [Structure](#structure)
-* [Project-Specific Hook Scripts](#project-specific-hook-scripts)
-* [Hook Events](#hook-events)
-* [PreToolUse](#pretooluse)
-* [PostToolUse](#posttooluse)
-* [Notification](#notification)
-* [UserPromptSubmit](#userpromptsubmit)
-* [Stop](#stop)
-* [SubagentStop](#subagentstop)
-* [PreCompact](#precompact)
-* [SessionStart](#sessionstart)
-* [SessionEnd](#sessionend)
-* [Hook Input](#hook-input)
-* [PreToolUse Input](#pretooluse-input)
-* [PostToolUse Input](#posttooluse-input)
-* [Notification Input](#notification-input)
-* [UserPromptSubmit Input](#userpromptsubmit-input)
-* [Stop and SubagentStop Input](#stop-and-subagentstop-input)
-* [PreCompact Input](#precompact-input)
-* [SessionStart Input](#sessionstart-input)
-* [SessionEnd Input](#sessionend-input)
-* [Hook Output](#hook-output)
-* [Simple: Exit Code](#simple%3A-exit-code)
-* [Exit Code 2 Behavior](#exit-code-2-behavior)
-* [Advanced: JSON Output](#advanced%3A-json-output)
-* [Common JSON Fields](#common-json-fields)
-* [PreToolUse Decision Control](#pretooluse-decision-control)
-* [PostToolUse Decision Control](#posttooluse-decision-control)
-* [UserPromptSubmit Decision Control](#userpromptsubmit-decision-control)
-* [Stop/SubagentStop Decision Control](#stop%2Fsubagentstop-decision-control)
-* [SessionStart Decision Control](#sessionstart-decision-control)
-* [SessionEnd Decision Control](#sessionend-decision-control)
-* [Exit Code Example: Bash Command Validation](#exit-code-example%3A-bash-command-validation)
-* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example%3A-userpromptsubmit-to-add-context-and-validation)
-* [JSON Output Example: PreToolUse with Approval](#json-output-example%3A-pretooluse-with-approval)
-* [Working with MCP Tools](#working-with-mcp-tools)
-* [MCP Tool Naming](#mcp-tool-naming)
-* [Configuring Hooks for MCP Tools](#configuring-hooks-for-mcp-tools)
-* [Examples](#examples)
-* [Security Considerations](#security-considerations)
-* [Disclaimer](#disclaimer)
-* [Security Best Practices](#security-best-practices)
-* [Configuration Safety](#configuration-safety)
-* [Hook Execution Details](#hook-execution-details)
-* [Debugging](#debugging)
-* [Basic Troubleshooting](#basic-troubleshooting)
-* [Advanced Debugging](#advanced-debugging)
-* [Debug Output Example](#debug-output-example)
-
 Reference
 
 Hooks reference
@@ -154,8 +96,6 @@ Hooks reference
 Copy page
 
 This page provides reference documentation for implementing hooks in Claude Code.
-
-Copy page
 
 For a quickstart guide with examples, see [Get started with Claude Code hooks](/en/docs/claude-code/hooks-guide).
 
@@ -172,8 +112,6 @@ Claude Code hooks are configured in your [settings files](/en/docs/claude-code/s
 ### [​](#structure) Structure
 
 Hooks are organized by matchers, where each matcher can have multiple hooks:
-
-Copy
 
 ```
 {
@@ -209,8 +147,6 @@ Copy
 For events like `UserPromptSubmit`, `Notification`, `Stop`, and `SubagentStop`
 that don’t use matchers, you can omit the matcher field:
 
-Copy
-
 ```
 {
   "hooks": {
@@ -233,8 +169,6 @@ Copy
 You can use the environment variable `CLAUDE_PROJECT_DIR` (only available when
 Claude Code spawns the hook command) to reference scripts stored in your project,
 ensuring they work regardless of Claude’s current directory:
-
-Copy
 
 ```
 {
@@ -260,6 +194,7 @@ Copy
 ### [​](#pretooluse) PreToolUse
 
 Runs after Claude creates tool parameters and before processing the tool call.
+
 **Common matchers:**
 
 * `Task` - Subagent tasks (see [subagents documentation](/en/docs/claude-code/sub-agents))
@@ -274,6 +209,7 @@ Runs after Claude creates tool parameters and before processing the tool call.
 ### [​](#posttooluse) PostToolUse
 
 Runs immediately after a tool completes successfully.
+
 Recognizes the same matcher values as PreToolUse.
 
 ### [​](#notification) Notification
@@ -303,6 +239,7 @@ Runs when a Claude Code subagent (Task tool call) has finished responding.
 ### [​](#precompact) PreCompact
 
 Runs before Claude Code is about to run a compact operation.
+
 **Matchers:**
 
 * `manual` - Invoked from `/compact`
@@ -313,6 +250,7 @@ Runs before Claude Code is about to run a compact operation.
 Runs when Claude Code starts a new session or resumes an existing session (which
 currently does start a new session under the hood). Useful for loading in
 development context like existing issues or recent changes to your codebase.
+
 **Matchers:**
 
 * `startup` - Invoked from startup
@@ -324,6 +262,7 @@ development context like existing issues or recent changes to your codebase.
 
 Runs when a Claude Code session ends. Useful for cleanup tasks, logging session
 statistics, or saving session state.
+
 The `reason` field in the hook input will be one of:
 
 * `clear` - Session cleared with /clear command
@@ -336,8 +275,6 @@ The `reason` field in the hook input will be one of:
 
 Hooks receive JSON data via stdin containing session information and
 event-specific data:
-
-Copy
 
 ```
 {
@@ -356,8 +293,6 @@ Copy
 
 The exact schema for `tool_input` depends on the tool.
 
-Copy
-
 ```
 {
   "session_id": "abc123",
@@ -375,8 +310,6 @@ Copy
 ### [​](#posttooluse-input) PostToolUse Input
 
 The exact schema for `tool_input` and `tool_response` depends on the tool.
-
-Copy
 
 ```
 {
@@ -398,8 +331,6 @@ Copy
 
 ### [​](#notification-input) Notification Input
 
-Copy
-
 ```
 {
   "session_id": "abc123",
@@ -411,8 +342,6 @@ Copy
 ```
 
 ### [​](#userpromptsubmit-input) UserPromptSubmit Input
-
-Copy
 
 ```
 {
@@ -430,8 +359,6 @@ Copy
 a stop hook. Check this value or process the transcript to prevent Claude Code
 from running indefinitely.
 
-Copy
-
 ```
 {
   "session_id": "abc123",
@@ -446,8 +373,6 @@ Copy
 For `manual`, `custom_instructions` comes from what the user passes into
 `/compact`. For `auto`, `custom_instructions` is empty.
 
-Copy
-
 ```
 {
   "session_id": "abc123",
@@ -460,8 +385,6 @@ Copy
 
 ### [​](#sessionstart-input) SessionStart Input
 
-Copy
-
 ```
 {
   "session_id": "abc123",
@@ -472,8 +395,6 @@ Copy
 ```
 
 ### [​](#sessionend-input) SessionEnd Input
-
-Copy
 
 ```
 {
@@ -529,8 +450,6 @@ Hooks can return structured JSON in `stdout` for more sophisticated control:
 
 All hook types can include these optional fields:
 
-Copy
-
 ```
 {
   "continue": true, // Whether Claude should continue after hook execution (default: true)
@@ -567,8 +486,6 @@ to Claude.
 * `"ask"` asks the user to confirm the tool call in the UI.
   `permissionDecisionReason` is shown to the user but not to Claude.
 
-Copy
-
 ```
 {
   "hookSpecificOutput": {
@@ -592,8 +509,6 @@ Use `hookSpecificOutput.permissionDecision` and
 * `undefined` does nothing. `reason` is ignored.
 * `"hookSpecificOutput.additionalContext"` adds context for Claude to consider.
 
-Copy
-
 ```
 {
   "decision": "block" | undefined,
@@ -615,8 +530,6 @@ Copy
 * `"hookSpecificOutput.additionalContext"` adds the string to the context if not
   blocked.
 
-Copy
-
 ```
 {
   "decision": "block" | undefined,
@@ -636,8 +549,6 @@ Copy
   to know how to proceed.
 * `undefined` allows Claude to stop. `reason` is ignored.
 
-Copy
-
 ```
 {
   "decision": "block" | undefined,
@@ -651,8 +562,6 @@ Copy
 
 * `"hookSpecificOutput.additionalContext"` adds the string to the context.
 * Multiple hooks’ `additionalContext` values are concatenated.
-
-Copy
 
 ```
 {
@@ -669,8 +578,6 @@ Copy
 but can perform cleanup tasks.
 
 #### [​](#exit-code-example%3A-bash-command-validation) Exit Code Example: Bash Command Validation
-
-Copy
 
 ```
 #!/usr/bin/env python3
@@ -729,8 +636,6 @@ For `UserPromptSubmit` hooks, you can inject context using either method:
 * Exit code 0 with stdout: Claude sees the context (special case for `UserPromptSubmit`)
 * JSON output: Provides more control over the behavior
 
-Copy
-
 ```
 #!/usr/bin/env python3
 import json
@@ -781,8 +686,6 @@ sys.exit(0)
 ```
 
 #### [​](#json-output-example%3A-pretooluse-with-approval) JSON Output Example: PreToolUse with Approval
-
-Copy
 
 ```
 #!/usr/bin/env python3
@@ -835,8 +738,6 @@ MCP tools follow the pattern `mcp__<server>__<tool>`, for example:
 ### [​](#configuring-hooks-for-mcp-tools) Configuring Hooks for MCP Tools
 
 You can target specific MCP tools or entire MCP servers:
-
-Copy
 
 ```
 {
@@ -963,8 +864,6 @@ For complex hook issues:
 
 Use `claude --debug` to see hook execution details:
 
-Copy
-
 ```
 [DEBUG] Executing hooks for PostToolUse:Write
 [DEBUG] Getting matching hook commands for PostToolUse with query: Write
@@ -990,6 +889,54 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [Configuration](#configuration)
+* [Structure](#structure)
+* [Project-Specific Hook Scripts](#project-specific-hook-scripts)
+* [Hook Events](#hook-events)
+* [PreToolUse](#pretooluse)
+* [PostToolUse](#posttooluse)
+* [Notification](#notification)
+* [UserPromptSubmit](#userpromptsubmit)
+* [Stop](#stop)
+* [SubagentStop](#subagentstop)
+* [PreCompact](#precompact)
+* [SessionStart](#sessionstart)
+* [SessionEnd](#sessionend)
+* [Hook Input](#hook-input)
+* [PreToolUse Input](#pretooluse-input)
+* [PostToolUse Input](#posttooluse-input)
+* [Notification Input](#notification-input)
+* [UserPromptSubmit Input](#userpromptsubmit-input)
+* [Stop and SubagentStop Input](#stop-and-subagentstop-input)
+* [PreCompact Input](#precompact-input)
+* [SessionStart Input](#sessionstart-input)
+* [SessionEnd Input](#sessionend-input)
+* [Hook Output](#hook-output)
+* [Simple: Exit Code](#simple%3A-exit-code)
+* [Exit Code 2 Behavior](#exit-code-2-behavior)
+* [Advanced: JSON Output](#advanced%3A-json-output)
+* [Common JSON Fields](#common-json-fields)
+* [PreToolUse Decision Control](#pretooluse-decision-control)
+* [PostToolUse Decision Control](#posttooluse-decision-control)
+* [UserPromptSubmit Decision Control](#userpromptsubmit-decision-control)
+* [Stop/SubagentStop Decision Control](#stop%2Fsubagentstop-decision-control)
+* [SessionStart Decision Control](#sessionstart-decision-control)
+* [SessionEnd Decision Control](#sessionend-decision-control)
+* [Exit Code Example: Bash Command Validation](#exit-code-example%3A-bash-command-validation)
+* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example%3A-userpromptsubmit-to-add-context-and-validation)
+* [JSON Output Example: PreToolUse with Approval](#json-output-example%3A-pretooluse-with-approval)
+* [Working with MCP Tools](#working-with-mcp-tools)
+* [MCP Tool Naming](#mcp-tool-naming)
+* [Configuring Hooks for MCP Tools](#configuring-hooks-for-mcp-tools)
+* [Examples](#examples)
+* [Security Considerations](#security-considerations)
+* [Disclaimer](#disclaimer)
+* [Security Best Practices](#security-best-practices)
+* [Configuration Safety](#configuration-safety)
+* [Hook Execution Details](#hook-execution-details)
+* [Debugging](#debugging)
+* [Basic Troubleshooting](#basic-troubleshooting)
+* [Advanced Debugging](#advanced-debugging)
+* [Debug Output Example](#debug-output-example)

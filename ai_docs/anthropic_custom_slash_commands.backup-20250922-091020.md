@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-09-22T09:10:20.341646
+> Last updated: 2025-09-08T09:10:01.763371
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Reference
 
 Slash commands
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Slash commands
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,32 +88,6 @@ Slash commands
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [Built-in slash commands](#built-in-slash-commands)
-* [Custom slash commands](#custom-slash-commands)
-* [Syntax](#syntax)
-* [Parameters](#parameters)
-* [Command types](#command-types)
-* [Project commands](#project-commands)
-* [Personal commands](#personal-commands)
-* [Features](#features)
-* [Namespacing](#namespacing)
-* [Arguments](#arguments)
-* [Bash command execution](#bash-command-execution)
-* [File references](#file-references)
-* [Thinking mode](#thinking-mode)
-* [Frontmatter](#frontmatter)
-* [MCP slash commands](#mcp-slash-commands)
-* [Command format](#command-format)
-* [Features](#features-2)
-* [Dynamic discovery](#dynamic-discovery)
-* [Arguments](#arguments-2)
-* [Naming conventions](#naming-conventions)
-* [Managing MCP connections](#managing-mcp-connections)
-* [MCP permissions and wildcards](#mcp-permissions-and-wildcards)
-* [See also](#see-also)
-
 Reference
 
 Slash commands
@@ -128,8 +96,6 @@ Slash commands
 Copy page
 
 Control Claude’s behavior during an interactive session with slash commands.
-
-Copy page
 
 [​](#built-in-slash-commands) Built-in slash commands
 -----------------------------------------------------
@@ -165,8 +131,6 @@ Custom slash commands allow you to define frequently-used prompts as Markdown fi
 
 ### [​](#syntax) Syntax
 
-Copy
-
 ```
 /<command-name> [arguments]
 ```
@@ -183,10 +147,10 @@ Copy
 #### [​](#project-commands) Project commands
 
 Commands stored in your repository and shared with your team. When listed in `/help`, these commands show “(project)” after their description.
-**Location**: `.claude/commands/`
-In the following example, we create the `/optimize` command:
 
-Copy
+**Location**: `.claude/commands/`
+
+In the following example, we create the `/optimize` command:
 
 ```
 # Create a project command
@@ -197,10 +161,10 @@ echo "Analyze this code for performance issues and suggest optimizations:" > .cl
 #### [​](#personal-commands) Personal commands
 
 Commands available across all your projects. When listed in `/help`, these commands show “(user)” after their description.
-**Location**: `~/.claude/commands/`
-In the following example, we create the `/security-review` command:
 
-Copy
+**Location**: `~/.claude/commands/`
+
+In the following example, we create the `/security-review` command:
 
 ```
 # Create a personal command
@@ -213,7 +177,9 @@ echo "Review this code for security vulnerabilities:" > ~/.claude/commands/secur
 #### [​](#namespacing) Namespacing
 
 Organize commands in subdirectories. The subdirectories are used for organization and appear in the command description, but they do not affect the command name itself. The description will show whether the command comes from the project directory (`.claude/commands`) or the user-level directory (`~/.claude/commands`), along with the subdirectory name.
+
 Conflicts between user and project level commands are not supported. Otherwise, multiple commands with the same base file name can coexist.
+
 For example, a file at `.claude/commands/frontend/component.md` creates the command `/component` with description showing “(project:frontend)”.
 Meanwhile, a file at `~/.claude/commands/component.md` creates the command `/component` with description showing “(user)”.
 
@@ -224,8 +190,6 @@ Pass dynamic values to commands using argument placeholders:
 ##### All arguments with `$ARGUMENTS`
 
 The `$ARGUMENTS` placeholder captures all arguments passed to the command:
-
-Copy
 
 ```
 # Command definition
@@ -239,8 +203,6 @@ echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/f
 ##### Individual arguments with `$1`, `$2`, etc.
 
 Access specific arguments individually using positional parameters (similar to shell scripts):
-
-Copy
 
 ```
 # Command definition  
@@ -260,9 +222,8 @@ Use positional arguments when you need to:
 #### [​](#bash-command-execution) Bash command execution
 
 Execute bash commands before the slash command runs using the `!` prefix. The output is included in the command context. You *must* include `allowed-tools` with the `Bash` tool, but you can choose the specific bash commands to allow.
-For example:
 
-Copy
+For example:
 
 ```
 ---
@@ -285,9 +246,8 @@ Based on the above changes, create a single git commit.
 #### [​](#file-references) File references
 
 Include file contents in commands using the `@` prefix to [reference files](/en/docs/claude-code/common-workflows#reference-files-and-directories).
-For example:
 
-Copy
+For example:
 
 ```
 # Reference a specific file
@@ -316,8 +276,6 @@ Command files support frontmatter, useful for specifying metadata about the comm
 
 For example:
 
-Copy
-
 ```
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
@@ -330,8 +288,6 @@ Create a git commit with message: $ARGUMENTS
 ```
 
 Example using positional arguments:
-
-Copy
 
 ```
 ---
@@ -352,8 +308,6 @@ MCP servers can expose prompts as slash commands that become available in Claude
 
 MCP commands follow the pattern:
 
-Copy
-
 ```
 /mcp__<server-name>__<prompt-name> [arguments]
 ```
@@ -371,8 +325,6 @@ MCP commands are automatically available when:
 #### [​](#arguments-2) Arguments
 
 MCP prompts can accept arguments defined by the server:
-
-Copy
 
 ```
 # Without arguments
@@ -426,6 +378,28 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [Built-in slash commands](#built-in-slash-commands)
+* [Custom slash commands](#custom-slash-commands)
+* [Syntax](#syntax)
+* [Parameters](#parameters)
+* [Command types](#command-types)
+* [Project commands](#project-commands)
+* [Personal commands](#personal-commands)
+* [Features](#features)
+* [Namespacing](#namespacing)
+* [Arguments](#arguments)
+* [Bash command execution](#bash-command-execution)
+* [File references](#file-references)
+* [Thinking mode](#thinking-mode)
+* [Frontmatter](#frontmatter)
+* [MCP slash commands](#mcp-slash-commands)
+* [Command format](#command-format)
+* [Features](#features-2)
+* [Dynamic discovery](#dynamic-discovery)
+* [Arguments](#arguments-2)
+* [Naming conventions](#naming-conventions)
+* [Managing MCP connections](#managing-mcp-connections)
+* [MCP permissions and wildcards](#mcp-permissions-and-wildcards)
+* [See also](#see-also)

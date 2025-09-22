@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-09-22T09:10:21.629912
+> Last updated: 2025-09-08T09:10:02.674039
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Configuration
 
 Claude Code settings
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Claude Code settings
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,23 +88,6 @@ Claude Code settings
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [Settings files](#settings-files)
-* [Available settings](#available-settings)
-* [Permission settings](#permission-settings)
-* [Settings precedence](#settings-precedence)
-* [Key points about the configuration system](#key-points-about-the-configuration-system)
-* [System prompt availability](#system-prompt-availability)
-* [Excluding sensitive files](#excluding-sensitive-files)
-* [Subagent configuration](#subagent-configuration)
-* [Environment variables](#environment-variables)
-* [Configuration options](#configuration-options)
-* [Global configuration](#global-configuration)
-* [Tools available to Claude](#tools-available-to-claude)
-* [Extending tools with hooks](#extending-tools-with-hooks)
-* [See also](#see-also)
-
 Configuration
 
 Claude Code settings
@@ -119,8 +96,6 @@ Claude Code settings
 Copy page
 
 Configure Claude Code with global and project-level settings, and environment variables.
-
-Copy page
 
 Claude Code offers a variety of settings to configure its behavior to meet your needs. You can configure Claude Code by running the `/config` command when using the interactive REPL.
 
@@ -143,8 +118,6 @@ Code through hierarchical settings:
   + Windows: `C:\ProgramData\ClaudeCode\managed-settings.json`
 
 Example settings.json
-
-Copy
 
 ```
 {
@@ -184,7 +157,7 @@ Copy
 | `model` | Override the default model to use for Claude Code | `"claude-3-5-sonnet-20241022"` |
 | `statusLine` | Configure a custom status line to display context. See [statusLine documentation](statusline) | `{"type": "command", "command": "~/.claude/statusline.sh"}` |
 | `outputStyle` | Configure an output style to adjust the system prompt. See [output styles documentation](output-styles) | `"Explanatory"` |
-| `forceLoginMethod` | Use `claudeai` to restrict login to Claude.ai accounts, `console` to restrict login to Claude Console (API usage billing) accounts | `claudeai` |
+| `forceLoginMethod` | Use `claudeai` to restrict login to Claude.ai accounts, `console` to restrict login to Anthropic Console (API usage billing) accounts | `claudeai` |
 | `forceLoginOrgUUID` | Specify the UUID of an organization to automatically select it during login, bypassing the organization selection step. Requires `forceLoginMethod` to be set | `"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"` |
 | `enableAllProjectMcpServers` | Automatically approve all MCP servers defined in project `.mcp.json` files | `true` |
 | `enabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to approve | `["memory", "github"]` |
@@ -196,9 +169,9 @@ Copy
 
 | Keys | Description | Example |
 | --- | --- | --- |
-| `allow` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to allow tool use. **Note:** Bash rules use prefix matching, not regex | `[ "Bash(git diff:*)" ]` |
+| `allow` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to allow tool use | `[ "Bash(git diff:*)" ]` |
 | `ask` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to ask for confirmation upon tool use. | `[ "Bash(git push:*)" ]` |
-| `deny` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to deny tool use. Use this to also exclude sensitive files from Claude Code access. **Note:** Bash patterns are prefix matches and can be bypassed (see [Bash permission limitations](/en/docs/claude-code/iam#tool-specific-permission-rules)) | `[ "WebFetch", "Bash(curl:*)", "Read(./.env)", "Read(./secrets/**)" ]` |
+| `deny` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to deny tool use. Use this to also exclude sensitive files from Claude Code access. | `[ "WebFetch", "Bash(curl:*)", "Read(./.env)", "Read(./secrets/**)" ]` |
 | `additionalDirectories` | Additional [working directories](iam#working-directories) that Claude has access to | `[ "../docs/" ]` |
 | `defaultMode` | Default [permission mode](iam#permission-modes) when opening Claude Code | `"acceptEdits"` |
 | `disableBypassPermissionsMode` | Set to `"disable"` to prevent `bypassPermissions` mode from being activated. See [managed policy settings](iam#enterprise-managed-policy-settings) | `"disable"` |
@@ -208,15 +181,20 @@ Copy
 Settings are applied in order of precedence (highest to lowest):
 
 1. **Enterprise managed policies** (`managed-settings.json`)
+
    * Deployed by IT/DevOps
    * Cannot be overridden
 2. **Command line arguments**
+
    * Temporary overrides for a specific session
 3. **Local project settings** (`.claude/settings.local.json`)
+
    * Personal project-specific settings
 4. **Shared project settings** (`.claude/settings.json`)
+
    * Team-shared project settings in source control
 5. **User settings** (`~/.claude/settings.json`)
+
    * Personal global settings
 
 This hierarchy ensures that enterprise security policies are always enforced while still allowing teams and individuals to customize their experience.
@@ -237,8 +215,6 @@ Unlike for claude.ai, we do not publish Claude Code’s internal system prompt o
 ### [​](#excluding-sensitive-files) Excluding sensitive files
 
 To prevent Claude Code from accessing files containing sensitive information (e.g., API keys, secrets, environment files), use the `permissions.deny` setting in your `.claude/settings.json` file:
-
-Copy
 
 ```
 {
@@ -271,7 +247,7 @@ Subagent files define specialized AI assistants with custom prompts and tool per
 
 Claude Code supports the following environment variables to control its behavior:
 
-All environment variables can also be configured in [`settings.json`](#available-settings). This is useful as a way to automatically set environment variables for each session, or to roll out a set of environment variables for your whole team or organization.
+All environment variables can also be configured in [`settings.json`](/_sites/docs.anthropic.com/en/docs/claude-code/settings#available-settings). This is useful as a way to automatically set environment variables for each session, or to roll out a set of environment variables for your whole team or organization.
 
 | Variable | Purpose |
 | --- | --- |
@@ -286,22 +262,19 @@ All environment variables can also be configured in [`settings.json`](#available
 | `ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION` | Override AWS region for the Haiku-class model when using Bedrock |
 | `AWS_BEARER_TOKEN_BEDROCK` | Bedrock API key for authentication (see [Bedrock API keys](https://aws.amazon.com/blogs/machine-learning/accelerate-ai-development-with-amazon-bedrock-api-keys/)) |
 | `BASH_DEFAULT_TIMEOUT_MS` | Default timeout for long-running bash commands |
-| `BASH_MAX_OUTPUT_LENGTH` | Maximum number of characters in bash outputs before they are middle-truncated |
 | `BASH_MAX_TIMEOUT_MS` | Maximum timeout the model can set for long-running bash commands |
+| `BASH_MAX_OUTPUT_LENGTH` | Maximum number of characters in bash outputs before they are middle-truncated |
 | `CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR` | Return to the original working directory after each Bash command |
 | `CLAUDE_CODE_API_KEY_HELPER_TTL_MS` | Interval in milliseconds at which credentials should be refreshed (when using `apiKeyHelper`) |
-| `CLAUDE_CODE_CLIENT_CERT` | Path to client certificate file for mTLS authentication |
-| `CLAUDE_CODE_CLIENT_KEY_PASSPHRASE` | Passphrase for encrypted CLAUDE\_CODE\_CLIENT\_KEY (optional) |
-| `CLAUDE_CODE_CLIENT_KEY` | Path to client private key file for mTLS authentication |
-| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | Equivalent of setting `DISABLE_AUTOUPDATER`, `DISABLE_BUG_COMMAND`, `DISABLE_ERROR_REPORTING`, and `DISABLE_TELEMETRY` |
-| `CLAUDE_CODE_DISABLE_TERMINAL_TITLE` | Set to `1` to disable automatic terminal title updates based on conversation context |
 | `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Skip auto-installation of IDE extensions |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Set the maximum number of output tokens for most requests |
-| `CLAUDE_CODE_SKIP_BEDROCK_AUTH` | Skip AWS authentication for Bedrock (e.g. when using an LLM gateway) |
-| `CLAUDE_CODE_SKIP_VERTEX_AUTH` | Skip Google authentication for Vertex (e.g. when using an LLM gateway) |
-| `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/en/docs/claude-code/model-config) |
 | `CLAUDE_CODE_USE_BEDROCK` | Use [Bedrock](/en/docs/claude-code/amazon-bedrock) |
 | `CLAUDE_CODE_USE_VERTEX` | Use [Vertex](/en/docs/claude-code/google-vertex-ai) |
+| `CLAUDE_CODE_SKIP_BEDROCK_AUTH` | Skip AWS authentication for Bedrock (e.g. when using an LLM gateway) |
+| `CLAUDE_CODE_SKIP_VERTEX_AUTH` | Skip Google authentication for Vertex (e.g. when using an LLM gateway) |
+| `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | Equivalent of setting `DISABLE_AUTOUPDATER`, `DISABLE_BUG_COMMAND`, `DISABLE_ERROR_REPORTING`, and `DISABLE_TELEMETRY` |
+| `CLAUDE_CODE_DISABLE_TERMINAL_TITLE` | Set to `1` to disable automatic terminal title updates based on conversation context |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/en/docs/claude-code/model-config) |
 | `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. This takes precedence over the `autoUpdates` configuration setting. |
 | `DISABLE_BUG_COMMAND` | Set to `1` to disable the `/bug` command |
 | `DISABLE_COST_WARNINGS` | Set to `1` to disable cost warning messages |
@@ -310,10 +283,10 @@ All environment variables can also be configured in [`settings.json`](#available
 | `DISABLE_TELEMETRY` | Set to `1` to opt out of Statsig telemetry (note that Statsig events do not include user data like code, file paths, or bash commands) |
 | `HTTP_PROXY` | Specify HTTP proxy server for network connections |
 | `HTTPS_PROXY` | Specify HTTPS proxy server for network connections |
-| `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses. Claude Code displays a warning when output exceeds 10,000 tokens (default: 25000) |
 | `MAX_THINKING_TOKENS` | Force a thinking for the model budget |
 | `MCP_TIMEOUT` | Timeout in milliseconds for MCP server startup |
 | `MCP_TOOL_TIMEOUT` | Timeout in milliseconds for MCP tool execution |
+| `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses. Claude Code displays a warning when output exceeds 10,000 tokens (default: 25000) |
 | `NO_PROXY` | List of domains and IPs to which requests will be directly issued, bypassing proxy |
 | `USE_BUILTIN_RIPGREP` | Set to `0` to use system-installed `rg` intead of `rg` included with Claude Code |
 | `VERTEX_REGION_CLAUDE_3_5_HAIKU` | Override region for Claude 3.5 Haiku when using Vertex AI |
@@ -368,12 +341,13 @@ Claude Code has access to a set of powerful tools that help it understand and mo
 | **WebSearch** | Performs web searches with domain filtering | Yes |
 | **Write** | Creates or overwrites files | Yes |
 
-Permission rules can be configured using `/allowed-tools` or in [permission settings](/en/docs/claude-code/settings#available-settings). Also see [Tool-specific permission rules](/en/docs/claude-code/iam#tool-specific-permission-rules).
+Permission rules can be configured using `/allowed-tools` or in [permission settings](/en/docs/claude-code/settings#available-settings).
 
 ### [​](#extending-tools-with-hooks) Extending tools with hooks
 
 You can run custom commands before or after any tool executes using
 [Claude Code hooks](/en/docs/claude-code/hooks-guide).
+
 For example, you could automatically run a Python formatter after Claude
 modifies Python files, or prevent modifications to production configuration
 files by blocking Write operations to certain paths.
@@ -393,6 +367,19 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [Settings files](#settings-files)
+* [Available settings](#available-settings)
+* [Permission settings](#permission-settings)
+* [Settings precedence](#settings-precedence)
+* [Key points about the configuration system](#key-points-about-the-configuration-system)
+* [System prompt availability](#system-prompt-availability)
+* [Excluding sensitive files](#excluding-sensitive-files)
+* [Subagent configuration](#subagent-configuration)
+* [Environment variables](#environment-variables)
+* [Configuration options](#configuration-options)
+* [Global configuration](#global-configuration)
+* [Tools available to Claude](#tools-available-to-claude)
+* [Extending tools with hooks](#extending-tools-with-hooks)
+* [See also](#see-also)

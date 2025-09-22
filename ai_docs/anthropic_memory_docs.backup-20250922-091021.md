@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-09-22T09:10:21.229768
+> Last updated: 2025-09-08T09:10:02.407402
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Configuration
 
 Manage Claude's memory
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Manage Claude's memory
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,17 +88,6 @@ Manage Claude's memory
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [Determine memory type](#determine-memory-type)
-* [CLAUDE.md imports](#claude-md-imports)
-* [How Claude looks up memories](#how-claude-looks-up-memories)
-* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-%23-shortcut)
-* [Directly edit memories with /memory](#directly-edit-memories-with-%2Fmemory)
-* [Set up project memory](#set-up-project-memory)
-* [Organization-level memory management](#organization-level-memory-management)
-* [Memory best practices](#memory-best-practices)
-
 Configuration
 
 Manage Claude's memory
@@ -113,8 +96,6 @@ Manage Claude's memory
 Copy page
 
 Learn how to manage Claude Code’s memory across sessions with different memory locations and best practices.
-
-Copy page
 
 Claude Code can remember your preferences across sessions, like style guidelines and common commands in your workflow.
 
@@ -126,7 +107,7 @@ Claude Code offers four memory locations in a hierarchical structure, each servi
 | Memory Type | Location | Purpose | Use Case Examples | Shared With |
 | --- | --- | --- | --- | --- |
 | **Enterprise policy** | macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md` Linux: `/etc/claude-code/CLAUDE.md` Windows: `C:\ProgramData\ClaudeCode\CLAUDE.md` | Organization-wide instructions managed by IT/DevOps | Company coding standards, security policies, compliance requirements | All users in organization |
-| **Project memory** | `./CLAUDE.md` or `./.claude/CLAUDE.md` | Team-shared instructions for the project | Project architecture, coding standards, common workflows | Team members via source control |
+| **Project memory** | `./CLAUDE.md` | Team-shared instructions for the project | Project architecture, coding standards, common workflows | Team members via source control |
 | **User memory** | `~/.claude/CLAUDE.md` | Personal preferences for all projects | Code styling preferences, personal tooling shortcuts | Just you (all projects) |
 | **Project memory (local)** | `./CLAUDE.local.md` | Personal project-specific preferences | *(Deprecated, see below)* Your sandbox URLs, preferred test data | Just you (current project) |
 
@@ -137,8 +118,6 @@ All memory files are automatically loaded into Claude Code’s context when laun
 
 CLAUDE.md files can import additional files using `@path/to/import` syntax. The following example imports 3 files:
 
-Copy
-
 ```
 See @README for project overview and @package.json for available npm commands for this project.
 
@@ -148,16 +127,12 @@ See @README for project overview and @package.json for available npm commands fo
 
 Both relative and absolute paths are allowed. In particular, importing files in user’s home dir is a convenient way for your team members to provide individual instructions that are not checked into the repository. Previously CLAUDE.local.md served a similar purpose, but is now deprecated in favor of imports since they work better across multiple git worktrees.
 
-Copy
-
 ```
 # Individual Preferences
 - @~/.claude/my-project-instructions.md
 ```
 
 To avoid potential collisions, imports are not evaluated inside markdown code spans and code blocks.
-
-Copy
 
 ```
 This code span will not be treated as an import: `@anthropic-ai/claude-code`
@@ -169,14 +144,13 @@ Imported files can recursively import additional files, with a max-depth of 5 ho
 ---------------------------------------------------------------
 
 Claude Code reads memories recursively: starting in the cwd, Claude Code recurses up to (but not including) the root directory */* and reads any CLAUDE.md or CLAUDE.local.md files it finds. This is especially convenient when working in large repositories where you run Claude Code in *foo/bar/*, and have memories in both *foo/CLAUDE.md* and *foo/bar/CLAUDE.md*.
+
 Claude will also discover CLAUDE.md nested in subtrees under your current working directory. Instead of loading them at launch, they are only included when Claude reads files in those subtrees.
 
 [​](#quickly-add-memories-with-the-%23-shortcut) Quickly add memories with the `#` shortcut
 -------------------------------------------------------------------------------------------
 
 The fastest way to add a memory is to start your input with the `#` character:
-
-Copy
 
 ```
 # Always use descriptive variable names
@@ -192,10 +166,9 @@ Use the `/memory` slash command during a session to open any memory file in your
 [​](#set-up-project-memory) Set up project memory
 -------------------------------------------------
 
-Suppose you want to set up a CLAUDE.md file to store important project information, conventions, and frequently used commands. Project memory can be stored in either `./CLAUDE.md` or `./.claude/CLAUDE.md`.
-Bootstrap a CLAUDE.md for your codebase with the following command:
+Suppose you want to set up a CLAUDE.md file to store important project information, conventions, and frequently used commands.
 
-Copy
+Bootstrap a CLAUDE.md for your codebase with the following command:
 
 ```
 > /init
@@ -212,6 +185,7 @@ Tips:
 -------------------------------------------------------------------------------
 
 Enterprise organizations can deploy centrally managed CLAUDE.md files that apply to all users.
+
 To set up organization-level memory management:
 
 1. Create the enterprise memory file in the appropriate location for your operating system:
@@ -237,6 +211,13 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [Determine memory type](#determine-memory-type)
+* [CLAUDE.md imports](#claude-md-imports)
+* [How Claude looks up memories](#how-claude-looks-up-memories)
+* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-%23-shortcut)
+* [Directly edit memories with /memory](#directly-edit-memories-with-%2Fmemory)
+* [Set up project memory](#set-up-project-memory)
+* [Organization-level memory management](#organization-level-memory-management)
+* [Memory best practices](#memory-best-practices)

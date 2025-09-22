@@ -2,21 +2,17 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-09-22T09:10:20.596621
+> Last updated: 2025-09-08T09:10:01.977795
 
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
+[Anthropic home page![light logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/light.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=963e6ff7a6fa0b7e91190b91eda1bcc9)![dark logo](https://mintcdn.com/anthropic/PF_69UDRSEsLpN9D/logo/dark.svg?fit=max&auto=format&n=PF_69UDRSEsLpN9D&q=85&s=976deddf2f26a84dd69133bd9ab074ad)](/)
 
 English
 
 Search...
 
-⌘K
-
-* [Console](https://console.anthropic.com/login)
-* [Support](https://support.claude.com/)
 * [Research](https://www.anthropic.com/research)
+* [Login](https://console.anthropic.com/login)
+* [Support](https://support.anthropic.com/)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -29,7 +25,7 @@ Build with Claude Code
 
 Output styles
 
-[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
@@ -43,24 +39,22 @@ Output styles
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
-* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
 ##### Claude Code SDK
 
 * [Overview](/en/docs/claude-code/sdk/sdk-overview)
-* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
-* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
 * [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
-* Guides
+* [Python](/en/docs/claude-code/sdk/sdk-python)
+* [TypeScript](/en/docs/claude-code/sdk/sdk-typescript)
 
 ##### Deployment
 
 * [Overview](/en/docs/claude-code/third-party-integrations)
 * [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
 * [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
-* [Network configuration](/en/docs/claude-code/network-config)
+* [Corporate proxy](/en/docs/claude-code/corporate-proxy)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
 
@@ -94,17 +88,6 @@ Output styles
 
 * [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
-On this page
-
-* [Built-in output styles](#built-in-output-styles)
-* [How output styles work](#how-output-styles-work)
-* [Change your output style](#change-your-output-style)
-* [Create a custom output style](#create-a-custom-output-style)
-* [Comparisons to related features](#comparisons-to-related-features)
-* [Output Styles vs. CLAUDE.md vs. —append-system-prompt](#output-styles-vs-claude-md-vs-%E2%80%94append-system-prompt)
-* [Output Styles vs. Agents](#output-styles-vs-agents)
-* [Output Styles vs. Custom Slash Commands](#output-styles-vs-custom-slash-commands)
-
 Build with Claude Code
 
 Output styles
@@ -113,8 +96,6 @@ Output styles
 Copy page
 
 Adapt Claude Code for uses beyond software engineering
-
-Copy page
 
 Output styles allow you to use Claude Code as any type of agent while keeping
 its core capabilities, such as running local scripts, reading/writing files, and
@@ -125,6 +106,7 @@ tracking TODOs.
 
 Claude Code’s **Default** output style is the existing system prompt, designed
 to help you complete software engineering tasks efficiently.
+
 There are two additional built-in output styles focused on teaching you the
 codebase and how Claude operates:
 
@@ -165,11 +147,10 @@ and are saved in `.claude/settings.local.json`.
 
 To set up a new output style with Claude’s help, run
 `/output-style:new I want an output style that ...`
+
 By default, output styles created through `/output-style:new` are saved as
 markdown files at the user level in `~/.claude/output-styles` and can be used
 across projects. They have the following structure:
-
-Copy
 
 ```
 ---
@@ -223,6 +204,13 @@ YesNo
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
-Assistant
+On this page
 
-Responses are generated using AI and may contain mistakes.
+* [Built-in output styles](#built-in-output-styles)
+* [How output styles work](#how-output-styles-work)
+* [Change your output style](#change-your-output-style)
+* [Create a custom output style](#create-a-custom-output-style)
+* [Comparisons to related features](#comparisons-to-related-features)
+* [Output Styles vs. CLAUDE.md vs. —append-system-prompt](#output-styles-vs-claude-md-vs-%E2%80%94append-system-prompt)
+* [Output Styles vs. Agents](#output-styles-vs-agents)
+* [Output Styles vs. Custom Slash Commands](#output-styles-vs-custom-slash-commands)
