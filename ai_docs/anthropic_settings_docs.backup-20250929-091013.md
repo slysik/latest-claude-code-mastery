@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-09-29T09:10:13.686043
+> Last updated: 2025-09-22T09:10:21.629912
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -315,7 +315,6 @@ All environment variables can also be configured in [`settings.json`](#available
 | `MCP_TIMEOUT` | Timeout in milliseconds for MCP server startup |
 | `MCP_TOOL_TIMEOUT` | Timeout in milliseconds for MCP tool execution |
 | `NO_PROXY` | List of domains and IPs to which requests will be directly issued, bypassing proxy |
-| `SLASH_COMMAND_TOOL_CHAR_BUDGET` | Maximum number of characters for slash command metadata shown to [SlashCommand tool](/en/docs/claude-code/slash-commands#slashcommand-tool) (default: 15000) |
 | `USE_BUILTIN_RIPGREP` | Set to `0` to use system-installed `rg` intead of `rg` included with Claude Code |
 | `VERTEX_REGION_CLAUDE_3_5_HAIKU` | Override region for Claude 3.5 Haiku when using Vertex AI |
 | `VERTEX_REGION_CLAUDE_3_5_SONNET` | Override region for Claude Sonnet 3.5 when using Vertex AI |
@@ -363,7 +362,6 @@ Claude Code has access to a set of powerful tools that help it understand and mo
 | **NotebookEdit** | Modifies Jupyter notebook cells | Yes |
 | **NotebookRead** | Reads and displays Jupyter notebook contents | No |
 | **Read** | Reads the contents of files | No |
-| **SlashCommand** | Runs a [custom slash command](/en/docs/claude-code/slash-commands#slashcommand-tool) | Yes |
 | **Task** | Runs a sub-agent to handle complex, multi-step tasks | No |
 | **TodoWrite** | Creates and manages structured task lists | No |
 | **WebFetch** | Fetches content from a specified URL | Yes |

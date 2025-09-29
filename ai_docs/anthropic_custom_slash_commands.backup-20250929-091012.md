@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-09-29T09:10:12.495933
+> Last updated: 2025-09-22T09:10:20.341646
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -118,12 +118,6 @@ On this page
 * [Naming conventions](#naming-conventions)
 * [Managing MCP connections](#managing-mcp-connections)
 * [MCP permissions and wildcards](#mcp-permissions-and-wildcards)
-* [SlashCommand tool](#slashcommand-tool)
-* [SlashCommand tool supported commands](#slashcommand-tool-supported-commands)
-* [Disable SlashCommand tool](#disable-slashcommand-tool)
-* [Disable specific commands only](#disable-specific-commands-only)
-* [SlashCommand permission rules](#slashcommand-permission-rules)
-* [Character budget limit](#character-budget-limit)
 * [See also](#see-also)
 
 Reference
@@ -319,7 +313,6 @@ Command files support frontmatter, useful for specifying metadata about the comm
 | `argument-hint` | The arguments expected for the slash command. Example: `argument-hint: add [tagId] | remove [tagId] | list`. This hint is shown to the user when auto-completing the slash command. | None |
 | `description` | Brief description of the command | Uses the first line from the prompt |
 | `model` | Specific model string (see [Models overview](/en/docs/about-claude/models/overview)) | Inherits from the conversation |
-| `disable-model-invocation` | Whether to prevent `SlashCommand` tool from calling this command | false |
 
 For example:
 
@@ -415,75 +408,6 @@ When configuring [permissions for MCP tools](/en/docs/claude-code/iam#tool-speci
 * ❌ **Incorrect**: `mcp__github__*` (wildcards not supported)
 
 To approve all tools from an MCP server, use just the server name: `mcp__servername`. To approve specific tools only, list each tool individually.
-
-[​](#slashcommand-tool) `SlashCommand` tool
--------------------------------------------
-
-The `SlashCommand` tool allows Claude to execute [custom slash commands](/en/docs/claude-code/slash-commands#custom-slash-commands) programmatically
-during a conversation. This gives Claude the ability to invoke custom commands
-on your behalf when appropriate.
-To encourage Claude to trigger `SlashCommand` tool, your instructions (prompts,
-CLAUDE.md, etc.) generally need to reference the command by name with its slash.
-Example:
-
-Copy
-
-```
-> Run /write-unit-test when you are about to start writing tests.
-```
-
-This tool puts each available custom slash command’s metadata into context up to the
-character budget limit. You can use `/context` to monitor token usage and follow
-the operations below to manage context.
-
-### [​](#slashcommand-tool-supported-commands) `SlashCommand` tool supported commands
-
-`SlashCommand` tool only supports custom slash commands that:
-
-* Are user-defined. Built-in commands like `/compact` and `/init` are *not* supported.
-* Have the `description` frontmatter field populated. We use the `description` in the context.
-
-For Claude Code versions >= 1.0.124, you can see which custom slash commands
-`SlashCommand` tool can invoke by running `claude --debug` and triggering a query.
-
-### [​](#disable-slashcommand-tool) Disable `SlashCommand` tool
-
-To prevent Claude from executing any slash commands via the tool:
-
-Copy
-
-```
-/permissions
-# Add to deny rules: SlashCommand
-```
-
-This will also remove SlashCommand tool (and the slash command descriptions) from context.
-
-### [​](#disable-specific-commands-only) Disable specific commands only
-
-To prevent a specific slash command from becoming available, add
-`disable-model-invocation: true` to the slash command’s frontmatter.
-This will also remove the command’s metadata from context.
-
-### [​](#slashcommand-permission-rules) `SlashCommand` permission rules
-
-The permission rules support:
-
-* **Exact match**: `SlashCommand:/commit` (allows only `/commit` with no arguments)
-* **Prefix match**: `SlashCommand:/review-pr:*` (allows `/review-pr` with any arguments)
-
-### [​](#character-budget-limit) Character budget limit
-
-The `SlashCommand` tool includes a character budget to limit the size of command
-descriptions shown to Claude. This prevents token overflow when many commands
-are available.
-The budget includes each custom slash command’s name, args, and description.
-
-* **Default limit**: 15,000 characters
-* **Custom limit**: Set via `SLASH_COMMAND_TOOL_CHAR_BUDGET` environment variable
-
-When the character budget is exceeded, Claude will see only a subset of the
-available commands. In `/context`, a warning will show with “M of N commands”.
 
 [​](#see-also) See also
 -----------------------

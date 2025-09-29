@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-09-29T09:10:11.734216
+> Last updated: 2025-09-22T09:10:19.612654
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -245,7 +245,7 @@ Copy
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/check-style.sh"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/check-style.sh"
           }
         ]
       }
@@ -896,7 +896,7 @@ Here are some key practices for writing more secure hooks:
 2. **Always quote shell variables** - Use `"$VAR"` not `$VAR`
 3. **Block path traversal** - Check for `..` in file paths
 4. **Use absolute paths** - Specify full paths for scripts (use
-   “$CLAUDE\_PROJECT\_DIR” for the project path)
+   `$CLAUDE_PROJECT_DIR` for the project path)
 5. **Skip sensitive files** - Avoid `.env`, `.git/`, keys, etc.
 
 ### [​](#configuration-safety) Configuration Safety
