@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-10-13T09:10:32.380067
+> Last updated: 2025-09-29T09:10:13.076739
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -16,6 +16,7 @@ Search...
 
 * [Console](https://console.anthropic.com/login)
 * [Support](https://support.claude.com/)
+* [Research](https://www.anthropic.com/research)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -39,10 +40,8 @@ Quickstart
 ##### Build with Claude Code
 
 * [Subagents](/en/docs/claude-code/sub-agents)
-* [Plugins](/en/docs/claude-code/plugins)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
-* [Headless mode](/en/docs/claude-code/headless)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
@@ -50,7 +49,11 @@ Quickstart
 
 ##### Claude Code SDK
 
-* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+* [Overview](/en/docs/claude-code/sdk/sdk-overview)
+* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
+* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
+* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
+* Guides
 
 ##### Deployment
 
@@ -70,13 +73,11 @@ Quickstart
 * [Monitoring](/en/docs/claude-code/monitoring-usage)
 * [Costs](/en/docs/claude-code/costs)
 * [Analytics](/en/docs/claude-code/analytics)
-* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
 * [Settings](/en/docs/claude-code/settings)
-* [Visual Studio Code](/en/docs/claude-code/vs-code)
-* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
 * [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
@@ -87,9 +88,7 @@ Quickstart
 * [CLI reference](/en/docs/claude-code/cli-reference)
 * [Interactive mode](/en/docs/claude-code/interactive-mode)
 * [Slash commands](/en/docs/claude-code/slash-commands)
-* [Checkpointing](/en/docs/claude-code/checkpointing)
 * [Hooks reference](/en/docs/claude-code/hooks)
-* [Plugins reference](/en/docs/claude-code/plugins-reference)
 
 ##### Resources
 
@@ -218,7 +217,17 @@ cd /path/to/your/project
 claude
 ```
 
-You’ll see the Claude Code welcome screen with your session information, recent conversations, and latest updates. Type `/help` for available commands or `/resume` to continue a previous conversation.
+You’ll see the Claude Code prompt inside a new interactive session:
+
+Copy
+
+```
+✻ Welcome to Claude Code!
+
+...
+
+> Try "create a util logging.py that..."
+```
 
 After logging in (Step 2), your credentials are stored on your system. Learn more in [Credential Management](/en/docs/claude-code/iam#credential-management).
 
@@ -496,26 +505,8 @@ YesNo
 
 [Overview](/en/docs/claude-code/overview)[Common workflows](/en/docs/claude-code/common-workflows)
 
+[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
+
 Assistant
 
 Responses are generated using AI and may contain mistakes.
-
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
-
-Company
-
-[Anthropic](https://www.anthropic.com/company)[Careers](https://www.anthropic.com/careers)[Economic Futures](https://www.anthropic.com/economic-futures)[Research](https://www.anthropic.com/research)[News](https://www.anthropic.com/news)[Trust center](https://trust.anthropic.com/)[Transparency](https://www.anthropic.com/transparency)
-
-Help and security
-
-[Availability](https://www.anthropic.com/supported-countries)[Status](https://status.anthropic.com/)[Support center](https://support.claude.com/)
-
-Learn
-
-[Courses](https://www.anthropic.com/learn)[MCP connectors](https://claude.com/partners/mcp)[Customer stories](https://www.claude.com/customers)[Engineering blog](https://www.anthropic.com/engineering)[Events](https://www.anthropic.com/events)[Powered by Claude](https://claude.com/partners/powered-by-claude)[Service partners](https://claude.com/partners/services)[Startups program](https://claude.com/programs/startups)
-
-Terms and policies
-
-[Privacy policy](https://www.anthropic.com/legal/privacy)[Disclosure policy](https://www.anthropic.com/responsible-disclosure-policy)[Usage policy](https://www.anthropic.com/legal/aup)[Commercial terms](https://www.anthropic.com/legal/commercial-terms)[Consumer terms](https://www.anthropic.com/legal/consumer-terms)

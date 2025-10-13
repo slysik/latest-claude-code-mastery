@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-10-13T09:10:31.344126
+> Last updated: 2025-09-29T09:10:12.159192
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -16,6 +16,7 @@ Search...
 
 * [Console](https://console.anthropic.com/login)
 * [Support](https://support.claude.com/)
+* [Research](https://www.anthropic.com/research)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -39,10 +40,8 @@ Subagents
 ##### Build with Claude Code
 
 * [Subagents](/en/docs/claude-code/sub-agents)
-* [Plugins](/en/docs/claude-code/plugins)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
-* [Headless mode](/en/docs/claude-code/headless)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
@@ -50,7 +49,11 @@ Subagents
 
 ##### Claude Code SDK
 
-* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+* [Overview](/en/docs/claude-code/sdk/sdk-overview)
+* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
+* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
+* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
+* Guides
 
 ##### Deployment
 
@@ -70,13 +73,11 @@ Subagents
 * [Monitoring](/en/docs/claude-code/monitoring-usage)
 * [Costs](/en/docs/claude-code/costs)
 * [Analytics](/en/docs/claude-code/analytics)
-* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
 * [Settings](/en/docs/claude-code/settings)
-* [Visual Studio Code](/en/docs/claude-code/vs-code)
-* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
 * [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
@@ -87,9 +88,7 @@ Subagents
 * [CLI reference](/en/docs/claude-code/cli-reference)
 * [Interactive mode](/en/docs/claude-code/interactive-mode)
 * [Slash commands](/en/docs/claude-code/slash-commands)
-* [Checkpointing](/en/docs/claude-code/checkpointing)
 * [Hooks reference](/en/docs/claude-code/hooks)
-* [Plugins reference](/en/docs/claude-code/plugins-reference)
 
 ##### Resources
 
@@ -102,8 +101,6 @@ On this page
 * [Quick start](#quick-start)
 * [Subagent configuration](#subagent-configuration)
 * [File locations](#file-locations)
-* [Plugin agents](#plugin-agents)
-* [CLI-based configuration](#cli-based-configuration)
 * [File format](#file-format)
 * [Configuration fields](#configuration-fields)
 * [Model selection](#model-selection)
@@ -231,46 +228,6 @@ Subagents are stored as Markdown files with YAML frontmatter in two possible loc
 | **User subagents** | `~/.claude/agents/` | Available across all projects | Lower |
 
 When subagent names conflict, project-level subagents take precedence over user-level subagents.
-
-### [​](#plugin-agents) Plugin agents
-
-[Plugins](/en/docs/claude-code/plugins) can provide custom subagents that integrate seamlessly with Claude Code. Plugin agents work identically to user-defined agents and appear in the `/agents` interface.
-**Plugin agent locations**: Plugins include agents in their `agents/` directory (or custom paths specified in the plugin manifest).
-**Using plugin agents**:
-
-* Plugin agents appear in `/agents` alongside your custom agents
-* Can be invoked explicitly: “Use the code-reviewer agent from the security-plugin”
-* Can be invoked automatically by Claude when appropriate
-* Can be managed (viewed, inspected) through `/agents` interface
-
-See the [plugin components reference](/en/docs/claude-code/plugins-reference#agents) for details on creating plugin agents.
-
-### [​](#cli-based-configuration) CLI-based configuration
-
-You can also define subagents dynamically using the `--agents` CLI flag, which accepts a JSON object:
-
-Copy
-
-```
-claude --agents '{
-  "code-reviewer": {
-    "description": "Expert code reviewer. Use proactively after code changes.",
-    "prompt": "You are a senior code reviewer. Focus on code quality, security, and best practices.",
-    "tools": ["Read", "Grep", "Glob", "Bash"],
-    "model": "sonnet"
-  }
-}'
-```
-
-**Priority**: CLI-defined subagents have lower priority than project-level subagents but higher priority than user-level subagents.
-**Use case**: This approach is useful for:
-
-* Quick testing of subagent configurations
-* Session-specific subagents that don’t need to be saved
-* Automation scripts that need custom subagents
-* Sharing subagent definitions in documentation or scripts
-
-For detailed information about the JSON format and all available options, see the [CLI reference documentation](/en/docs/claude-code/cli-reference#agents-flag-format).
 
 ### [​](#file-format) File format
 
@@ -543,7 +500,6 @@ Claude Code intelligently selects subagents based on context. Make your `descrip
 [​](#related-documentation) Related documentation
 -------------------------------------------------
 
-* [Plugins](/en/docs/claude-code/plugins) - Extend Claude Code with custom agents through plugins
 * [Slash commands](/en/docs/claude-code/slash-commands) - Learn about other built-in commands
 * [Settings](/en/docs/claude-code/settings) - Configure Claude Code behavior
 * [Hooks](/en/docs/claude-code/hooks) - Automate workflows with event handlers
@@ -552,28 +508,10 @@ Was this page helpful?
 
 YesNo
 
-[Common workflows](/en/docs/claude-code/common-workflows)[Plugins](/en/docs/claude-code/plugins)
+[Common workflows](/en/docs/claude-code/common-workflows)[Output styles](/en/docs/claude-code/output-styles)
+
+[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
 Assistant
 
 Responses are generated using AI and may contain mistakes.
-
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
-
-Company
-
-[Anthropic](https://www.anthropic.com/company)[Careers](https://www.anthropic.com/careers)[Economic Futures](https://www.anthropic.com/economic-futures)[Research](https://www.anthropic.com/research)[News](https://www.anthropic.com/news)[Trust center](https://trust.anthropic.com/)[Transparency](https://www.anthropic.com/transparency)
-
-Help and security
-
-[Availability](https://www.anthropic.com/supported-countries)[Status](https://status.anthropic.com/)[Support center](https://support.claude.com/)
-
-Learn
-
-[Courses](https://www.anthropic.com/learn)[MCP connectors](https://claude.com/partners/mcp)[Customer stories](https://www.claude.com/customers)[Engineering blog](https://www.anthropic.com/engineering)[Events](https://www.anthropic.com/events)[Powered by Claude](https://claude.com/partners/powered-by-claude)[Service partners](https://claude.com/partners/services)[Startups program](https://claude.com/programs/startups)
-
-Terms and policies
-
-[Privacy policy](https://www.anthropic.com/legal/privacy)[Disclosure policy](https://www.anthropic.com/responsible-disclosure-policy)[Usage policy](https://www.anthropic.com/legal/aup)[Commercial terms](https://www.anthropic.com/legal/commercial-terms)[Consumer terms](https://www.anthropic.com/legal/consumer-terms)

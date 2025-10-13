@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-10-13T09:10:31.721281
+> Last updated: 2025-09-29T09:10:12.495933
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -16,6 +16,7 @@ Search...
 
 * [Console](https://console.anthropic.com/login)
 * [Support](https://support.claude.com/)
+* [Research](https://www.anthropic.com/research)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -39,10 +40,8 @@ Slash commands
 ##### Build with Claude Code
 
 * [Subagents](/en/docs/claude-code/sub-agents)
-* [Plugins](/en/docs/claude-code/plugins)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
-* [Headless mode](/en/docs/claude-code/headless)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
@@ -50,7 +49,11 @@ Slash commands
 
 ##### Claude Code SDK
 
-* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+* [Overview](/en/docs/claude-code/sdk/sdk-overview)
+* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
+* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
+* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
+* Guides
 
 ##### Deployment
 
@@ -70,13 +73,11 @@ Slash commands
 * [Monitoring](/en/docs/claude-code/monitoring-usage)
 * [Costs](/en/docs/claude-code/costs)
 * [Analytics](/en/docs/claude-code/analytics)
-* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
 * [Settings](/en/docs/claude-code/settings)
-* [Visual Studio Code](/en/docs/claude-code/vs-code)
-* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
 * [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
@@ -87,9 +88,7 @@ Slash commands
 * [CLI reference](/en/docs/claude-code/cli-reference)
 * [Interactive mode](/en/docs/claude-code/interactive-mode)
 * [Slash commands](/en/docs/claude-code/slash-commands)
-* [Checkpointing](/en/docs/claude-code/checkpointing)
 * [Hooks reference](/en/docs/claude-code/hooks)
-* [Plugins reference](/en/docs/claude-code/plugins-reference)
 
 ##### Resources
 
@@ -111,10 +110,6 @@ On this page
 * [File references](#file-references)
 * [Thinking mode](#thinking-mode)
 * [Frontmatter](#frontmatter)
-* [Plugin commands](#plugin-commands)
-* [How plugin commands work](#how-plugin-commands-work)
-* [Plugin command structure](#plugin-command-structure)
-* [Invocation patterns](#invocation-patterns)
 * [MCP slash commands](#mcp-slash-commands)
 * [Command format](#command-format)
 * [Features](#features-2)
@@ -152,7 +147,7 @@ Copy page
 | `/bug` | Report bugs (sends conversation to Anthropic) |
 | `/clear` | Clear conversation history |
 | `/compact [instructions]` | Compact conversation with optional focus instructions |
-| `/config` | Open the Settings interface (Config tab) |
+| `/config` | View/modify configuration |
 | `/cost` | Show token usage statistics (see [cost tracking guide](/en/docs/claude-code/costs#using-the-cost-command) for subscription-specific details) |
 | `/doctor` | Checks the health of your Claude Code installation |
 | `/help` | Get usage help |
@@ -165,10 +160,8 @@ Copy page
 | `/permissions` | View or update [permissions](/en/docs/claude-code/iam#configuring-permissions) |
 | `/pr_comments` | View pull request comments |
 | `/review` | Request code review |
-| `/rewind` | Rewind the conversation and/or code |
-| `/status` | Open the Settings interface (Status tab) showing version, model, account, and connectivity |
+| `/status` | View account and system statuses |
 | `/terminal-setup` | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |
-| `/usage` | Show plan usage limits and rate limit status (subscription plans only) |
 | `/vim` | Enter vim mode for alternating insert and command modes |
 
 [​](#custom-slash-commands) Custom slash commands
@@ -357,71 +350,6 @@ Review PR #$1 with priority $2 and assign to $3.
 Focus on security, performance, and code style.
 ```
 
-[​](#plugin-commands) Plugin commands
--------------------------------------
-
-[Plugins](/en/docs/claude-code/plugins) can provide custom slash commands that integrate seamlessly with Claude Code. Plugin commands work exactly like user-defined commands but are distributed through [plugin marketplaces](/en/docs/claude-code/plugin-marketplaces).
-
-### [​](#how-plugin-commands-work) How plugin commands work
-
-Plugin commands are:
-
-* **Namespaced**: Commands can use the format `/plugin-name:command-name` to avoid conflicts (plugin prefix is optional unless there are name collisions)
-* **Automatically available**: Once a plugin is installed and enabled, its commands appear in `/help`
-* **Fully integrated**: Support all command features (arguments, frontmatter, bash execution, file references)
-
-### [​](#plugin-command-structure) Plugin command structure
-
-**Location**: `commands/` directory in plugin root
-**File format**: Markdown files with frontmatter
-**Basic command structure**:
-
-Copy
-
-```
----
-description: Brief description of what the command does
----
-
-# Command Name
-
-Detailed instructions for Claude on how to execute this command.
-Include specific guidance on parameters, expected outcomes, and any special considerations.
-```
-
-**Advanced command features**:
-
-* **Arguments**: Use placeholders like `{arg1}` in command descriptions
-* **Subdirectories**: Organize commands in subdirectories for namespacing
-* **Bash integration**: Commands can execute shell scripts and programs
-* **File references**: Commands can reference and modify project files
-
-### [​](#invocation-patterns) Invocation patterns
-
-Direct command (when no conflicts)
-
-Copy
-
-```
-/command-name
-```
-
-Plugin-prefixed (when needed for disambiguation)
-
-Copy
-
-```
-/plugin-name:command-name
-```
-
-With arguments (if command supports them)
-
-Copy
-
-```
-/command-name arg1 arg2
-```
-
 [​](#mcp-slash-commands) MCP slash commands
 -------------------------------------------
 
@@ -560,7 +488,6 @@ available commands. In `/context`, a warning will show with “M of N commands�
 [​](#see-also) See also
 -----------------------
 
-* [Plugins](/en/docs/claude-code/plugins) - Extend Claude Code with custom commands through plugins
 * [Identity and Access Management](/en/docs/claude-code/iam) - Complete guide to permissions, including MCP tool permissions
 * [Interactive mode](/en/docs/claude-code/interactive-mode) - Shortcuts, input modes, and interactive features
 * [CLI reference](/en/docs/claude-code/cli-reference) - Command-line flags and options
@@ -571,28 +498,10 @@ Was this page helpful?
 
 YesNo
 
-[Interactive mode](/en/docs/claude-code/interactive-mode)[Checkpointing](/en/docs/claude-code/checkpointing)
+[Interactive mode](/en/docs/claude-code/interactive-mode)[Hooks reference](/en/docs/claude-code/hooks)
+
+[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
 Assistant
 
 Responses are generated using AI and may contain mistakes.
-
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
-
-Company
-
-[Anthropic](https://www.anthropic.com/company)[Careers](https://www.anthropic.com/careers)[Economic Futures](https://www.anthropic.com/economic-futures)[Research](https://www.anthropic.com/research)[News](https://www.anthropic.com/news)[Trust center](https://trust.anthropic.com/)[Transparency](https://www.anthropic.com/transparency)
-
-Help and security
-
-[Availability](https://www.anthropic.com/supported-countries)[Status](https://status.anthropic.com/)[Support center](https://support.claude.com/)
-
-Learn
-
-[Courses](https://www.anthropic.com/learn)[MCP connectors](https://claude.com/partners/mcp)[Customer stories](https://www.claude.com/customers)[Engineering blog](https://www.anthropic.com/engineering)[Events](https://www.anthropic.com/events)[Powered by Claude](https://claude.com/partners/powered-by-claude)[Service partners](https://claude.com/partners/services)[Startups program](https://claude.com/programs/startups)
-
-Terms and policies
-
-[Privacy policy](https://www.anthropic.com/legal/privacy)[Disclosure policy](https://www.anthropic.com/responsible-disclosure-policy)[Usage policy](https://www.anthropic.com/legal/aup)[Commercial terms](https://www.anthropic.com/legal/commercial-terms)[Consumer terms](https://www.anthropic.com/legal/consumer-terms)

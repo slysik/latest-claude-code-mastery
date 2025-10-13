@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-10-13T09:10:33.122141
+> Last updated: 2025-09-29T09:10:13.686043
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -16,6 +16,7 @@ Search...
 
 * [Console](https://console.anthropic.com/login)
 * [Support](https://support.claude.com/)
+* [Research](https://www.anthropic.com/research)
 * [Discord](https://www.anthropic.com/discord)
 * [Sign up](https://console.anthropic.com/login)
 * [Sign up](https://console.anthropic.com/login)
@@ -39,10 +40,8 @@ Claude Code settings
 ##### Build with Claude Code
 
 * [Subagents](/en/docs/claude-code/sub-agents)
-* [Plugins](/en/docs/claude-code/plugins)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
-* [Headless mode](/en/docs/claude-code/headless)
 * [GitHub Actions](/en/docs/claude-code/github-actions)
 * [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
@@ -50,7 +49,11 @@ Claude Code settings
 
 ##### Claude Code SDK
 
-* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+* [Overview](/en/docs/claude-code/sdk/sdk-overview)
+* [TypeScript SDK reference](/en/docs/claude-code/sdk/sdk-typescript)
+* [Python SDK reference](/en/docs/claude-code/sdk/sdk-python)
+* [Headless mode](/en/docs/claude-code/sdk/sdk-headless)
+* Guides
 
 ##### Deployment
 
@@ -70,13 +73,11 @@ Claude Code settings
 * [Monitoring](/en/docs/claude-code/monitoring-usage)
 * [Costs](/en/docs/claude-code/costs)
 * [Analytics](/en/docs/claude-code/analytics)
-* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
 * [Settings](/en/docs/claude-code/settings)
-* [Visual Studio Code](/en/docs/claude-code/vs-code)
-* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
 * [Terminal configuration](/en/docs/claude-code/terminal-config)
 * [Model configuration](/en/docs/claude-code/model-config)
 * [Memory management](/en/docs/claude-code/memory)
@@ -87,9 +88,7 @@ Claude Code settings
 * [CLI reference](/en/docs/claude-code/cli-reference)
 * [Interactive mode](/en/docs/claude-code/interactive-mode)
 * [Slash commands](/en/docs/claude-code/slash-commands)
-* [Checkpointing](/en/docs/claude-code/checkpointing)
 * [Hooks reference](/en/docs/claude-code/hooks)
-* [Plugins reference](/en/docs/claude-code/plugins-reference)
 
 ##### Resources
 
@@ -105,12 +104,9 @@ On this page
 * [System prompt availability](#system-prompt-availability)
 * [Excluding sensitive files](#excluding-sensitive-files)
 * [Subagent configuration](#subagent-configuration)
-* [Plugin configuration](#plugin-configuration)
-* [Plugin settings](#plugin-settings)
-* [enabledPlugins](#enabledplugins)
-* [extraKnownMarketplaces](#extraknownmarketplaces)
-* [Managing plugins](#managing-plugins)
 * [Environment variables](#environment-variables)
+* [Configuration options](#configuration-options)
+* [Global configuration](#global-configuration)
 * [Tools available to Claude](#tools-available-to-claude)
 * [Extending tools with hooks](#extending-tools-with-hooks)
 * [See also](#see-also)
@@ -126,7 +122,7 @@ Configure Claude Code with global and project-level settings, and environment va
 
 Copy page
 
-Claude Code offers a variety of settings to configure its behavior to meet your needs. You can configure Claude Code by running the `/config` command when using the interactive REPL, which opens a tabbed Settings interface where you can view status information and modify configuration options.
+Claude Code offers a variety of settings to configure its behavior to meet your needs. You can configure Claude Code by running the `/config` command when using the interactive REPL.
 
 [​](#settings-files) Settings files
 -----------------------------------
@@ -145,11 +141,6 @@ Code through hierarchical settings:
   + macOS: `/Library/Application Support/ClaudeCode/managed-settings.json`
   + Linux and WSL: `/etc/claude-code/managed-settings.json`
   + Windows: `C:\ProgramData\ClaudeCode\managed-settings.json`
-* Enterprise deployments can also configure **managed MCP servers** that override
-  user-configured servers. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration):
-  + macOS: `/Library/Application Support/ClaudeCode/managed-mcp.json`
-  + Linux and WSL: `/etc/claude-code/managed-mcp.json`
-  + Windows: `C:\ProgramData\ClaudeCode\managed-mcp.json`
 
 Example settings.json
 
@@ -190,7 +181,7 @@ Copy
 | `permissions` | See table below for structure of permissions. |  |
 | `hooks` | Configure custom commands to run before or after tool executions. See [hooks documentation](hooks) | `{"PreToolUse": {"Bash": "echo 'Running command...'"}}` |
 | `disableAllHooks` | Disable all <hooks> | `true` |
-| `model` | Override the default model to use for Claude Code | `"claude-sonnet-4-5-20250929"` |
+| `model` | Override the default model to use for Claude Code | `"claude-3-5-sonnet-20241022"` |
 | `statusLine` | Configure a custom status line to display context. See [statusLine documentation](statusline) | `{"type": "command", "command": "~/.claude/statusline.sh"}` |
 | `outputStyle` | Configure an output style to adjust the system prompt. See [output styles documentation](output-styles) | `"Explanatory"` |
 | `forceLoginMethod` | Use `claudeai` to restrict login to Claude.ai accounts, `console` to restrict login to Claude Console (API usage billing) accounts | `claudeai` |
@@ -198,7 +189,6 @@ Copy
 | `enableAllProjectMcpServers` | Automatically approve all MCP servers defined in project `.mcp.json` files | `true` |
 | `enabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to approve | `["memory", "github"]` |
 | `disabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to reject | `["filesystem"]` |
-| `useEnterpriseMcpConfigOnly` | When set in managed-settings.json, restricts MCP servers to only those defined in managed-mcp.json. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration) | `true` |
 | `awsAuthRefresh` | Custom script that modifies the `.aws` directory (see [advanced credential configuration](/en/docs/claude-code/amazon-bedrock#advanced-credential-configuration)) | `aws sso login --profile myprofile` |
 | `awsCredentialExport` | Custom script that outputs JSON with AWS credentials (see [advanced credential configuration](/en/docs/claude-code/amazon-bedrock#advanced-credential-configuration)) | `/bin/generate_aws_grant.sh` |
 
@@ -276,107 +266,6 @@ Claude Code supports custom AI subagents that can be configured at both user and
 
 Subagent files define specialized AI assistants with custom prompts and tool permissions. Learn more about creating and using subagents in the [subagents documentation](/en/docs/claude-code/sub-agents).
 
-[​](#plugin-configuration) Plugin configuration
------------------------------------------------
-
-Claude Code supports a plugin system that lets you extend functionality with custom commands, agents, hooks, and MCP servers. Plugins are distributed through marketplaces and can be configured at both user and repository levels.
-
-### [​](#plugin-settings) Plugin settings
-
-Plugin-related settings in `settings.json`:
-
-Copy
-
-```
-{
-  "enabledPlugins": {
-    "formatter@company-tools": true,
-    "deployer@company-tools": true,
-    "analyzer@security-plugins": false
-  },
-  "extraKnownMarketplaces": {
-    "company-tools": {
-      "source": "github",
-      "repo": "company/claude-plugins"
-    }
-  }
-}
-```
-
-#### [​](#enabledplugins) `enabledPlugins`
-
-Controls which plugins are enabled. Format: `"plugin-name@marketplace-name": true/false`
-**Scopes**:
-
-* **User settings** (`~/.claude/settings.json`): Personal plugin preferences
-* **Project settings** (`.claude/settings.json`): Project-specific plugins shared with team
-* **Local settings** (`.claude/settings.local.json`): Per-machine overrides (not committed)
-
-**Example**:
-
-Copy
-
-```
-{
-  "enabledPlugins": {
-    "code-formatter@team-tools": true,
-    "deployment-tools@team-tools": true,
-    "experimental-features@personal": false
-  }
-}
-```
-
-#### [​](#extraknownmarketplaces) `extraKnownMarketplaces`
-
-Defines additional marketplaces that should be made available for the repository. Typically used in repository-level settings to ensure team members have access to required plugin sources.
-**When a repository includes `extraKnownMarketplaces`**:
-
-1. Team members are prompted to install the marketplace when they trust the folder
-2. Team members are then prompted to install plugins from that marketplace
-3. Users can skip unwanted marketplaces or plugins (stored in user settings)
-4. Installation respects trust boundaries and requires explicit consent
-
-**Example**:
-
-Copy
-
-```
-{
-  "extraKnownMarketplaces": {
-    "company-tools": {
-      "source": {
-        "source": "github",
-        "repo": "company-org/claude-plugins"
-      }
-    },
-    "security-plugins": {
-      "source": {
-        "source": "git",
-        "url": "https://git.company.com/security/plugins.git"
-      }
-    }
-  }
-}
-```
-
-**Marketplace source types**:
-
-* `github`: GitHub repository (uses `repo`)
-* `git`: Any git URL (uses `url`)
-* `directory`: Local filesystem path (uses `path`, for development only)
-
-### [​](#managing-plugins) Managing plugins
-
-Use the `/plugin` command to manage plugins interactively:
-
-* Browse available plugins from marketplaces
-* Install/uninstall plugins
-* Enable/disable plugins
-* View plugin details (commands, agents, hooks provided)
-* Add/remove marketplaces
-
-Learn more about the plugin system in the [plugins documentation](/en/docs/claude-code/plugins).
-
 [​](#environment-variables) Environment variables
 -------------------------------------------------
 
@@ -422,7 +311,7 @@ All environment variables can also be configured in [`settings.json`](#available
 | `HTTP_PROXY` | Specify HTTP proxy server for network connections |
 | `HTTPS_PROXY` | Specify HTTPS proxy server for network connections |
 | `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses. Claude Code displays a warning when output exceeds 10,000 tokens (default: 25000) |
-| `MAX_THINKING_TOKENS` | Enable [extended thinking](/en/docs/build-with-claude/extended-thinking) and set the token budget for the thinking process. Extended thinking improves performance on complex reasoning and coding tasks but impacts [prompt caching efficiency](/en/docs/build-with-claude/prompt-caching#caching-with-thinking-blocks). Disabled by default. |
+| `MAX_THINKING_TOKENS` | Force a thinking for the model budget |
 | `MCP_TIMEOUT` | Timeout in milliseconds for MCP server startup |
 | `MCP_TOOL_TIMEOUT` | Timeout in milliseconds for MCP tool execution |
 | `NO_PROXY` | List of domains and IPs to which requests will be directly issued, bypassing proxy |
@@ -434,6 +323,30 @@ All environment variables can also be configured in [`settings.json`](#available
 | `VERTEX_REGION_CLAUDE_4_0_OPUS` | Override region for Claude 4.0 Opus when using Vertex AI |
 | `VERTEX_REGION_CLAUDE_4_0_SONNET` | Override region for Claude 4.0 Sonnet when using Vertex AI |
 | `VERTEX_REGION_CLAUDE_4_1_OPUS` | Override region for Claude 4.1 Opus when using Vertex AI |
+
+[​](#configuration-options) Configuration options
+-------------------------------------------------
+
+To manage your configurations, use the following commands:
+
+* List settings: `claude config list`
+* See a setting: `claude config get <key>`
+* Change a setting: `claude config set <key> <value>`
+* Push to a setting (for lists): `claude config add <key> <value>`
+* Remove from a setting (for lists): `claude config remove <key> <value>`
+
+By default `config` changes your project configuration. To manage your global configuration, use the `--global` (or `-g`) flag.
+
+### [​](#global-configuration) Global configuration
+
+To set a global configuration, use `claude config set -g <key> <value>`:
+
+| Key | Description | Example |
+| --- | --- | --- |
+| `autoUpdates` | **DEPRECATED.** Use the `DISABLE_AUTOUPDATER` environment variable instead. | `false` |
+| `preferredNotifChannel` | Where you want to receive notifications (default: `iterm2`) | `iterm2`, `iterm2_with_bell`, `terminal_bell`, or `notifications_disabled` |
+| `theme` | Color theme | `dark`, `light`, `light-daltonized`, or `dark-daltonized` |
+| `verbose` | Whether to show full bash and command outputs (default: `false`) | `true` |
 
 [​](#tools-available-to-claude) Tools available to Claude
 ---------------------------------------------------------
@@ -478,28 +391,10 @@ Was this page helpful?
 
 YesNo
 
-[Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)[Visual Studio Code](/en/docs/claude-code/vs-code)
+[Analytics](/en/docs/claude-code/analytics)[Add Claude Code to your IDE](/en/docs/claude-code/ide-integrations)
+
+[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
 Assistant
 
 Responses are generated using AI and may contain mistakes.
-
-[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
-
-[x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
-
-Company
-
-[Anthropic](https://www.anthropic.com/company)[Careers](https://www.anthropic.com/careers)[Economic Futures](https://www.anthropic.com/economic-futures)[Research](https://www.anthropic.com/research)[News](https://www.anthropic.com/news)[Trust center](https://trust.anthropic.com/)[Transparency](https://www.anthropic.com/transparency)
-
-Help and security
-
-[Availability](https://www.anthropic.com/supported-countries)[Status](https://status.anthropic.com/)[Support center](https://support.claude.com/)
-
-Learn
-
-[Courses](https://www.anthropic.com/learn)[MCP connectors](https://claude.com/partners/mcp)[Customer stories](https://www.claude.com/customers)[Engineering blog](https://www.anthropic.com/engineering)[Events](https://www.anthropic.com/events)[Powered by Claude](https://claude.com/partners/powered-by-claude)[Service partners](https://claude.com/partners/services)[Startups program](https://claude.com/programs/startups)
-
-Terms and policies
-
-[Privacy policy](https://www.anthropic.com/legal/privacy)[Disclosure policy](https://www.anthropic.com/responsible-disclosure-policy)[Usage policy](https://www.anthropic.com/legal/aup)[Commercial terms](https://www.anthropic.com/legal/commercial-terms)[Consumer terms](https://www.anthropic.com/legal/consumer-terms)
