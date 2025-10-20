@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-10-20T09:10:14.519466
+> Last updated: 2025-10-13T09:10:32.005600
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -40,7 +40,6 @@ Output styles
 
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Plugins](/en/docs/claude-code/plugins)
-* [Agent Skills](/en/docs/claude-code/skills)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [Headless mode](/en/docs/claude-code/headless)
@@ -49,7 +48,7 @@ Output styles
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
-##### Claude Agent SDK
+##### Claude Code SDK
 
 * [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
 
@@ -221,7 +220,7 @@ Was this page helpful?
 
 YesNo
 
-[Agent Skills](/en/docs/claude-code/skills)[Hooks](/en/docs/claude-code/hooks-guide)
+[Plugins](/en/docs/claude-code/plugins)[Hooks](/en/docs/claude-code/hooks-guide)
 
 Assistant
 

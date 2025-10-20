@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-10-20T09:10:15.848379
+> Last updated: 2025-10-13T09:10:33.122141
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -40,7 +40,6 @@ Claude Code settings
 
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Plugins](/en/docs/claude-code/plugins)
-* [Agent Skills](/en/docs/claude-code/skills)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [Headless mode](/en/docs/claude-code/headless)
@@ -49,7 +48,7 @@ Claude Code settings
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
-##### Claude Agent SDK
+##### Claude Code SDK
 
 * [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
 
@@ -212,7 +211,7 @@ Copy
 | `deny` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to deny tool use. Use this to also exclude sensitive files from Claude Code access. **Note:** Bash patterns are prefix matches and can be bypassed (see [Bash permission limitations](/en/docs/claude-code/iam#tool-specific-permission-rules)) | `[ "WebFetch", "Bash(curl:*)", "Read(./.env)", "Read(./secrets/**)" ]` |
 | `additionalDirectories` | Additional [working directories](iam#working-directories) that Claude has access to | `[ "../docs/" ]` |
 | `defaultMode` | Default [permission mode](iam#permission-modes) when opening Claude Code | `"acceptEdits"` |
-| `disableBypassPermissionsMode` | Set to `"disable"` to prevent `bypassPermissions` mode from being activated. This disables the `--dangerously-skip-permissions` command-line flag. See [managed policy settings](iam#enterprise-managed-policy-settings) | `"disable"` |
+| `disableBypassPermissionsMode` | Set to `"disable"` to prevent `bypassPermissions` mode from being activated. See [managed policy settings](iam#enterprise-managed-policy-settings) | `"disable"` |
 
 ### [​](#settings-precedence) Settings precedence
 
@@ -419,10 +418,6 @@ All environment variables can also be configured in [`settings.json`](#available
 | `DISABLE_COST_WARNINGS` | Set to `1` to disable cost warning messages |
 | `DISABLE_ERROR_REPORTING` | Set to `1` to opt out of Sentry error reporting |
 | `DISABLE_NON_ESSENTIAL_MODEL_CALLS` | Set to `1` to disable model calls for non-critical paths like flavor text |
-| `DISABLE_PROMPT_CACHING` | Set to `1` to disable prompt caching for all models (takes precedence over per-model settings) |
-| `DISABLE_PROMPT_CACHING_HAIKU` | Set to `1` to disable prompt caching for Haiku models |
-| `DISABLE_PROMPT_CACHING_OPUS` | Set to `1` to disable prompt caching for Opus models |
-| `DISABLE_PROMPT_CACHING_SONNET` | Set to `1` to disable prompt caching for Sonnet models |
 | `DISABLE_TELEMETRY` | Set to `1` to opt out of Statsig telemetry (note that Statsig events do not include user data like code, file paths, or bash commands) |
 | `HTTP_PROXY` | Specify HTTP proxy server for network connections |
 | `HTTPS_PROXY` | Specify HTTPS proxy server for network connections |
@@ -451,6 +446,7 @@ Claude Code has access to a set of powerful tools that help it understand and mo
 | **Edit** | Makes targeted edits to specific files | Yes |
 | **Glob** | Finds files based on pattern matching | No |
 | **Grep** | Searches for patterns in file contents | No |
+| **MultiEdit** | Performs multiple edits on a single file atomically | Yes |
 | **NotebookEdit** | Modifies Jupyter notebook cells | Yes |
 | **NotebookRead** | Reads and displays Jupyter notebook contents | No |
 | **Read** | Reads the contents of files | No |

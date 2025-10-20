@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-10-20T09:10:14.133230
+> Last updated: 2025-10-13T09:10:31.721281
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -40,7 +40,6 @@ Slash commands
 
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Plugins](/en/docs/claude-code/plugins)
-* [Agent Skills](/en/docs/claude-code/skills)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [Headless mode](/en/docs/claude-code/headless)
@@ -130,12 +129,6 @@ On this page
 * [Disable specific commands only](#disable-specific-commands-only)
 * [SlashCommand permission rules](#slashcommand-permission-rules)
 * [Character budget limit](#character-budget-limit)
-* [Skills vs slash commands](#skills-vs-slash-commands)
-* [Use slash commands for](#use-slash-commands-for)
-* [Use Skills for](#use-skills-for)
-* [Key differences](#key-differences)
-* [Example comparison](#example-comparison)
-* [When to use each](#when-to-use-each)
 * [See also](#see-also)
 
 Reference
@@ -563,101 +556,6 @@ The budget includes each custom slash command’s name, args, and description.
 
 When the character budget is exceeded, Claude will see only a subset of the
 available commands. In `/context`, a warning will show with “M of N commands”.
-
-[​](#skills-vs-slash-commands) Skills vs slash commands
--------------------------------------------------------
-
-**Slash commands** and **Agent Skills** serve different purposes in Claude Code:
-
-### [​](#use-slash-commands-for) Use slash commands for
-
-**Quick, frequently-used prompts**:
-
-* Simple prompt snippets you use often
-* Quick reminders or templates
-* Frequently-used instructions that fit in one file
-
-**Examples**:
-
-* `/review` → “Review this code for bugs and suggest improvements”
-* `/explain` → “Explain this code in simple terms”
-* `/optimize` → “Analyze this code for performance issues”
-
-### [​](#use-skills-for) Use Skills for
-
-**Comprehensive capabilities with structure**:
-
-* Complex workflows with multiple steps
-* Capabilities requiring scripts or utilities
-* Knowledge organized across multiple files
-* Team workflows you want to standardize
-
-**Examples**:
-
-* PDF processing Skill with form-filling scripts and validation
-* Data analysis Skill with reference docs for different data types
-* Documentation Skill with style guides and templates
-
-### [​](#key-differences) Key differences
-
-| Aspect | Slash Commands | Agent Skills |
-| --- | --- | --- |
-| **Complexity** | Simple prompts | Complex capabilities |
-| **Structure** | Single .md file | Directory with SKILL.md + resources |
-| **Discovery** | Explicit invocation (`/command`) | Automatic (based on context) |
-| **Files** | One file only | Multiple files, scripts, templates |
-| **Scope** | Project or personal | Project or personal |
-| **Sharing** | Via git | Via git |
-
-### [​](#example-comparison) Example comparison
-
-**As a slash command**:
-
-Copy
-
-```
-# .claude/commands/review.md
-Review this code for:
-- Security vulnerabilities
-- Performance issues
-- Code style violations
-```
-
-Usage: `/review` (manual invocation)
-**As a Skill**:
-
-Copy
-
-```
-.claude/skills/code-review/
-├── SKILL.md (overview and workflows)
-├── SECURITY.md (security checklist)
-├── PERFORMANCE.md (performance patterns)
-├── STYLE.md (style guide reference)
-└── scripts/
-    └── run-linters.sh
-```
-
-Usage: “Can you review this code?” (automatic discovery)
-The Skill provides richer context, validation scripts, and organized reference material.
-
-### [​](#when-to-use-each) When to use each
-
-**Use slash commands**:
-
-* You invoke the same prompt repeatedly
-* The prompt fits in a single file
-* You want explicit control over when it runs
-
-**Use Skills**:
-
-* Claude should discover the capability automatically
-* Multiple files or scripts are needed
-* Complex workflows with validation steps
-* Team needs standardized, detailed guidance
-
-Both slash commands and Skills can coexist. Use the approach that fits your needs.
-Learn more about [Agent Skills](/en/docs/claude-code/skills).
 
 [​](#see-also) See also
 -----------------------

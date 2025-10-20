@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-10-20T09:10:14.963874
+> Last updated: 2025-10-13T09:10:32.380067
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -40,7 +40,6 @@ Quickstart
 
 * [Subagents](/en/docs/claude-code/sub-agents)
 * [Plugins](/en/docs/claude-code/plugins)
-* [Agent Skills](/en/docs/claude-code/skills)
 * [Output styles](/en/docs/claude-code/output-styles)
 * [Hooks](/en/docs/claude-code/hooks-guide)
 * [Headless mode](/en/docs/claude-code/headless)
@@ -152,14 +151,6 @@ npm install -g @anthropic-ai/claude-code
 ### [​](#native-install) Native Install
 
 Alternatively, try our new native install, now in beta.
-
-**Homebrew (macOS, Linux):**
-
-Copy
-
-```
-brew install --cask claude-code
-```
 
 **macOS, Linux, WSL:**
 
@@ -472,7 +463,6 @@ Copy
 
 Save time with shortcuts
 
-* Press `?` to see all available keyboard shortcuts
 * Use Tab for command completion
 * Press ↑ for command history
 * Type `/` to see all slash commands
