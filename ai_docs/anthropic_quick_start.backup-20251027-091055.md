@@ -2,9 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-10-27T09:10:55.975758
-
-Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
+> Last updated: 2025-10-20T09:10:14.963874
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -30,14 +28,13 @@ Getting started
 
 Quickstart
 
-[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
 * [Overview](/en/docs/claude-code/overview)
 * [Quickstart](/en/docs/claude-code/quickstart)
 * [Common workflows](/en/docs/claude-code/common-workflows)
-* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
 
 ##### Build with Claude Code
 
@@ -52,7 +49,7 @@ Quickstart
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
-##### Claude Agent SDK
+##### Claude Code SDK
 
 * [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
 
@@ -64,7 +61,6 @@ Quickstart
 * [Network configuration](/en/docs/claude-code/network-config)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
-* [Sandboxing](/en/docs/claude-code/sandboxing)
 
 ##### Administration
 
@@ -495,10 +491,7 @@ Step-by-step guides for common tasks](/en/docs/claude-code/common-workflows)[CLI
 Master all commands and options](/en/docs/claude-code/cli-reference)[Configuration
 -------------
 
-Customize Claude Code for your workflow](/en/docs/claude-code/settings)[Claude Code on the web
-----------------------
-
-Run tasks asynchronously in the cloud](/en/docs/claude-code/claude-code-on-the-web)
+Customize Claude Code for your workflow](/en/docs/claude-code/settings)
 
 [​](#getting-help) Getting help
 -------------------------------

@@ -2,9 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-10-27T09:10:55.381030
-
-Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
+> Last updated: 2025-10-20T09:10:14.133230
 
 [Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
@@ -30,14 +28,13 @@ Reference
 
 Slash commands
 
-[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+[Welcome](/en/home)[Claude Developer Platform](/en/docs/intro)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[API Reference](/en/api/messages)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
 * [Overview](/en/docs/claude-code/overview)
 * [Quickstart](/en/docs/claude-code/quickstart)
 * [Common workflows](/en/docs/claude-code/common-workflows)
-* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
 
 ##### Build with Claude Code
 
@@ -52,7 +49,7 @@ Slash commands
 * [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
 * [Troubleshooting](/en/docs/claude-code/troubleshooting)
 
-##### Claude Agent SDK
+##### Claude Code SDK
 
 * [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
 
@@ -64,7 +61,6 @@ Slash commands
 * [Network configuration](/en/docs/claude-code/network-config)
 * [LLM gateway](/en/docs/claude-code/llm-gateway)
 * [Development containers](/en/docs/claude-code/devcontainer)
-* [Sandboxing](/en/docs/claude-code/sandboxing)
 
 ##### Administration
 
@@ -176,7 +172,6 @@ Copy page
 | `/permissions` | View or update [permissions](/en/docs/claude-code/iam#configuring-permissions) |
 | `/pr_comments` | View pull request comments |
 | `/review` | Request code review |
-| `/sandbox` | Enable sandboxed bash tool with filesystem and network isolation for safer, more autonomous execution |
 | `/rewind` | Rewind the conversation and/or code |
 | `/status` | Open the Settings interface (Status tab) showing version, model, account, and connectivity |
 | `/terminal-setup` | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |
