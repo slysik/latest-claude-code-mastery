@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-11-03T09:10:58.605271
+> Last updated: 2025-10-27T09:10:54.569144
 
 Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
@@ -675,22 +675,14 @@ to Claude.
 * `"ask"` asks the user to confirm the tool call in the UI.
   `permissionDecisionReason` is shown to the user but not to Claude.
 
-Additionally, hooks can modify tool inputs before execution using `updatedInput`:
-
-* `updatedInput` allows you to modify the tool’s input parameters before the tool executes. This is a `Record<string, unknown>` object containing the fields you want to change or add.
-* This is most useful with `"permissionDecision": "allow"` to modify and approve tool calls.
-
 Copy
 
 ```
 {
   "hookSpecificOutput": {
     "hookEventName": "PreToolUse",
-    "permissionDecision": "allow"
-    "permissionDecisionReason": "My reason here",
-    "updatedInput": {
-      "field_to_modify": "new value"
-    }
+    "permissionDecision": "allow" | "deny" | "ask",
+    "permissionDecisionReason": "My reason here"
   }
 }
 ```

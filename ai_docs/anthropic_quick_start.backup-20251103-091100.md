@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-11-03T09:11:00.282505
+> Last updated: 2025-10-27T09:10:55.975758
 
 Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
@@ -104,6 +104,8 @@ On this page
 
 * [Before you begin](#before-you-begin)
 * [Step 1: Install Claude Code](#step-1%3A-install-claude-code)
+* [NPM Install](#npm-install)
+* [Native Install](#native-install)
 * [Step 2: Log in to your account](#step-2%3A-log-in-to-your-account)
 * [Step 3: Start your first session](#step-3%3A-start-your-first-session)
 * [Step 4: Ask your first question](#step-4%3A-ask-your-first-question)
@@ -141,10 +143,19 @@ Make sure you have:
 [​](#step-1%3A-install-claude-code) Step 1: Install Claude Code
 ---------------------------------------------------------------
 
-To install Claude Code, use one of the following methods:
+### [​](#npm-install) NPM Install
 
-* Native Install (Recommended)
-* NPM
+If you have [Node.js 18 or newer installed](https://nodejs.org/en/download/):
+
+Copy
+
+```
+npm install -g @anthropic-ai/claude-code
+```
+
+### [​](#native-install) Native Install
+
+Alternatively, try our new native install, now in beta.
 
 **Homebrew (macOS, Linux):**
 
