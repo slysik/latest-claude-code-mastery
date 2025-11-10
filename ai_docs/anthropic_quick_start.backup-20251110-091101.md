@@ -2,11 +2,11 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-11-10T09:11:01.934586
+> Last updated: 2025-11-03T09:11:00.282505
 
-[Skip to main content](#content-area)
+Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
 
@@ -16,9 +16,11 @@ Search...
 
 ⌘K
 
-* [Claude Developer Platform](https://platform.claude.com/)
-* [Claude Code on the Web](https://claude.ai/code)
-* [Claude Code on the Web](https://claude.ai/code)
+* [Console](https://console.anthropic.com/login)
+* [Support](https://support.claude.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
 Search...
 
@@ -28,14 +30,75 @@ Getting started
 
 Quickstart
 
-[Getting started](/docs/en/overview)[Build with Claude Code](/docs/en/sub-agents)[Deployment](/docs/en/third-party-integrations)[Administration](/docs/en/setup)[Configuration](/docs/en/settings)[Reference](/docs/en/cli-reference)[Resources](/docs/en/legal-and-compliance)
+[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
 
 ##### Getting started
 
-* [Overview](/docs/en/overview)
-* [Quickstart](/docs/en/quickstart)
-* [Common workflows](/docs/en/common-workflows)
-* [Claude Code on the web](/docs/en/claude-code-on-the-web)
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
+
+##### Build with Claude Code
+
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Plugins](/en/docs/claude-code/plugins)
+* [Agent Skills](/en/docs/claude-code/skills)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Headless mode](/en/docs/claude-code/headless)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Claude Agent SDK
+
+* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Network configuration](/en/docs/claude-code/network-config)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+* [Sandboxing](/en/docs/claude-code/sandboxing)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
+
+##### Configuration
+
+* [Settings](/en/docs/claude-code/settings)
+* [Visual Studio Code](/en/docs/claude-code/vs-code)
+* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Model configuration](/en/docs/claude-code/model-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
+
+##### Reference
+
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Checkpointing](/en/docs/claude-code/checkpointing)
+* [Hooks reference](/en/docs/claude-code/hooks)
+* [Plugins reference](/en/docs/claude-code/plugins-reference)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
 On this page
 
@@ -87,8 +150,6 @@ To install Claude Code, use one of the following methods:
 
 Copy
 
-Ask AI
-
 ```
 brew install --cask claude-code
 ```
@@ -96,8 +157,6 @@ brew install --cask claude-code
 **macOS, Linux, WSL:**
 
 Copy
-
-Ask AI
 
 ```
 curl -fsSL https://claude.ai/install.sh | bash
@@ -107,8 +166,6 @@ curl -fsSL https://claude.ai/install.sh | bash
 
 Copy
 
-Ask AI
-
 ```
 irm https://claude.ai/install.ps1 | iex
 ```
@@ -116,8 +173,6 @@ irm https://claude.ai/install.ps1 | iex
 **Windows CMD:**
 
 Copy
-
-Ask AI
 
 ```
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
@@ -130,16 +185,12 @@ Claude Code requires an account to use. When you start an interactive session wi
 
 Copy
 
-Ask AI
-
 ```
 claude
 # You'll be prompted to log in on first use
 ```
 
 Copy
-
-Ask AI
 
 ```
 /login
@@ -164,8 +215,6 @@ Open your terminal in any project directory and start Claude Code:
 
 Copy
 
-Ask AI
-
 ```
 cd /path/to/your/project
 claude
@@ -173,7 +222,7 @@ claude
 
 You’ll see the Claude Code welcome screen with your session information, recent conversations, and latest updates. Type `/help` for available commands or `/resume` to continue a previous conversation.
 
-After logging in (Step 2), your credentials are stored on your system. Learn more in [Credential Management](/docs/en/iam#credential-management).
+After logging in (Step 2), your credentials are stored on your system. Learn more in [Credential Management](/en/docs/claude-code/iam#credential-management).
 
 [​](#step-4%3A-ask-your-first-question) Step 4: Ask your first question
 -----------------------------------------------------------------------
@@ -181,8 +230,6 @@ After logging in (Step 2), your credentials are stored on your system. Learn mor
 Let’s start with understanding your codebase. Try one of these commands:
 
 Copy
-
-Ask AI
 
 ```
 > what does this project do?
@@ -192,23 +239,17 @@ Claude will analyze your files and provide a summary. You can also ask more spec
 
 Copy
 
-Ask AI
-
 ```
 > what technologies does this project use?
 ```
 
 Copy
 
-Ask AI
-
 ```
 > where is the main entry point?
 ```
 
 Copy
-
-Ask AI
 
 ```
 > explain the folder structure
@@ -218,23 +259,17 @@ You can also ask Claude about its own capabilities:
 
 Copy
 
-Ask AI
-
 ```
 > what can Claude Code do?
 ```
 
 Copy
 
-Ask AI
-
 ```
 > how do I use slash commands in Claude Code?
 ```
 
 Copy
-
-Ask AI
 
 ```
 > can Claude Code work with Docker?
@@ -248,8 +283,6 @@ Claude Code reads your files as needed - you don’t have to manually add contex
 Now let’s make Claude Code do some actual coding. Try a simple task:
 
 Copy
-
-Ask AI
 
 ```
 > add a hello world function to the main file
@@ -271,15 +304,11 @@ Claude Code makes Git operations conversational:
 
 Copy
 
-Ask AI
-
 ```
 > what files have I changed?
 ```
 
 Copy
-
-Ask AI
 
 ```
 > commit my changes with a descriptive message
@@ -289,23 +318,17 @@ You can also prompt for more complex Git operations:
 
 Copy
 
-Ask AI
-
 ```
 > create a new branch called feature/quickstart
 ```
 
 Copy
 
-Ask AI
-
 ```
 > show me the last 5 commits
 ```
 
 Copy
-
-Ask AI
 
 ```
 > help me resolve merge conflicts
@@ -319,8 +342,6 @@ Describe what you want in natural language:
 
 Copy
 
-Ask AI
-
 ```
 > add input validation to the user registration form
 ```
@@ -328,8 +349,6 @@ Ask AI
 Or fix existing issues:
 
 Copy
-
-Ask AI
 
 ```
 > there's a bug where users can submit empty forms - fix it
@@ -350,8 +369,6 @@ There are a number of ways to work with Claude:
 
 Copy
 
-Ask AI
-
 ```
 > refactor the authentication module to use async/await instead of callbacks
 ```
@@ -359,8 +376,6 @@ Ask AI
 **Write tests**
 
 Copy
-
-Ask AI
 
 ```
 > write unit tests for the calculator functions
@@ -370,8 +385,6 @@ Ask AI
 
 Copy
 
-Ask AI
-
 ```
 > update the README with installation instructions
 ```
@@ -379,8 +392,6 @@ Ask AI
 **Code review**
 
 Copy
-
-Ask AI
 
 ```
 > review my changes and suggest improvements
@@ -405,7 +416,7 @@ Here are the most important commands for daily use:
 | `/help` | Show available commands | `> /help` |
 | `exit` or Ctrl+C | Exit Claude Code | `> exit` |
 
-See the [CLI reference](/docs/en/cli-reference) for a complete list of commands.
+See the [CLI reference](/en/docs/claude-code/cli-reference) for a complete list of commands.
 
 [​](#pro-tips-for-beginners) Pro tips for beginners
 ---------------------------------------------------
@@ -420,23 +431,17 @@ Break complex tasks into steps:
 
 Copy
 
-Ask AI
-
 ```
 > 1. create a new database table for user profiles
 ```
 
 Copy
 
-Ask AI
-
 ```
 > 2. create an API endpoint to get and update user profiles
 ```
 
 Copy
-
-Ask AI
 
 ```
 > 3. build a webpage that allows users to see and edit their information
@@ -448,15 +453,11 @@ Before making changes, let Claude understand your code:
 
 Copy
 
-Ask AI
-
 ```
 > analyze the database schema
 ```
 
 Copy
-
-Ask AI
 
 ```
 > build a dashboard showing products that are most frequently returned by our UK customers
@@ -477,16 +478,16 @@ Now that you’ve learned the basics, explore more advanced features:
 [Common workflows
 ----------------
 
-Step-by-step guides for common tasks](/docs/en/common-workflows)[CLI reference
+Step-by-step guides for common tasks](/en/docs/claude-code/common-workflows)[CLI reference
 -------------
 
-Master all commands and options](/docs/en/cli-reference)[Configuration
+Master all commands and options](/en/docs/claude-code/cli-reference)[Configuration
 -------------
 
-Customize Claude Code for your workflow](/docs/en/settings)[Claude Code on the web
+Customize Claude Code for your workflow](/en/docs/claude-code/settings)[Claude Code on the web
 ----------------------
 
-Run tasks asynchronously in the cloud](/docs/en/claude-code-on-the-web)
+Run tasks asynchronously in the cloud](/en/docs/claude-code/claude-code-on-the-web)
 
 [​](#getting-help) Getting help
 -------------------------------
@@ -495,11 +496,17 @@ Run tasks asynchronously in the cloud](/docs/en/claude-code-on-the-web)
 * **Documentation**: You’re here! Browse other guides
 * **Community**: Join our [Discord](https://www.anthropic.com/discord) for tips and support
 
-[Overview](/docs/en/overview)[Common workflows](/docs/en/common-workflows)
+Was this page helpful?
 
-⌘I
+YesNo
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Overview](/en/docs/claude-code/overview)[Common workflows](/en/docs/claude-code/common-workflows)
+
+Assistant
+
+Responses are generated using AI and may contain mistakes.
+
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 

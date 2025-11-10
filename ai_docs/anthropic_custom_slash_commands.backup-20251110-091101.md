@@ -2,11 +2,11 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-11-10T09:11:01.151704
+> Last updated: 2025-11-03T09:10:59.622022
 
-[Skip to main content](#content-area)
+Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
 
@@ -16,9 +16,11 @@ Search...
 
 ⌘K
 
-* [Claude Developer Platform](https://platform.claude.com/)
-* [Claude Code on the Web](https://claude.ai/code)
-* [Claude Code on the Web](https://claude.ai/code)
+* [Console](https://console.anthropic.com/login)
+* [Support](https://support.claude.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
 Search...
 
@@ -28,16 +30,75 @@ Reference
 
 Slash commands
 
-[Getting started](/docs/en/overview)[Build with Claude Code](/docs/en/sub-agents)[Deployment](/docs/en/third-party-integrations)[Administration](/docs/en/setup)[Configuration](/docs/en/settings)[Reference](/docs/en/cli-reference)[Resources](/docs/en/legal-and-compliance)
+[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+
+##### Getting started
+
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
+
+##### Build with Claude Code
+
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Plugins](/en/docs/claude-code/plugins)
+* [Agent Skills](/en/docs/claude-code/skills)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Headless mode](/en/docs/claude-code/headless)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Claude Agent SDK
+
+* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Network configuration](/en/docs/claude-code/network-config)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+* [Sandboxing](/en/docs/claude-code/sandboxing)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
+
+##### Configuration
+
+* [Settings](/en/docs/claude-code/settings)
+* [Visual Studio Code](/en/docs/claude-code/vs-code)
+* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Model configuration](/en/docs/claude-code/model-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
 
 ##### Reference
 
-* [CLI reference](/docs/en/cli-reference)
-* [Interactive mode](/docs/en/interactive-mode)
-* [Slash commands](/docs/en/slash-commands)
-* [Checkpointing](/docs/en/checkpointing)
-* [Hooks reference](/docs/en/hooks)
-* [Plugins reference](/docs/en/plugins-reference)
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Checkpointing](/en/docs/claude-code/checkpointing)
+* [Hooks reference](/en/docs/claude-code/hooks)
+* [Plugins reference](/en/docs/claude-code/plugins-reference)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
 On this page
 
@@ -99,35 +160,26 @@ Copy page
 | --- | --- |
 | `/add-dir` | Add additional working directories |
 | `/agents` | Manage custom AI subagents for specialized tasks |
-| `/bashes` | List and manage background tasks |
 | `/bug` | Report bugs (sends conversation to Anthropic) |
 | `/clear` | Clear conversation history |
 | `/compact [instructions]` | Compact conversation with optional focus instructions |
 | `/config` | Open the Settings interface (Config tab) |
-| `/context` | Visualize current context usage as a colored grid |
-| `/cost` | Show token usage statistics (see [cost tracking guide](/docs/en/costs#using-the-cost-command) for subscription-specific details) |
+| `/cost` | Show token usage statistics (see [cost tracking guide](/en/docs/claude-code/costs#using-the-cost-command) for subscription-specific details) |
 | `/doctor` | Checks the health of your Claude Code installation |
-| `/exit` | Exit the REPL |
-| `/export [filename]` | Export the current conversation to a file or clipboard |
 | `/help` | Get usage help |
-| `/hooks` | Manage hook configurations for tool events |
 | `/init` | Initialize project with CLAUDE.md guide |
 | `/login` | Switch Anthropic accounts |
 | `/logout` | Sign out from your Anthropic account |
 | `/mcp` | Manage MCP server connections and OAuth authentication |
 | `/memory` | Edit CLAUDE.md memory files |
 | `/model` | Select or change the AI model |
-| `/output-style [style]` | Set the output style directly or from a selection menu |
-| `/permissions` | View or update [permissions](/docs/en/iam#configuring-permissions) |
+| `/permissions` | View or update [permissions](/en/docs/claude-code/iam#configuring-permissions) |
 | `/pr_comments` | View pull request comments |
-| `/privacy-settings` | View and update your privacy settings |
 | `/review` | Request code review |
 | `/sandbox` | Enable sandboxed bash tool with filesystem and network isolation for safer, more autonomous execution |
 | `/rewind` | Rewind the conversation and/or code |
 | `/status` | Open the Settings interface (Status tab) showing version, model, account, and connectivity |
-| `/statusline` | Set up Claude Code’s status line UI |
 | `/terminal-setup` | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |
-| `/todos` | List current todo items |
 | `/usage` | Show plan usage limits and rate limit status (subscription plans only) |
 | `/vim` | Enter vim mode for alternating insert and command modes |
 
@@ -139,8 +191,6 @@ Custom slash commands allow you to define frequently-used prompts as Markdown fi
 ### [​](#syntax) Syntax
 
 Copy
-
-Ask AI
 
 ```
 /<command-name> [arguments]
@@ -163,8 +213,6 @@ In the following example, we create the `/optimize` command:
 
 Copy
 
-Ask AI
-
 ```
 # Create a project command
 mkdir -p .claude/commands
@@ -178,8 +226,6 @@ Commands available across all your projects. When listed in `/help`, these comma
 In the following example, we create the `/security-review` command:
 
 Copy
-
-Ask AI
 
 ```
 # Create a personal command
@@ -206,8 +252,6 @@ The `$ARGUMENTS` placeholder captures all arguments passed to the command:
 
 Copy
 
-Ask AI
-
 ```
 # Command definition
 echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/fix-issue.md
@@ -222,8 +266,6 @@ echo 'Fix issue #$ARGUMENTS following our coding standards' > .claude/commands/f
 Access specific arguments individually using positional parameters (similar to shell scripts):
 
 Copy
-
-Ask AI
 
 ```
 # Command definition  
@@ -247,8 +289,6 @@ For example:
 
 Copy
 
-Ask AI
-
 ```
 ---
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*)
@@ -269,12 +309,10 @@ Based on the above changes, create a single git commit.
 
 #### [​](#file-references) File references
 
-Include file contents in commands using the `@` prefix to [reference files](/docs/en/common-workflows#reference-files-and-directories).
+Include file contents in commands using the `@` prefix to [reference files](/en/docs/claude-code/common-workflows#reference-files-and-directories).
 For example:
 
 Copy
-
-Ask AI
 
 ```
 # Reference a specific file
@@ -288,7 +326,7 @@ Compare @src/old-version.js with @src/new-version.js
 
 #### [​](#thinking-mode) Thinking mode
 
-Slash commands can trigger extended thinking by including [extended thinking keywords](/docs/en/common-workflows#use-extended-thinking).
+Slash commands can trigger extended thinking by including [extended thinking keywords](/en/docs/claude-code/common-workflows#use-extended-thinking).
 
 ### [​](#frontmatter) Frontmatter
 
@@ -299,14 +337,12 @@ Command files support frontmatter, useful for specifying metadata about the comm
 | `allowed-tools` | List of tools the command can use | Inherits from the conversation |
 | `argument-hint` | The arguments expected for the slash command. Example: `argument-hint: add [tagId] | remove [tagId] | list`. This hint is shown to the user when auto-completing the slash command. | None |
 | `description` | Brief description of the command | Uses the first line from the prompt |
-| `model` | Specific model string (see [Models overview](https://docs.claude.com/en/docs/about-claude/models/overview)) | Inherits from the conversation |
+| `model` | Specific model string (see [Models overview](/en/docs/about-claude/models/overview)) | Inherits from the conversation |
 | `disable-model-invocation` | Whether to prevent `SlashCommand` tool from calling this command | false |
 
 For example:
 
 Copy
-
-Ask AI
 
 ```
 ---
@@ -323,8 +359,6 @@ Example using positional arguments:
 
 Copy
 
-Ask AI
-
 ```
 ---
 argument-hint: [pr-number] [priority] [assignee]
@@ -338,7 +372,7 @@ Focus on security, performance, and code style.
 [​](#plugin-commands) Plugin commands
 -------------------------------------
 
-[Plugins](/docs/en/plugins) can provide custom slash commands that integrate seamlessly with Claude Code. Plugin commands work exactly like user-defined commands but are distributed through [plugin marketplaces](/docs/en/plugin-marketplaces).
+[Plugins](/en/docs/claude-code/plugins) can provide custom slash commands that integrate seamlessly with Claude Code. Plugin commands work exactly like user-defined commands but are distributed through [plugin marketplaces](/en/docs/claude-code/plugin-marketplaces).
 
 ### [​](#how-plugin-commands-work) How plugin commands work
 
@@ -355,8 +389,6 @@ Plugin commands are:
 **Basic command structure**:
 
 Copy
-
-Ask AI
 
 ```
 ---
@@ -382,8 +414,6 @@ Direct command (when no conflicts)
 
 Copy
 
-Ask AI
-
 ```
 /command-name
 ```
@@ -392,8 +422,6 @@ Plugin-prefixed (when needed for disambiguation)
 
 Copy
 
-Ask AI
-
 ```
 /plugin-name:command-name
 ```
@@ -401,8 +429,6 @@ Ask AI
 With arguments (if command supports them)
 
 Copy
-
-Ask AI
 
 ```
 /command-name arg1 arg2
@@ -418,8 +444,6 @@ MCP servers can expose prompts as slash commands that become available in Claude
 MCP commands follow the pattern:
 
 Copy
-
-Ask AI
 
 ```
 /mcp__<server-name>__<prompt-name> [arguments]
@@ -440,8 +464,6 @@ MCP commands are automatically available when:
 MCP prompts can accept arguments defined by the server:
 
 Copy
-
-Ask AI
 
 ```
 # Without arguments
@@ -470,7 +492,7 @@ Use the `/mcp` command to:
 
 ### [​](#mcp-permissions-and-wildcards) MCP permissions and wildcards
 
-When configuring [permissions for MCP tools](/docs/en/iam#tool-specific-permission-rules), note that **wildcards are not supported**:
+When configuring [permissions for MCP tools](/en/docs/claude-code/iam#tool-specific-permission-rules), note that **wildcards are not supported**:
 
 * ✅ **Correct**: `mcp__github` (approves ALL tools from the github server)
 * ✅ **Correct**: `mcp__github__get_issue` (approves specific tool)
@@ -481,7 +503,7 @@ To approve all tools from an MCP server, use just the server name: `mcp__servern
 [​](#slashcommand-tool) `SlashCommand` tool
 -------------------------------------------
 
-The `SlashCommand` tool allows Claude to execute [custom slash commands](/docs/en/slash-commands#custom-slash-commands) programmatically
+The `SlashCommand` tool allows Claude to execute [custom slash commands](/en/docs/claude-code/slash-commands#custom-slash-commands) programmatically
 during a conversation. This gives Claude the ability to invoke custom commands
 on your behalf when appropriate.
 To encourage Claude to trigger `SlashCommand` tool, your instructions (prompts,
@@ -489,8 +511,6 @@ CLAUDE.md, etc.) generally need to reference the command by name with its slash.
 Example:
 
 Copy
-
-Ask AI
 
 ```
 > Run /write-unit-test when you are about to start writing tests.
@@ -515,8 +535,6 @@ For Claude Code versions >= 1.0.124, you can see which custom slash commands
 To prevent Claude from executing any slash commands via the tool:
 
 Copy
-
-Ask AI
 
 ```
 /permissions
@@ -602,8 +620,6 @@ available commands. In `/context`, a warning will show with “M of N commands�
 
 Copy
 
-Ask AI
-
 ```
 # .claude/commands/review.md
 Review this code for:
@@ -616,8 +632,6 @@ Usage: `/review` (manual invocation)
 **As a Skill**:
 
 Copy
-
-Ask AI
 
 ```
 .claude/skills/code-review/
@@ -648,23 +662,29 @@ The Skill provides richer context, validation scripts, and organized reference m
 * Team needs standardized, detailed guidance
 
 Both slash commands and Skills can coexist. Use the approach that fits your needs.
-Learn more about [Agent Skills](/docs/en/skills).
+Learn more about [Agent Skills](/en/docs/claude-code/skills).
 
 [​](#see-also) See also
 -----------------------
 
-* [Plugins](/docs/en/plugins) - Extend Claude Code with custom commands through plugins
-* [Identity and Access Management](/docs/en/iam) - Complete guide to permissions, including MCP tool permissions
-* [Interactive mode](/docs/en/interactive-mode) - Shortcuts, input modes, and interactive features
-* [CLI reference](/docs/en/cli-reference) - Command-line flags and options
-* [Settings](/docs/en/settings) - Configuration options
-* [Memory management](/docs/en/memory) - Managing Claude’s memory across sessions
+* [Plugins](/en/docs/claude-code/plugins) - Extend Claude Code with custom commands through plugins
+* [Identity and Access Management](/en/docs/claude-code/iam) - Complete guide to permissions, including MCP tool permissions
+* [Interactive mode](/en/docs/claude-code/interactive-mode) - Shortcuts, input modes, and interactive features
+* [CLI reference](/en/docs/claude-code/cli-reference) - Command-line flags and options
+* [Settings](/en/docs/claude-code/settings) - Configuration options
+* [Memory management](/en/docs/claude-code/memory) - Managing Claude’s memory across sessions
 
-[Interactive mode](/docs/en/interactive-mode)[Checkpointing](/docs/en/checkpointing)
+Was this page helpful?
 
-⌘I
+YesNo
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Interactive mode](/en/docs/claude-code/interactive-mode)[Checkpointing](/en/docs/claude-code/checkpointing)
+
+Assistant
+
+Responses are generated using AI and may contain mistakes.
+
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 

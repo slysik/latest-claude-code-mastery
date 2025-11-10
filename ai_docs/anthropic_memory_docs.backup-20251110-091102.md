@@ -2,11 +2,11 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-11-10T09:11:02.227839
+> Last updated: 2025-11-03T09:11:00.564816
 
-[Skip to main content](#content-area)
+Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
 
@@ -16,9 +16,11 @@ Search...
 
 ⌘K
 
-* [Claude Developer Platform](https://platform.claude.com/)
-* [Claude Code on the Web](https://claude.ai/code)
-* [Claude Code on the Web](https://claude.ai/code)
+* [Console](https://console.anthropic.com/login)
+* [Support](https://support.claude.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
 Search...
 
@@ -28,17 +30,75 @@ Configuration
 
 Manage Claude's memory
 
-[Getting started](/docs/en/overview)[Build with Claude Code](/docs/en/sub-agents)[Deployment](/docs/en/third-party-integrations)[Administration](/docs/en/setup)[Configuration](/docs/en/settings)[Reference](/docs/en/cli-reference)[Resources](/docs/en/legal-and-compliance)
+[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+
+##### Getting started
+
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
+
+##### Build with Claude Code
+
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Plugins](/en/docs/claude-code/plugins)
+* [Agent Skills](/en/docs/claude-code/skills)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Headless mode](/en/docs/claude-code/headless)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Claude Agent SDK
+
+* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Network configuration](/en/docs/claude-code/network-config)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+* [Sandboxing](/en/docs/claude-code/sandboxing)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
-* [Settings](/docs/en/settings)
-* [Visual Studio Code](/docs/en/vs-code)
-* [JetBrains IDEs](/docs/en/jetbrains)
-* [Terminal configuration](/docs/en/terminal-config)
-* [Model configuration](/docs/en/model-config)
-* [Memory management](/docs/en/memory)
-* [Status line configuration](/docs/en/statusline)
+* [Settings](/en/docs/claude-code/settings)
+* [Visual Studio Code](/en/docs/claude-code/vs-code)
+* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Model configuration](/en/docs/claude-code/model-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
+
+##### Reference
+
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Checkpointing](/en/docs/claude-code/checkpointing)
+* [Hooks reference](/en/docs/claude-code/hooks)
+* [Plugins reference](/en/docs/claude-code/plugins-reference)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
 On this page
 
@@ -85,8 +145,6 @@ CLAUDE.md files can import additional files using `@path/to/import` syntax. The 
 
 Copy
 
-Ask AI
-
 ```
 See @README for project overview and @package.json for available npm commands for this project.
 
@@ -98,8 +156,6 @@ Both relative and absolute paths are allowed. In particular, importing files in 
 
 Copy
 
-Ask AI
-
 ```
 # Individual Preferences
 - @~/.claude/my-project-instructions.md
@@ -108,8 +164,6 @@ Ask AI
 To avoid potential collisions, imports are not evaluated inside markdown code spans and code blocks.
 
 Copy
-
-Ask AI
 
 ```
 This code span will not be treated as an import: `@anthropic-ai/claude-code`
@@ -130,8 +184,6 @@ The fastest way to add a memory is to start your input with the `#` character:
 
 Copy
 
-Ask AI
-
 ```
 # Always use descriptive variable names
 ```
@@ -150,8 +202,6 @@ Suppose you want to set up a CLAUDE.md file to store important project informati
 Bootstrap a CLAUDE.md for your codebase with the following command:
 
 Copy
-
-Ask AI
 
 ```
 > /init
@@ -185,11 +235,17 @@ To set up organization-level memory management:
 * **Use structure to organize**: Format each individual memory as a bullet point and group related memories under descriptive markdown headings.
 * **Review periodically**: Update memories as your project evolves to ensure Claude is always using the most up to date information and context.
 
-[Model configuration](/docs/en/model-config)[Status line configuration](/docs/en/statusline)
+Was this page helpful?
 
-⌘I
+YesNo
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Model configuration](/en/docs/claude-code/model-config)[Status line configuration](/en/docs/claude-code/statusline)
+
+Assistant
+
+Responses are generated using AI and may contain mistakes.
+
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 

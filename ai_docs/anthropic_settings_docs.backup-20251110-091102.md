@@ -2,11 +2,11 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-11-10T09:11:02.712988
+> Last updated: 2025-11-03T09:11:00.999838
 
-[Skip to main content](#content-area)
+Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
 
@@ -16,9 +16,11 @@ Search...
 
 ⌘K
 
-* [Claude Developer Platform](https://platform.claude.com/)
-* [Claude Code on the Web](https://claude.ai/code)
-* [Claude Code on the Web](https://claude.ai/code)
+* [Console](https://console.anthropic.com/login)
+* [Support](https://support.claude.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
 Search...
 
@@ -28,17 +30,75 @@ Configuration
 
 Claude Code settings
 
-[Getting started](/docs/en/overview)[Build with Claude Code](/docs/en/sub-agents)[Deployment](/docs/en/third-party-integrations)[Administration](/docs/en/setup)[Configuration](/docs/en/settings)[Reference](/docs/en/cli-reference)[Resources](/docs/en/legal-and-compliance)
+[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+
+##### Getting started
+
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
+
+##### Build with Claude Code
+
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Plugins](/en/docs/claude-code/plugins)
+* [Agent Skills](/en/docs/claude-code/skills)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Headless mode](/en/docs/claude-code/headless)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Claude Agent SDK
+
+* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Network configuration](/en/docs/claude-code/network-config)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+* [Sandboxing](/en/docs/claude-code/sandboxing)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
 
 ##### Configuration
 
-* [Settings](/docs/en/settings)
-* [Visual Studio Code](/docs/en/vs-code)
-* [JetBrains IDEs](/docs/en/jetbrains)
-* [Terminal configuration](/docs/en/terminal-config)
-* [Model configuration](/docs/en/model-config)
-* [Memory management](/docs/en/memory)
-* [Status line configuration](/docs/en/statusline)
+* [Settings](/en/docs/claude-code/settings)
+* [Visual Studio Code](/en/docs/claude-code/vs-code)
+* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Model configuration](/en/docs/claude-code/model-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
+
+##### Reference
+
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Checkpointing](/en/docs/claude-code/checkpointing)
+* [Hooks reference](/en/docs/claude-code/hooks)
+* [Plugins reference](/en/docs/claude-code/plugins-reference)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
 On this page
 
@@ -92,7 +152,7 @@ Code through hierarchical settings:
   + Linux and WSL: `/etc/claude-code/managed-settings.json`
   + Windows: `C:\ProgramData\ClaudeCode\managed-settings.json`
 * Enterprise deployments can also configure **managed MCP servers** that override
-  user-configured servers. See [Enterprise MCP configuration](/docs/en/mcp#enterprise-mcp-configuration):
+  user-configured servers. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration):
   + macOS: `/Library/Application Support/ClaudeCode/managed-mcp.json`
   + Linux and WSL: `/etc/claude-code/managed-mcp.json`
   + Windows: `C:\ProgramData\ClaudeCode\managed-mcp.json`
@@ -100,8 +160,6 @@ Code through hierarchical settings:
 Example settings.json
 
 Copy
-
-Ask AI
 
 ```
 {
@@ -121,12 +179,7 @@ Ask AI
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "1",
     "OTEL_METRICS_EXPORTER": "otlp"
-  },
-  "companyAnnouncements": [
-    "Welcome to Acme Corp! Review our code guidelines at docs.acme.com",
-    "Reminder: Code reviews required for all PRs",
-    "New security policy in effect"
-  ]
+  }
 }
 ```
 
@@ -138,39 +191,39 @@ Ask AI
 | --- | --- | --- |
 | `apiKeyHelper` | Custom script, to be executed in `/bin/sh`, to generate an auth value. This value will be sent as `X-Api-Key` and `Authorization: Bearer` headers for model requests | `/bin/generate_temp_api_key.sh` |
 | `cleanupPeriodDays` | How long to locally retain chat transcripts based on last activity date (default: 30 days) | `20` |
-| `companyAnnouncements` | Announcement to display to users at startup. If multiple announcements are provided, they will be cycled through at random. | `["Welcome to Acme Corp! Review our code guidelines at docs.acme.com"]` |
 | `env` | Environment variables that will be applied to every session | `{"FOO": "bar"}` |
 | `includeCoAuthoredBy` | Whether to include the `co-authored-by Claude` byline in git commits and pull requests (default: `true`) | `false` |
 | `permissions` | See table below for structure of permissions. |  |
-| `hooks` | Configure custom commands to run before or after tool executions. See [hooks documentation](/docs/en/hooks) | `{"PreToolUse": {"Bash": "echo 'Running command...'"}}` |
-| `disableAllHooks` | Disable all [hooks](/docs/en/hooks) | `true` |
+| `hooks` | Configure custom commands to run before or after tool executions. See [hooks documentation](hooks) | `{"PreToolUse": {"Bash": "echo 'Running command...'"}}` |
+| `disableAllHooks` | Disable all <hooks> | `true` |
 | `model` | Override the default model to use for Claude Code | `"claude-sonnet-4-5-20250929"` |
-| `statusLine` | Configure a custom status line to display context. See [statusLine documentation](/docs/en/statusline) | `{"type": "command", "command": "~/.claude/statusline.sh"}` |
-| `outputStyle` | Configure an output style to adjust the system prompt. See [output styles documentation](/docs/en/output-styles) | `"Explanatory"` |
+| `statusLine` | Configure a custom status line to display context. See [statusLine documentation](statusline) | `{"type": "command", "command": "~/.claude/statusline.sh"}` |
+| `outputStyle` | Configure an output style to adjust the system prompt. See [output styles documentation](output-styles) | `"Explanatory"` |
 | `forceLoginMethod` | Use `claudeai` to restrict login to Claude.ai accounts, `console` to restrict login to Claude Console (API usage billing) accounts | `claudeai` |
 | `forceLoginOrgUUID` | Specify the UUID of an organization to automatically select it during login, bypassing the organization selection step. Requires `forceLoginMethod` to be set | `"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"` |
 | `enableAllProjectMcpServers` | Automatically approve all MCP servers defined in project `.mcp.json` files | `true` |
 | `enabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to approve | `["memory", "github"]` |
 | `disabledMcpjsonServers` | List of specific MCP servers from `.mcp.json` files to reject | `["filesystem"]` |
-| `allowedMcpServers` | When set in managed-settings.json, allowlist of MCP servers users can configure. Undefined = no restrictions, empty array = lockdown. Applies to all scopes. Denylist takes precedence. See [Enterprise MCP configuration](/docs/en/mcp#enterprise-mcp-configuration) | `[{ "serverName": "github" }]` |
-| `deniedMcpServers` | When set in managed-settings.json, denylist of MCP servers that are explicitly blocked. Applies to all scopes including enterprise servers. Denylist takes precedence over allowlist. See [Enterprise MCP configuration](/docs/en/mcp#enterprise-mcp-configuration) | `[{ "serverName": "filesystem" }]` |
-| `awsAuthRefresh` | Custom script that modifies the `.aws` directory (see [advanced credential configuration](/docs/en/amazon-bedrock#advanced-credential-configuration)) | `aws sso login --profile myprofile` |
-| `awsCredentialExport` | Custom script that outputs JSON with AWS credentials (see [advanced credential configuration](/docs/en/amazon-bedrock#advanced-credential-configuration)) | `/bin/generate_aws_grant.sh` |
+| `useEnterpriseMcpConfigOnly` | When set in managed-settings.json, restricts MCP servers to only those defined in managed-mcp.json. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration) | `true` |
+| `allowedMcpServers` | When set in managed-settings.json, allowlist of MCP servers users can configure. Undefined = no restrictions, empty array = lockdown. Applies to all scopes. Denylist takes precedence. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration) | `[{ "serverName": "github" }]` |
+| `deniedMcpServers` | When set in managed-settings.json, denylist of MCP servers that are explicitly blocked. Applies to all scopes including enterprise servers. Denylist takes precedence over allowlist. See [Enterprise MCP configuration](/en/docs/claude-code/mcp#enterprise-mcp-configuration) | `[{ "serverName": "filesystem" }]` |
+| `awsAuthRefresh` | Custom script that modifies the `.aws` directory (see [advanced credential configuration](/en/docs/claude-code/amazon-bedrock#advanced-credential-configuration)) | `aws sso login --profile myprofile` |
+| `awsCredentialExport` | Custom script that outputs JSON with AWS credentials (see [advanced credential configuration](/en/docs/claude-code/amazon-bedrock#advanced-credential-configuration)) | `/bin/generate_aws_grant.sh` |
 
 ### [​](#permission-settings) Permission settings
 
 | Keys | Description | Example |
 | --- | --- | --- |
-| `allow` | Array of [permission rules](/docs/en/iam#configuring-permissions) to allow tool use. **Note:** Bash rules use prefix matching, not regex | `[ "Bash(git diff:*)" ]` |
-| `ask` | Array of [permission rules](/docs/en/iam#configuring-permissions) to ask for confirmation upon tool use. | `[ "Bash(git push:*)" ]` |
-| `deny` | Array of [permission rules](/docs/en/iam#configuring-permissions) to deny tool use. Use this to also exclude sensitive files from Claude Code access. **Note:** Bash patterns are prefix matches and can be bypassed (see [Bash permission limitations](/docs/en/iam#tool-specific-permission-rules)) | `[ "WebFetch", "Bash(curl:*)", "Read(./.env)", "Read(./secrets/**)" ]` |
-| `additionalDirectories` | Additional [working directories](/docs/en/iam#working-directories) that Claude has access to | `[ "../docs/" ]` |
-| `defaultMode` | Default [permission mode](/docs/en/iam#permission-modes) when opening Claude Code | `"acceptEdits"` |
-| `disableBypassPermissionsMode` | Set to `"disable"` to prevent `bypassPermissions` mode from being activated. This disables the `--dangerously-skip-permissions` command-line flag. See [managed policy settings](/docs/en/iam#enterprise-managed-policy-settings) | `"disable"` |
+| `allow` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to allow tool use. **Note:** Bash rules use prefix matching, not regex | `[ "Bash(git diff:*)" ]` |
+| `ask` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to ask for confirmation upon tool use. | `[ "Bash(git push:*)" ]` |
+| `deny` | Array of [permission rules](/en/docs/claude-code/iam#configuring-permissions) to deny tool use. Use this to also exclude sensitive files from Claude Code access. **Note:** Bash patterns are prefix matches and can be bypassed (see [Bash permission limitations](/en/docs/claude-code/iam#tool-specific-permission-rules)) | `[ "WebFetch", "Bash(curl:*)", "Read(./.env)", "Read(./secrets/**)" ]` |
+| `additionalDirectories` | Additional [working directories](iam#working-directories) that Claude has access to | `[ "../docs/" ]` |
+| `defaultMode` | Default [permission mode](iam#permission-modes) when opening Claude Code | `"acceptEdits"` |
+| `disableBypassPermissionsMode` | Set to `"disable"` to prevent `bypassPermissions` mode from being activated. This disables the `--dangerously-skip-permissions` command-line flag. See [managed policy settings](iam#enterprise-managed-policy-settings) | `"disable"` |
 
 ### [​](#sandbox-settings) Sandbox settings
 
-Configure advanced sandboxing behavior. Sandboxing isolates bash commands from your filesystem and network. See [Sandboxing](/docs/en/sandboxing) for details.
+Configure advanced sandboxing behavior. Sandboxing isolates bash commands from your filesystem and network. See [Sandboxing](/en/docs/claude-code/sandboxing) for details.
 **Filesystem and network restrictions** are configured via Read, Edit, and WebFetch permission rules, not via these sandbox settings.
 
 | Keys | Description | Example |
@@ -188,8 +241,6 @@ Configure advanced sandboxing behavior. Sandboxing isolates bash commands from y
 **Configuration example:**
 
 Copy
-
-Ask AI
 
 ```
 {
@@ -261,8 +312,6 @@ To prevent Claude Code from accessing files containing sensitive information (e.
 
 Copy
 
-Ask AI
-
 ```
 {
   "permissions": {
@@ -287,7 +336,7 @@ Claude Code supports custom AI subagents that can be configured at both user and
 * **User subagents**: `~/.claude/agents/` - Available across all your projects
 * **Project subagents**: `.claude/agents/` - Specific to your project and can be shared with your team
 
-Subagent files define specialized AI assistants with custom prompts and tool permissions. Learn more about creating and using subagents in the [subagents documentation](/docs/en/sub-agents).
+Subagent files define specialized AI assistants with custom prompts and tool permissions. Learn more about creating and using subagents in the [subagents documentation](/en/docs/claude-code/sub-agents).
 
 [​](#plugin-configuration) Plugin configuration
 -----------------------------------------------
@@ -299,8 +348,6 @@ Claude Code supports a plugin system that lets you extend functionality with cus
 Plugin-related settings in `settings.json`:
 
 Copy
-
-Ask AI
 
 ```
 {
@@ -331,8 +378,6 @@ Controls which plugins are enabled. Format: `"plugin-name@marketplace-name": tru
 
 Copy
 
-Ask AI
-
 ```
 {
   "enabledPlugins": {
@@ -356,8 +401,6 @@ Defines additional marketplaces that should be made available for the repository
 **Example**:
 
 Copy
-
-Ask AI
 
 ```
 {
@@ -394,7 +437,7 @@ Use the `/plugin` command to manage plugins interactively:
 * View plugin details (commands, agents, hooks provided)
 * Add/remove marketplaces
 
-Learn more about the plugin system in the [plugins documentation](/docs/en/plugins).
+Learn more about the plugin system in the [plugins documentation](/en/docs/claude-code/plugins).
 
 [​](#environment-variables) Environment variables
 -------------------------------------------------
@@ -408,11 +451,11 @@ All environment variables can also be configured in [`settings.json`](#available
 | `ANTHROPIC_API_KEY` | API key sent as `X-Api-Key` header, typically for the Claude SDK (for interactive usage, run `/login`) |
 | `ANTHROPIC_AUTH_TOKEN` | Custom value for the `Authorization` header (the value you set here will be prefixed with `Bearer` ) |
 | `ANTHROPIC_CUSTOM_HEADERS` | Custom headers you want to add to the request (in `Name: Value` format) |
-| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
-| `ANTHROPIC_DEFAULT_OPUS_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
-| `ANTHROPIC_DEFAULT_SONNET_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
-| `ANTHROPIC_MODEL` | Name of the model setting to use (see [Model Configuration](/docs/en/model-config#environment-variables)) |
-| `ANTHROPIC_SMALL_FAST_MODEL` | [DEPRECATED] Name of [Haiku-class model for background tasks](/docs/en/costs) |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | See [Model configuration](/en/docs/claude-code/model-config#environment-variables) |
+| `ANTHROPIC_MODEL` | Name of the model setting to use (see [Model Configuration](/en/docs/claude-code/model-config#environment-variables)) |
+| `ANTHROPIC_SMALL_FAST_MODEL` | [DEPRECATED] Name of [Haiku-class model for background tasks](/en/docs/claude-code/costs) |
 | `ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION` | Override AWS region for the Haiku-class model when using Bedrock |
 | `AWS_BEARER_TOKEN_BEDROCK` | Bedrock API key for authentication (see [Bedrock API keys](https://aws.amazon.com/blogs/machine-learning/accelerate-ai-development-with-amazon-bedrock-api-keys/)) |
 | `BASH_DEFAULT_TIMEOUT_MS` | Default timeout for long-running bash commands |
@@ -429,10 +472,10 @@ All environment variables can also be configured in [`settings.json`](#available
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Set the maximum number of output tokens for most requests |
 | `CLAUDE_CODE_SKIP_BEDROCK_AUTH` | Skip AWS authentication for Bedrock (e.g. when using an LLM gateway) |
 | `CLAUDE_CODE_SKIP_VERTEX_AUTH` | Skip Google authentication for Vertex (e.g. when using an LLM gateway) |
-| `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/docs/en/model-config) |
-| `CLAUDE_CODE_USE_BEDROCK` | Use [Bedrock](/docs/en/amazon-bedrock) |
-| `CLAUDE_CODE_USE_VERTEX` | Use [Vertex](/docs/en/google-vertex-ai) |
-| `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/en/docs/claude-code/model-config) |
+| `CLAUDE_CODE_USE_BEDROCK` | Use [Bedrock](/en/docs/claude-code/amazon-bedrock) |
+| `CLAUDE_CODE_USE_VERTEX` | Use [Vertex](/en/docs/claude-code/google-vertex-ai) |
+| `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. This takes precedence over the `autoUpdates` configuration setting. |
 | `DISABLE_BUG_COMMAND` | Set to `1` to disable the `/bug` command |
 | `DISABLE_COST_WARNINGS` | Set to `1` to disable cost warning messages |
 | `DISABLE_ERROR_REPORTING` | Set to `1` to opt out of Sentry error reporting |
@@ -445,11 +488,11 @@ All environment variables can also be configured in [`settings.json`](#available
 | `HTTP_PROXY` | Specify HTTP proxy server for network connections |
 | `HTTPS_PROXY` | Specify HTTPS proxy server for network connections |
 | `MAX_MCP_OUTPUT_TOKENS` | Maximum number of tokens allowed in MCP tool responses. Claude Code displays a warning when output exceeds 10,000 tokens (default: 25000) |
-| `MAX_THINKING_TOKENS` | Enable [extended thinking](https://docs.claude.com/en/docs/build-with-claude/extended-thinking) and set the token budget for the thinking process. Extended thinking improves performance on complex reasoning and coding tasks but impacts [prompt caching efficiency](https://docs.claude.com/en/docs/build-with-claude/prompt-caching#caching-with-thinking-blocks). Disabled by default. |
+| `MAX_THINKING_TOKENS` | Enable [extended thinking](/en/docs/build-with-claude/extended-thinking) and set the token budget for the thinking process. Extended thinking improves performance on complex reasoning and coding tasks but impacts [prompt caching efficiency](/en/docs/build-with-claude/prompt-caching#caching-with-thinking-blocks). Disabled by default. |
 | `MCP_TIMEOUT` | Timeout in milliseconds for MCP server startup |
 | `MCP_TOOL_TIMEOUT` | Timeout in milliseconds for MCP tool execution |
 | `NO_PROXY` | List of domains and IPs to which requests will be directly issued, bypassing proxy |
-| `SLASH_COMMAND_TOOL_CHAR_BUDGET` | Maximum number of characters for slash command metadata shown to [SlashCommand tool](/docs/en/slash-commands#slashcommand-tool) (default: 15000) |
+| `SLASH_COMMAND_TOOL_CHAR_BUDGET` | Maximum number of characters for slash command metadata shown to [SlashCommand tool](/en/docs/claude-code/slash-commands#slashcommand-tool) (default: 15000) |
 | `USE_BUILTIN_RIPGREP` | Set to `0` to use system-installed `rg` intead of `rg` included with Claude Code |
 | `VERTEX_REGION_CLAUDE_3_5_HAIKU` | Override region for Claude 3.5 Haiku when using Vertex AI |
 | `VERTEX_REGION_CLAUDE_3_7_SONNET` | Override region for Claude 3.7 Sonnet when using Vertex AI |
@@ -471,19 +514,19 @@ Claude Code has access to a set of powerful tools that help it understand and mo
 | **NotebookEdit** | Modifies Jupyter notebook cells | Yes |
 | **NotebookRead** | Reads and displays Jupyter notebook contents | No |
 | **Read** | Reads the contents of files | No |
-| **SlashCommand** | Runs a [custom slash command](/docs/en/slash-commands#slashcommand-tool) | Yes |
+| **SlashCommand** | Runs a [custom slash command](/en/docs/claude-code/slash-commands#slashcommand-tool) | Yes |
 | **Task** | Runs a sub-agent to handle complex, multi-step tasks | No |
 | **TodoWrite** | Creates and manages structured task lists | No |
 | **WebFetch** | Fetches content from a specified URL | Yes |
 | **WebSearch** | Performs web searches with domain filtering | Yes |
 | **Write** | Creates or overwrites files | Yes |
 
-Permission rules can be configured using `/allowed-tools` or in [permission settings](/docs/en/settings#available-settings). Also see [Tool-specific permission rules](/docs/en/iam#tool-specific-permission-rules).
+Permission rules can be configured using `/allowed-tools` or in [permission settings](/en/docs/claude-code/settings#available-settings). Also see [Tool-specific permission rules](/en/docs/claude-code/iam#tool-specific-permission-rules).
 
 ### [​](#extending-tools-with-hooks) Extending tools with hooks
 
 You can run custom commands before or after any tool executes using
-[Claude Code hooks](/docs/en/hooks-guide).
+[Claude Code hooks](/en/docs/claude-code/hooks-guide).
 For example, you could automatically run a Python formatter after Claude
 modifies Python files, or prevent modifications to production configuration
 files by blocking Write operations to certain paths.
@@ -491,15 +534,21 @@ files by blocking Write operations to certain paths.
 [​](#see-also) See also
 -----------------------
 
-* [Identity and Access Management](/docs/en/iam#configuring-permissions) - Learn about Claude Code’s permission system
-* [IAM and access control](/docs/en/iam#enterprise-managed-policy-settings) - Enterprise policy management
-* [Troubleshooting](/docs/en/troubleshooting#auto-updater-issues) - Solutions for common configuration issues
+* [Identity and Access Management](/en/docs/claude-code/iam#configuring-permissions) - Learn about Claude Code’s permission system
+* [IAM and access control](/en/docs/claude-code/iam#enterprise-managed-policy-settings) - Enterprise policy management
+* [Troubleshooting](/en/docs/claude-code/troubleshooting#auto-updater-issues) - Solutions for common configuration issues
 
-[Visual Studio Code](/docs/en/vs-code)
+Was this page helpful?
 
-⌘I
+YesNo
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)[Visual Studio Code](/en/docs/claude-code/vs-code)
+
+Assistant
+
+Responses are generated using AI and may contain mistakes.
+
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 

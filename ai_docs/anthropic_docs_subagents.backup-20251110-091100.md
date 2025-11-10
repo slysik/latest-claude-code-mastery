@@ -2,11 +2,11 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-11-10T09:11:00.760368
+> Last updated: 2025-11-03T09:10:59.233575
 
-[Skip to main content](#content-area)
+Agent Skills are now available! [Learn more about extending Claude's capabilities with Agent Skills](/en/docs/agents-and-tools/agent-skills/overview).
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 ![US](https://d3gk2c5xim1je2.cloudfront.net/flags/US.svg)
 
@@ -16,9 +16,11 @@ Search...
 
 ⌘K
 
-* [Claude Developer Platform](https://platform.claude.com/)
-* [Claude Code on the Web](https://claude.ai/code)
-* [Claude Code on the Web](https://claude.ai/code)
+* [Console](https://console.anthropic.com/login)
+* [Support](https://support.claude.com/)
+* [Discord](https://www.anthropic.com/discord)
+* [Sign up](https://console.anthropic.com/login)
+* [Sign up](https://console.anthropic.com/login)
 
 Search...
 
@@ -28,21 +30,75 @@ Build with Claude Code
 
 Subagents
 
-[Getting started](/docs/en/overview)[Build with Claude Code](/docs/en/sub-agents)[Deployment](/docs/en/third-party-integrations)[Administration](/docs/en/setup)[Configuration](/docs/en/settings)[Reference](/docs/en/cli-reference)[Resources](/docs/en/legal-and-compliance)
+[Home](/en/home)[Developer Guide](/en/docs/intro)[API Reference](/en/api/overview)[Claude Code](/en/docs/claude-code/overview)[Model Context Protocol (MCP)](/en/docs/mcp)[Resources](/en/resources/overview)[Release Notes](/en/release-notes/overview)
+
+##### Getting started
+
+* [Overview](/en/docs/claude-code/overview)
+* [Quickstart](/en/docs/claude-code/quickstart)
+* [Common workflows](/en/docs/claude-code/common-workflows)
+* [Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)
 
 ##### Build with Claude Code
 
-* [Subagents](/docs/en/sub-agents)
-* [Plugins](/docs/en/plugins)
-* [Agent Skills](/docs/en/skills)
-* [Output styles](/docs/en/output-styles)
-* [Hooks](/docs/en/hooks-guide)
-* [Headless mode](/docs/en/headless)
-* [GitHub Actions](/docs/en/github-actions)
-* [GitLab CI/CD](/docs/en/gitlab-ci-cd)
-* [Model Context Protocol (MCP)](/docs/en/mcp)
-* [Migrate to Claude Agent SDK](/docs/en/sdk/migration-guide)
-* [Troubleshooting](/docs/en/troubleshooting)
+* [Subagents](/en/docs/claude-code/sub-agents)
+* [Plugins](/en/docs/claude-code/plugins)
+* [Agent Skills](/en/docs/claude-code/skills)
+* [Output styles](/en/docs/claude-code/output-styles)
+* [Hooks](/en/docs/claude-code/hooks-guide)
+* [Headless mode](/en/docs/claude-code/headless)
+* [GitHub Actions](/en/docs/claude-code/github-actions)
+* [GitLab CI/CD](/en/docs/claude-code/gitlab-ci-cd)
+* [Model Context Protocol (MCP)](/en/docs/claude-code/mcp)
+* [Troubleshooting](/en/docs/claude-code/troubleshooting)
+
+##### Claude Agent SDK
+
+* [Migrate to Claude Agent SDK](/en/docs/claude-code/sdk/migration-guide)
+
+##### Deployment
+
+* [Overview](/en/docs/claude-code/third-party-integrations)
+* [Amazon Bedrock](/en/docs/claude-code/amazon-bedrock)
+* [Google Vertex AI](/en/docs/claude-code/google-vertex-ai)
+* [Network configuration](/en/docs/claude-code/network-config)
+* [LLM gateway](/en/docs/claude-code/llm-gateway)
+* [Development containers](/en/docs/claude-code/devcontainer)
+* [Sandboxing](/en/docs/claude-code/sandboxing)
+
+##### Administration
+
+* [Advanced installation](/en/docs/claude-code/setup)
+* [Identity and Access Management](/en/docs/claude-code/iam)
+* [Security](/en/docs/claude-code/security)
+* [Data usage](/en/docs/claude-code/data-usage)
+* [Monitoring](/en/docs/claude-code/monitoring-usage)
+* [Costs](/en/docs/claude-code/costs)
+* [Analytics](/en/docs/claude-code/analytics)
+* [Plugin marketplaces](/en/docs/claude-code/plugin-marketplaces)
+
+##### Configuration
+
+* [Settings](/en/docs/claude-code/settings)
+* [Visual Studio Code](/en/docs/claude-code/vs-code)
+* [JetBrains IDEs](/en/docs/claude-code/jetbrains)
+* [Terminal configuration](/en/docs/claude-code/terminal-config)
+* [Model configuration](/en/docs/claude-code/model-config)
+* [Memory management](/en/docs/claude-code/memory)
+* [Status line configuration](/en/docs/claude-code/statusline)
+
+##### Reference
+
+* [CLI reference](/en/docs/claude-code/cli-reference)
+* [Interactive mode](/en/docs/claude-code/interactive-mode)
+* [Slash commands](/en/docs/claude-code/slash-commands)
+* [Checkpointing](/en/docs/claude-code/checkpointing)
+* [Hooks reference](/en/docs/claude-code/hooks)
+* [Plugins reference](/en/docs/claude-code/plugins-reference)
+
+##### Resources
+
+* [Legal and compliance](/en/docs/claude-code/legal-and-compliance)
 
 On this page
 
@@ -63,8 +119,6 @@ On this page
 * [Using subagents effectively](#using-subagents-effectively)
 * [Automatic delegation](#automatic-delegation)
 * [Explicit invocation](#explicit-invocation)
-* [Built-in subagents](#built-in-subagents)
-* [Plan subagent](#plan-subagent)
 * [Example subagents](#example-subagents)
 * [Code reviewer](#code-reviewer)
 * [Debugger](#debugger)
@@ -73,7 +127,6 @@ On this page
 * [Advanced usage](#advanced-usage)
 * [Chaining subagents](#chaining-subagents)
 * [Dynamic subagent selection](#dynamic-subagent-selection)
-* [Resumable subagents](#resumable-subagents)
 * [Performance considerations](#performance-considerations)
 * [Related documentation](#related-documentation)
 
@@ -138,8 +191,6 @@ Run the following command:
 
 Copy
 
-Ask AI
-
 ```
 /agents
 ```
@@ -168,8 +219,6 @@ Your subagent is now available! Claude will use it automatically when appropriat
 
 Copy
 
-Ask AI
-
 ```
 > Use the code-reviewer subagent to check my recent changes
 ```
@@ -190,7 +239,7 @@ When subagent names conflict, project-level subagents take precedence over user-
 
 ### [​](#plugin-agents) Plugin agents
 
-[Plugins](/docs/en/plugins) can provide custom subagents that integrate seamlessly with Claude Code. Plugin agents work identically to user-defined agents and appear in the `/agents` interface.
+[Plugins](/en/docs/claude-code/plugins) can provide custom subagents that integrate seamlessly with Claude Code. Plugin agents work identically to user-defined agents and appear in the `/agents` interface.
 **Plugin agent locations**: Plugins include agents in their `agents/` directory (or custom paths specified in the plugin manifest).
 **Using plugin agents**:
 
@@ -199,15 +248,13 @@ When subagent names conflict, project-level subagents take precedence over user-
 * Can be invoked automatically by Claude when appropriate
 * Can be managed (viewed, inspected) through `/agents` interface
 
-See the [plugin components reference](/docs/en/plugins-reference#agents) for details on creating plugin agents.
+See the [plugin components reference](/en/docs/claude-code/plugins-reference#agents) for details on creating plugin agents.
 
 ### [​](#cli-based-configuration) CLI-based configuration
 
 You can also define subagents dynamically using the `--agents` CLI flag, which accepts a JSON object:
 
 Copy
-
-Ask AI
 
 ```
 claude --agents '{
@@ -228,15 +275,13 @@ claude --agents '{
 * Automation scripts that need custom subagents
 * Sharing subagent definitions in documentation or scripts
 
-For detailed information about the JSON format and all available options, see the [CLI reference documentation](/docs/en/cli-reference#agents-flag-format).
+For detailed information about the JSON format and all available options, see the [CLI reference documentation](/en/docs/claude-code/cli-reference#agents-flag-format).
 
 ### [​](#file-format) File format
 
 Each subagent is defined in a Markdown file with this structure:
 
 Copy
-
-Ask AI
 
 ```
 ---
@@ -261,11 +306,11 @@ the subagent should follow.
 | `name` | Yes | Unique identifier using lowercase letters and hyphens |
 | `description` | Yes | Natural language description of the subagent’s purpose |
 | `tools` | No | Comma-separated list of specific tools. If omitted, inherits all tools from the main thread |
-| `model` | No | Model to use for this subagent. Can be a model alias (`sonnet`, `opus`, `haiku`) or `'inherit'` to use the main conversation’s model. If omitted, defaults to the [configured subagent model](/docs/en/model-config) |
+| `model` | No | Model to use for this subagent. Can be a model alias (`sonnet`, `opus`, `haiku`) or `'inherit'` to use the main conversation’s model. If omitted, defaults to the [configured subagent model](/en/docs/claude-code/model-config) |
 
 ### [​](#model-selection) Model selection
 
-The `model` field allows you to control which [AI model](/docs/en/model-config) the subagent uses:
+The `model` field allows you to control which [AI model](/en/docs/claude-code/model-config) the subagent uses:
 
 * **Model alias**: Use one of the available aliases: `sonnet`, `opus`, or `haiku`
 * **`'inherit'`**: Use the same model as the main conversation (useful for consistency)
@@ -275,7 +320,7 @@ Using `'inherit'` is particularly useful when you want your subagents to adapt t
 
 ### [​](#available-tools) Available tools
 
-Subagents can be granted access to any of Claude Code’s internal tools. See the [tools documentation](/docs/en/settings#tools-available-to-claude) for a complete list of available tools.
+Subagents can be granted access to any of Claude Code’s internal tools. See the [tools documentation](/en/docs/claude-code/settings#tools-available-to-claude) for a complete list of available tools.
 
 **Recommended:** Use the `/agents` command to modify tool access - it provides an interactive interface that lists all available tools, including any connected MCP server tools, making it easier to select the ones you need.
 
@@ -295,8 +340,6 @@ The `/agents` command provides a comprehensive interface for subagent management
 
 Copy
 
-Ask AI
-
 ```
 /agents
 ```
@@ -315,8 +358,6 @@ This opens an interactive menu where you can:
 You can also manage subagents by working directly with their files:
 
 Copy
-
-Ask AI
 
 ```
 # Create a project subagent
@@ -352,47 +393,11 @@ Request a specific subagent by mentioning it in your command:
 
 Copy
 
-Ask AI
-
 ```
 > Use the test-runner subagent to fix failing tests
 > Have the code-reviewer subagent look at my recent changes
 > Ask the debugger subagent to investigate this error
 ```
-
-[​](#built-in-subagents) Built-in subagents
--------------------------------------------
-
-Claude Code includes built-in subagents that are available out of the box:
-
-### [​](#plan-subagent) Plan subagent
-
-The Plan subagent is a specialized built-in agent designed for use during plan mode. When Claude is operating in plan mode (non-execution mode), it uses the Plan subagent to conduct research and gather information about your codebase before presenting a plan.
-**Key characteristics:**
-
-* **Model**: Uses Sonnet for more capable analysis
-* **Tools**: Has access to Read, Glob, Grep, and Bash tools for codebase exploration
-* **Purpose**: Searches files, analyzes code structure, and gathers context
-* **Automatic invocation**: Claude automatically uses this agent when in plan mode and needs to research the codebase
-
-**How it works:**
-When you’re in plan mode and Claude needs to understand your codebase to create a plan, it delegates research tasks to the Plan subagent. This prevents infinite nesting of agents (subagents cannot spawn other subagents) while still allowing Claude to gather the necessary context.
-**Example scenario:**
-
-Copy
-
-Ask AI
-
-```
-User: [In plan mode] Help me refactor the authentication module
-
-Claude: Let me research your authentication implementation first...
-[Internally invokes Plan subagent to explore auth-related files]
-[Plan subagent searches codebase and returns findings]
-Claude: Based on my research, here's my proposed plan...
-```
-
-The Plan subagent is only used in plan mode. In normal execution mode, Claude uses the general-purpose agent or other custom subagents you’ve created.
 
 [​](#example-subagents) Example subagents
 -----------------------------------------
@@ -400,8 +405,6 @@ The Plan subagent is only used in plan mode. In normal execution mode, Claude us
 ### [​](#code-reviewer) Code reviewer
 
 Copy
-
-Ask AI
 
 ```
 ---
@@ -440,8 +443,6 @@ Include specific examples of how to fix issues.
 
 Copy
 
-Ask AI
-
 ```
 ---
 name: debugger
@@ -478,8 +479,6 @@ Focus on fixing the underlying issue, not just symptoms.
 ### [​](#data-scientist) Data scientist
 
 Copy
-
-Ask AI
 
 ```
 ---
@@ -532,8 +531,6 @@ For complex workflows, you can chain multiple subagents:
 
 Copy
 
-Ask AI
-
 ```
 > First use the code-analyzer subagent to find performance issues, then use the optimizer subagent to fix them
 ```
@@ -541,72 +538,6 @@ Ask AI
 ### [​](#dynamic-subagent-selection) Dynamic subagent selection
 
 Claude Code intelligently selects subagents based on context. Make your `description` fields specific and action-oriented for best results.
-
-### [​](#resumable-subagents) Resumable subagents
-
-Subagents can be resumed to continue previous conversations, which is particularly useful for long-running research or analysis tasks that need to be continued across multiple invocations.
-**How it works:**
-
-* Each subagent execution is assigned a unique `agentId`
-* The agent’s conversation is stored in a separate transcript file: `agent-{agentId}.jsonl`
-* You can resume a previous agent by providing its `agentId` via the `resume` parameter
-* When resumed, the agent continues with full context from its previous conversation
-
-**Example workflow:**
-Initial invocation:
-
-Copy
-
-Ask AI
-
-```
-> Use the code-analyzer agent to start reviewing the authentication module
-
-[Agent completes initial analysis and returns agentId: "abc123"]
-```
-
-Resume the agent:
-
-Copy
-
-Ask AI
-
-```
-> Resume agent abc123 and now analyze the authorization logic as well
-
-[Agent continues with full context from previous conversation]
-```
-
-**Use cases:**
-
-* **Long-running research**: Break down large codebase analysis into multiple sessions
-* **Iterative refinement**: Continue refining a subagent’s work without losing context
-* **Multi-step workflows**: Have a subagent work on related tasks sequentially while maintaining context
-
-**Technical details:**
-
-* Agent transcripts are stored in your project directory
-* Recording is disabled during resume to avoid duplicating messages
-* Both synchronous and asynchronous agents can be resumed
-* The `resume` parameter accepts the agent ID from a previous execution
-
-**Programmatic usage:**
-If you’re using the Agent SDK or interacting with the AgentTool directly, you can pass the `resume` parameter:
-
-Copy
-
-Ask AI
-
-```
-{
-  "description": "Continue analysis",
-  "prompt": "Now examine the error handling patterns",
-  "subagent_type": "code-analyzer",
-  "resume": "abc123"  // Agent ID from previous execution
-}
-```
-
-Keep track of agent IDs for tasks you may want to resume later. Claude Code displays the agent ID when a subagent completes its work.
 
 [​](#performance-considerations) Performance considerations
 -----------------------------------------------------------
@@ -617,16 +548,22 @@ Keep track of agent IDs for tasks you may want to resume later. Claude Code disp
 [​](#related-documentation) Related documentation
 -------------------------------------------------
 
-* [Plugins](/docs/en/plugins) - Extend Claude Code with custom agents through plugins
-* [Slash commands](/docs/en/slash-commands) - Learn about other built-in commands
-* [Settings](/docs/en/settings) - Configure Claude Code behavior
-* [Hooks](/docs/en/hooks) - Automate workflows with event handlers
+* [Plugins](/en/docs/claude-code/plugins) - Extend Claude Code with custom agents through plugins
+* [Slash commands](/en/docs/claude-code/slash-commands) - Learn about other built-in commands
+* [Settings](/en/docs/claude-code/settings) - Configure Claude Code behavior
+* [Hooks](/en/docs/claude-code/hooks) - Automate workflows with event handlers
 
-[Plugins](/docs/en/plugins)
+Was this page helpful?
 
-⌘I
+YesNo
 
-[Claude Code Docs home page![light logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/light.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=536eade682636e84231afce2577f9509)![dark logo](https://mintcdn.com/claude-code/o69F7a6qoW9vboof/logo/dark.svg?fit=max&auto=format&n=o69F7a6qoW9vboof&q=85&s=0766b3221061e80143e9f300733e640b)](/docs)
+[Claude Code on the web](/en/docs/claude-code/claude-code-on-the-web)[Plugins](/en/docs/claude-code/plugins)
+
+Assistant
+
+Responses are generated using AI and may contain mistakes.
+
+[Claude Docs home page![light logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/light.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=c877c45432515ee69194cb19e9f983a2)![dark logo](https://mintcdn.com/anthropic-claude-docs/DcI2Ybid7ZEnFaf0/logo/dark.svg?fit=max&auto=format&n=DcI2Ybid7ZEnFaf0&q=85&s=f5bb877be0cb3cba86cf6d7c88185216)](/)
 
 [x](https://x.com/AnthropicAI)[linkedin](https://www.linkedin.com/company/anthropicresearch)
 
