@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-11-17T09:11:52.995639
+> Last updated: 2025-11-10T09:11:02.227839
 
 [Skip to main content](#content-area)
 
@@ -45,8 +45,8 @@ On this page
 * [Determine memory type](#determine-memory-type)
 * [CLAUDE.md imports](#claude-md-imports)
 * [How Claude looks up memories](#how-claude-looks-up-memories)
-* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-#-shortcut)
-* [Directly edit memories with /memory](#directly-edit-memories-with-/memory)
+* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-%23-shortcut)
+* [Directly edit memories with /memory](#directly-edit-memories-with-%2Fmemory)
 * [Set up project memory](#set-up-project-memory)
 * [Organization-level memory management](#organization-level-memory-management)
 * [Memory best practices](#memory-best-practices)
@@ -123,8 +123,8 @@ Imported files can recursively import additional files, with a max-depth of 5 ho
 Claude Code reads memories recursively: starting in the cwd, Claude Code recurses up to (but not including) the root directory */* and reads any CLAUDE.md or CLAUDE.local.md files it finds. This is especially convenient when working in large repositories where you run Claude Code in *foo/bar/*, and have memories in both *foo/CLAUDE.md* and *foo/bar/CLAUDE.md*.
 Claude will also discover CLAUDE.md nested in subtrees under your current working directory. Instead of loading them at launch, they are only included when Claude reads files in those subtrees.
 
-[​](#quickly-add-memories-with-the-#-shortcut) Quickly add memories with the `#` shortcut
------------------------------------------------------------------------------------------
+[​](#quickly-add-memories-with-the-%23-shortcut) Quickly add memories with the `#` shortcut
+-------------------------------------------------------------------------------------------
 
 The fastest way to add a memory is to start your input with the `#` character:
 
@@ -138,8 +138,8 @@ Ask AI
 
 You’ll be prompted to select which memory file to store this in.
 
-[​](#directly-edit-memories-with-/memory) Directly edit memories with `/memory`
--------------------------------------------------------------------------------
+[​](#directly-edit-memories-with-%2Fmemory) Directly edit memories with `/memory`
+---------------------------------------------------------------------------------
 
 Use the `/memory` slash command during a session to open any memory file in your system editor for more extensive additions or organization.
 

@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-11-17T09:11:52.649378
+> Last updated: 2025-11-10T09:11:01.934586
 
 [Skip to main content](#content-area)
 
@@ -40,17 +40,17 @@ Quickstart
 On this page
 
 * [Before you begin](#before-you-begin)
-* [Step 1: Install Claude Code](#step-1:-install-claude-code)
-* [Step 2: Log in to your account](#step-2:-log-in-to-your-account)
-* [Step 3: Start your first session](#step-3:-start-your-first-session)
-* [Step 4: Ask your first question](#step-4:-ask-your-first-question)
-* [Step 5: Make your first code change](#step-5:-make-your-first-code-change)
-* [Step 6: Use Git with Claude Code](#step-6:-use-git-with-claude-code)
-* [Step 7: Fix a bug or add a feature](#step-7:-fix-a-bug-or-add-a-feature)
-* [Step 8: Test out other common workflows](#step-8:-test-out-other-common-workflows)
+* [Step 1: Install Claude Code](#step-1%3A-install-claude-code)
+* [Step 2: Log in to your account](#step-2%3A-log-in-to-your-account)
+* [Step 3: Start your first session](#step-3%3A-start-your-first-session)
+* [Step 4: Ask your first question](#step-4%3A-ask-your-first-question)
+* [Step 5: Make your first code change](#step-5%3A-make-your-first-code-change)
+* [Step 6: Use Git with Claude Code](#step-6%3A-use-git-with-claude-code)
+* [Step 7: Fix a bug or add a feature](#step-7%3A-fix-a-bug-or-add-a-feature)
+* [Step 8: Test out other common workflows](#step-8%3A-test-out-other-common-workflows)
 * [Essential commands](#essential-commands)
 * [Pro tips for beginners](#pro-tips-for-beginners)
-* [What’s next?](#what’s-next)
+* [What’s next?](#what%E2%80%99s-next%3F)
 * [Getting help](#getting-help)
 
 Getting started
@@ -75,8 +75,8 @@ Make sure you have:
 * A code project to work with
 * A [Claude.ai](https://claude.ai) (recommended) or [Claude Console](https://console.anthropic.com/) account
 
-[​](#step-1:-install-claude-code) Step 1: Install Claude Code
--------------------------------------------------------------
+[​](#step-1%3A-install-claude-code) Step 1: Install Claude Code
+---------------------------------------------------------------
 
 To install Claude Code, use one of the following methods:
 
@@ -123,8 +123,8 @@ Ask AI
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
 
-[​](#step-2:-log-in-to-your-account) Step 2: Log in to your account
--------------------------------------------------------------------
+[​](#step-2%3A-log-in-to-your-account) Step 2: Log in to your account
+---------------------------------------------------------------------
 
 Claude Code requires an account to use. When you start an interactive session with the `claude` command, you’ll need to log in:
 
@@ -157,8 +157,8 @@ When you first authenticate Claude Code with your Claude Console account, a work
 
 You can have both account types under the same email address. If you need to log in again or switch accounts, use the `/login` command within Claude Code.
 
-[​](#step-3:-start-your-first-session) Step 3: Start your first session
------------------------------------------------------------------------
+[​](#step-3%3A-start-your-first-session) Step 3: Start your first session
+-------------------------------------------------------------------------
 
 Open your terminal in any project directory and start Claude Code:
 
@@ -175,8 +175,8 @@ You’ll see the Claude Code welcome screen with your session information, recen
 
 After logging in (Step 2), your credentials are stored on your system. Learn more in [Credential Management](/docs/en/iam#credential-management).
 
-[​](#step-4:-ask-your-first-question) Step 4: Ask your first question
----------------------------------------------------------------------
+[​](#step-4%3A-ask-your-first-question) Step 4: Ask your first question
+-----------------------------------------------------------------------
 
 Let’s start with understanding your codebase. Try one of these commands:
 
@@ -242,8 +242,8 @@ Ask AI
 
 Claude Code reads your files as needed - you don’t have to manually add context. Claude also has access to its own documentation and can answer questions about its features and capabilities.
 
-[​](#step-5:-make-your-first-code-change) Step 5: Make your first code change
------------------------------------------------------------------------------
+[​](#step-5%3A-make-your-first-code-change) Step 5: Make your first code change
+-------------------------------------------------------------------------------
 
 Now let’s make Claude Code do some actual coding. Try a simple task:
 
@@ -264,8 +264,8 @@ Claude Code will:
 
 Claude Code always asks for permission before modifying files. You can approve individual changes or enable “Accept all” mode for a session.
 
-[​](#step-6:-use-git-with-claude-code) Step 6: Use Git with Claude Code
------------------------------------------------------------------------
+[​](#step-6%3A-use-git-with-claude-code) Step 6: Use Git with Claude Code
+-------------------------------------------------------------------------
 
 Claude Code makes Git operations conversational:
 
@@ -311,8 +311,8 @@ Ask AI
 > help me resolve merge conflicts
 ```
 
-[​](#step-7:-fix-a-bug-or-add-a-feature) Step 7: Fix a bug or add a feature
----------------------------------------------------------------------------
+[​](#step-7%3A-fix-a-bug-or-add-a-feature) Step 7: Fix a bug or add a feature
+-----------------------------------------------------------------------------
 
 Claude is proficient at debugging and feature implementation.
 Describe what you want in natural language:
@@ -342,8 +342,8 @@ Claude Code will:
 * Implement a solution
 * Run tests if available
 
-[​](#step-8:-test-out-other-common-workflows) Step 8: Test out other common workflows
--------------------------------------------------------------------------------------
+[​](#step-8%3A-test-out-other-common-workflows) Step 8: Test out other common workflows
+---------------------------------------------------------------------------------------
 
 There are a number of ways to work with Claude:
 **Refactor code**
@@ -469,8 +469,8 @@ Save time with shortcuts
 * Press ↑ for command history
 * Type `/` to see all slash commands
 
-[​](#what’s-next) What’s next?
-------------------------------
+[​](#what%E2%80%99s-next%3F) What’s next?
+-----------------------------------------
 
 Now that you’ve learned the basics, explore more advanced features:
 

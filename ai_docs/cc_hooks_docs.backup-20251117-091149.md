@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-11-17T09:11:49.647582
+> Last updated: 2025-11-10T09:10:59.786007
 
 [Skip to main content](#content-area)
 
@@ -50,13 +50,12 @@ On this page
 * [Configuration](#configuration-2)
 * [Response schema](#response-schema)
 * [Supported hook events](#supported-hook-events)
-* [Example: Intelligent Stop hook](#example:-intelligent-stop-hook)
-* [Example: SubagentStop with custom logic](#example:-subagentstop-with-custom-logic)
+* [Example: Intelligent Stop hook](#example%3A-intelligent-stop-hook)
+* [Example: SubagentStop with custom logic](#example%3A-subagentstop-with-custom-logic)
 * [Comparison with bash command hooks](#comparison-with-bash-command-hooks)
 * [Best practices](#best-practices)
 * [Hook Events](#hook-events)
 * [PreToolUse](#pretooluse)
-* [PermissionRequest](#permissionrequest)
 * [PostToolUse](#posttooluse)
 * [Notification](#notification)
 * [UserPromptSubmit](#userpromptsubmit)
@@ -76,20 +75,19 @@ On this page
 * [SessionStart Input](#sessionstart-input)
 * [SessionEnd Input](#sessionend-input)
 * [Hook Output](#hook-output)
-* [Simple: Exit Code](#simple:-exit-code)
+* [Simple: Exit Code](#simple%3A-exit-code)
 * [Exit Code 2 Behavior](#exit-code-2-behavior)
-* [Advanced: JSON Output](#advanced:-json-output)
+* [Advanced: JSON Output](#advanced%3A-json-output)
 * [Common JSON Fields](#common-json-fields)
 * [PreToolUse Decision Control](#pretooluse-decision-control)
-* [PermissionRequest Decision Control](#permissionrequest-decision-control)
 * [PostToolUse Decision Control](#posttooluse-decision-control)
 * [UserPromptSubmit Decision Control](#userpromptsubmit-decision-control)
-* [Stop/SubagentStop Decision Control](#stop/subagentstop-decision-control)
+* [Stop/SubagentStop Decision Control](#stop%2Fsubagentstop-decision-control)
 * [SessionStart Decision Control](#sessionstart-decision-control)
 * [SessionEnd Decision Control](#sessionend-decision-control)
-* [Exit Code Example: Bash Command Validation](#exit-code-example:-bash-command-validation)
-* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example:-userpromptsubmit-to-add-context-and-validation)
-* [JSON Output Example: PreToolUse with Approval](#json-output-example:-pretooluse-with-approval)
+* [Exit Code Example: Bash Command Validation](#exit-code-example%3A-bash-command-validation)
+* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example%3A-userpromptsubmit-to-add-context-and-validation)
+* [JSON Output Example: PreToolUse with Approval](#json-output-example%3A-pretooluse-with-approval)
 * [Working with MCP Tools](#working-with-mcp-tools)
 * [MCP Tool Naming](#mcp-tool-naming)
 * [Configuring Hooks for MCP Tools](#configuring-hooks-for-mcp-tools)
@@ -165,7 +163,7 @@ Ask AI
   + `prompt`: (For `type: "prompt"`) The prompt to send to the LLM for evaluation
   + `timeout`: (Optional) How long a hook should run, in seconds, before canceling that specific hook
 
-For events like `UserPromptSubmit`, `Stop`, and `SubagentStop`
+For events like `UserPromptSubmit`, `Notification`, `Stop`, and `SubagentStop`
 that don’t use matchers, you can omit the matcher field:
 
 Copy
@@ -344,7 +342,7 @@ Prompt-based hooks work with any hook event, but are most useful for:
 * **UserPromptSubmit**: Validate user prompts with LLM assistance
 * **PreToolUse**: Make context-aware permission decisions
 
-### [​](#example:-intelligent-stop-hook) Example: Intelligent Stop hook
+### [​](#example%3A-intelligent-stop-hook) Example: Intelligent Stop hook
 
 Copy
 
@@ -368,7 +366,7 @@ Ask AI
 }
 ```
 
-### [​](#example:-subagentstop-with-custom-logic) Example: SubagentStop with custom logic
+### [​](#example%3A-subagentstop-with-custom-logic) Example: SubagentStop with custom logic
 
 Copy
 
@@ -429,14 +427,6 @@ Runs after Claude creates tool parameters and before processing the tool call.
 * `Write` - File writing
 * `WebFetch`, `WebSearch` - Web operations
 
-Use [PreToolUse decision control](#pretooluse-decision-control) to allow, deny, or ask for permission to use the tool.
-
-### [​](#permissionrequest) PermissionRequest
-
-Runs when the user is shown a permission dialog.
-Use [PermissionRequest decision control](#permissionrequest-decision-control) to allow or deny on behalf of the user.
-Recognizes the same matcher values as PreToolUse.
-
 ### [​](#posttooluse) PostToolUse
 
 Runs immediately after a tool completes successfully.
@@ -444,47 +434,12 @@ Recognizes the same matcher values as PreToolUse.
 
 ### [​](#notification) Notification
 
-Runs when Claude Code sends notifications. Supports matchers to filter by notification type.
-**Common matchers:**
+Runs when Claude Code sends notifications. Notifications are sent when:
 
-* `permission_prompt` - Permission requests from Claude Code
-* `idle_prompt` - When Claude is waiting for user input (after 60+ seconds of idle time)
-* `auth_success` - Authentication success notifications
-* `elicitation_dialog` - When Claude Code needs input for MCP tool elicitation
-
-You can use matchers to run different hooks for different notification types, or omit the matcher to run hooks for all notifications.
-**Example: Different notifications for different types**
-
-Copy
-
-Ask AI
-
-```
-{
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "permission_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/path/to/permission-alert.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/path/to/idle-notification.sh"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
+1. Claude needs your permission to use a tool. Example: “Claude needs your
+   permission to use Bash”
+2. The prompt input has been idle for at least 60 seconds. “Claude is waiting
+   for your input”
 
 ### [​](#userpromptsubmit) UserPromptSubmit
 
@@ -668,8 +623,7 @@ Ask AI
   "cwd": "/Users/...",
   "permission_mode": "default",
   "hook_event_name": "Notification",
-  "message": "Claude needs your permission to use Bash",
-  "notification_type": "permission_prompt"
+  "message": "Task completed successfully"
 }
 ```
 
@@ -766,24 +720,21 @@ Ask AI
 [​](#hook-output) Hook Output
 -----------------------------
 
-There are two mutually-exclusive ways for hooks to return output back to Claude Code. The output
+There are two ways for hooks to return output back to Claude Code. The output
 communicates whether to block and any feedback that should be shown to Claude
 and the user.
 
-### [​](#simple:-exit-code) Simple: Exit Code
+### [​](#simple%3A-exit-code) Simple: Exit Code
 
 Hooks communicate status through exit codes, stdout, and stderr:
 
-* **Exit code 0**: Success. `stdout` is shown to the user in verbose mode
-  (ctrl+o), except for `UserPromptSubmit` and `SessionStart`, where stdout is
-  added to the context. JSON output in `stdout` is parsed for structured control
-  (see [Advanced: JSON Output](#advanced-json-output)).
-* **Exit code 2**: Blocking error. Only `stderr` is used as the error message
-  and fed back to Claude. The format is `[command]: {stderr}`. JSON in `stdout`
-  is **not** processed for exit code 2. See per-hook-event behavior below.
-* **Other exit codes**: Non-blocking error. `stderr` is shown to the user in verbose mode (ctrl+o) with
-  format `Failed with non-blocking status code: {stderr}`. If `stderr` is empty,
-  it shows `No stderr output`. Execution continues.
+* **Exit code 0**: Success. `stdout` is shown to the user in transcript mode
+  (CTRL-R), except for `UserPromptSubmit` and `SessionStart`, where stdout is
+  added to the context.
+* **Exit code 2**: Blocking error. `stderr` is fed back to Claude to process
+  automatically. See per-hook-event behavior below.
+* **Other exit codes**: Non-blocking error. `stderr` is shown to the user and
+  execution continues.
 
 Reminder: Claude Code does not see stdout if the exit code is 0, except for
 the `UserPromptSubmit` hook where stdout is injected as context.
@@ -802,13 +753,9 @@ the `UserPromptSubmit` hook where stdout is injected as context.
 | `SessionStart` | N/A, shows stderr to user only |
 | `SessionEnd` | N/A, shows stderr to user only |
 
-### [​](#advanced:-json-output) Advanced: JSON Output
+### [​](#advanced%3A-json-output) Advanced: JSON Output
 
-Hooks can return structured JSON in `stdout` for more sophisticated control.
-
-JSON output is only processed when the hook exits with code 0. If your hook
-exits with code 2 (blocking error), `stderr` text is used directly—any JSON in `stdout`
-is ignored. For other non-zero exit codes, only `stderr` is shown to the user in verbose mode (ctrl+o).
+Hooks can return structured JSON in `stdout` for more sophisticated control:
 
 #### [​](#common-json-fields) Common JSON Fields
 
@@ -856,7 +803,7 @@ to Claude.
 
 Additionally, hooks can modify tool inputs before execution using `updatedInput`:
 
-* `updatedInput` allows you to modify the tool’s input parameters before the tool executes.
+* `updatedInput` allows you to modify the tool’s input parameters before the tool executes. This is a `Record<string, unknown>` object containing the fields you want to change or add.
 * This is most useful with `"permissionDecision": "allow"` to modify and approve tool calls.
 
 Copy
@@ -880,31 +827,6 @@ The `decision` and `reason` fields are deprecated for PreToolUse hooks.
 Use `hookSpecificOutput.permissionDecision` and
 `hookSpecificOutput.permissionDecisionReason` instead. The deprecated fields
 `"approve"` and `"block"` map to `"allow"` and `"deny"` respectively.
-
-#### [​](#permissionrequest-decision-control) `PermissionRequest` Decision Control
-
-`PermissionRequest` hooks can allow or deny permission requests shown to the user.
-
-* For `"behavior": "allow"` you can also optionally pass in an `"updatedInput"` that modifies the tool’s input parameters before the tool executes.
-* For `"behavior": "deny"` you can also optionally pass in a `"message"` string that tells the model why the permission was denied, and a boolean `"interrupt"` which will stop Claude.
-
-Copy
-
-Ask AI
-
-```
-{
-  "hookSpecificOutput": {
-    "hookEventName": "PermissionRequest",
-    "decision": {
-      "behavior": "allow",
-      "updatedInput": {
-        "command": "npm run lint"
-      }
-    }
-  }
-}
-```
 
 #### [​](#posttooluse-decision-control) `PostToolUse` Decision Control
 
@@ -931,23 +853,13 @@ Ask AI
 
 #### [​](#userpromptsubmit-decision-control) `UserPromptSubmit` Decision Control
 
-`UserPromptSubmit` hooks can control whether a user prompt is processed and add context.
-**Adding context (exit code 0):**
-There are two ways to add context to the conversation:
+`UserPromptSubmit` hooks can control whether a user prompt is processed.
 
-1. **Plain text stdout** (simpler): Any non-JSON text written to stdout is added
-   as context. This is the easiest way to inject information.
-2. **JSON with `additionalContext`** (structured): Use the JSON format below for
-   more control. The `additionalContext` field is added as context.
-
-Both methods work with exit code 0. Plain stdout is shown as hook output in
-the transcript; `additionalContext` is added more discretely.
-**Blocking prompts:**
-
-* `"decision": "block"` prevents the prompt from being processed. The submitted
-  prompt is erased from context. `"reason"` is shown to the user but not added
-  to context.
-* `"decision": undefined` (or omitted) allows the prompt to proceed normally.
+* `"block"` prevents the prompt from being processed. The submitted prompt is
+  erased from context. `"reason"` is shown to the user but not added to context.
+* `undefined` allows the prompt to proceed normally. `"reason"` is ignored.
+* `"hookSpecificOutput.additionalContext"` adds the string to the context if not
+  blocked.
 
 Copy
 
@@ -964,11 +876,7 @@ Ask AI
 }
 ```
 
-The JSON format is not required for simple use cases. To add context, you can
-just print plain text to stdout with exit code 0. Use JSON when you need to
-block prompts or want more structured control.
-
-#### [​](#stop/subagentstop-decision-control) `Stop`/`SubagentStop` Decision Control
+#### [​](#stop%2Fsubagentstop-decision-control) `Stop`/`SubagentStop` Decision Control
 
 `Stop` and `SubagentStop` hooks can control whether Claude must continue.
 
@@ -1012,7 +920,7 @@ Ask AI
 `SessionEnd` hooks run when a session ends. They cannot block session termination
 but can perform cleanup tasks.
 
-#### [​](#exit-code-example:-bash-command-validation) Exit Code Example: Bash Command Validation
+#### [​](#exit-code-example%3A-bash-command-validation) Exit Code Example: Bash Command Validation
 
 Copy
 
@@ -1068,16 +976,12 @@ if issues:
     sys.exit(2)
 ```
 
-#### [​](#json-output-example:-userpromptsubmit-to-add-context-and-validation) JSON Output Example: UserPromptSubmit to Add Context and Validation
+#### [​](#json-output-example%3A-userpromptsubmit-to-add-context-and-validation) JSON Output Example: UserPromptSubmit to Add Context and Validation
 
 For `UserPromptSubmit` hooks, you can inject context using either method:
 
-* **Plain text stdout** with exit code 0: Simplest approach—just print text
-* **JSON output** with exit code 0: Use `"decision": "block"` to reject prompts,
-  or `additionalContext` for structured context injection
-
-Remember: Exit code 2 only uses `stderr` for the error message. To block using
-JSON (with a custom reason), use `"decision": "block"` with exit code 0.
+* Exit code 0 with stdout: Claude sees the context (special case for `UserPromptSubmit`)
+* JSON output: Provides more control over the behavior
 
 Copy
 
@@ -1132,7 +1036,7 @@ print(json.dumps({
 sys.exit(0)
 ```
 
-#### [​](#json-output-example:-pretooluse-with-approval) JSON Output Example: PreToolUse with Approval
+#### [​](#json-output-example%3A-pretooluse-with-approval) JSON Output Example: PreToolUse with Approval
 
 Copy
 
@@ -1161,7 +1065,7 @@ if tool_name == "Read":
         output = {
             "decision": "approve",
             "reason": "Documentation file auto-approved",
-            "suppressOutput": True  # Don't show in verbose mode
+            "suppressOutput": True  # Don't show in transcript mode
         }
         print(json.dumps(output))
         sys.exit(0)
@@ -1280,7 +1184,7 @@ This prevents malicious hook modifications from affecting your current session.
   + The `CLAUDE_CODE_REMOTE` environment variable indicates whether the hook is running in a remote (web) environment (`"true"`) or local CLI environment (not set or empty). Use this to run different logic based on execution context.
 * **Input**: JSON via stdin
 * **Output**:
-  + PreToolUse/PostToolUse/Stop/SubagentStop: Progress shown in verbose mode (ctrl+o)
+  + PreToolUse/PostToolUse/Stop/SubagentStop: Progress shown in transcript (Ctrl-R)
   + Notification/SessionEnd: Logged to debug only (`--debug`)
   + UserPromptSubmit/SessionStart: stdout added as context for Claude
 
@@ -1334,7 +1238,7 @@ Ask AI
 [DEBUG] Hook command completed with status 0: <Your stdout>
 ```
 
-Progress messages appear in verbose mode (ctrl+o) showing:
+Progress messages appear in transcript mode (Ctrl-R) showing:
 
 * Which hook is running
 * Command being executed

@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-11-17T09:11:51.308774
+> Last updated: 2025-11-10T09:11:00.760368
 
 [Skip to main content](#content-area)
 
@@ -46,7 +46,7 @@ Subagents
 
 On this page
 
-* [What are subagents?](#what-are-subagents)
+* [What are subagents?](#what-are-subagents%3F)
 * [Key benefits](#key-benefits)
 * [Quick start](#quick-start)
 * [Subagent configuration](#subagent-configuration)
@@ -58,7 +58,7 @@ On this page
 * [Model selection](#model-selection)
 * [Available tools](#available-tools)
 * [Managing subagents](#managing-subagents)
-* [Using the /agents command (Recommended)](#using-the-/agents-command-recommended)
+* [Using the /agents command (Recommended)](#using-the-%2Fagents-command-recommended)
 * [Direct file management](#direct-file-management)
 * [Using subagents effectively](#using-subagents-effectively)
 * [Automatic delegation](#automatic-delegation)
@@ -90,8 +90,8 @@ Copy page
 
 Custom subagents in Claude Code are specialized AI assistants that can be invoked to handle specific types of tasks. They enable more efficient problem-solving by providing task-specific configurations with customized system prompts, tools and a separate context window.
 
-[​](#what-are-subagents) What are subagents?
---------------------------------------------
+[​](#what-are-subagents%3F) What are subagents?
+-----------------------------------------------
 
 Subagents are pre-configured AI personalities that Claude Code can delegate tasks to. Each subagent:
 
@@ -289,7 +289,7 @@ You have two options for configuring tools:
 [​](#managing-subagents) Managing subagents
 -------------------------------------------
 
-### [​](#using-the-/agents-command-recommended) Using the /agents command (Recommended)
+### [​](#using-the-%2Fagents-command-recommended) Using the /agents command (Recommended)
 
 The `/agents` command provides a comprehensive interface for subagent management:
 

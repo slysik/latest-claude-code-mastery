@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-11-17T09:11:53.569716
+> Last updated: 2025-11-10T09:11:02.712988
 
 [Skip to main content](#content-area)
 
