@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-11-24T09:11:28.745446
+> Last updated: 2025-11-17T09:11:52.995639
 
 [Skip to main content](#content-area)
 
@@ -33,6 +33,8 @@ Manage Claude's memory
 ##### Configuration
 
 * [Settings](/docs/en/settings)
+* [Visual Studio Code](/docs/en/vs-code)
+* [JetBrains IDEs](/docs/en/jetbrains)
 * [Terminal configuration](/docs/en/terminal-config)
 * [Model configuration](/docs/en/model-config)
 * [Memory management](/docs/en/memory)

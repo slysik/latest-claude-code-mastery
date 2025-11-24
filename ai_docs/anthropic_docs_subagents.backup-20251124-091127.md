@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-11-24T09:11:27.339110
+> Last updated: 2025-11-17T09:11:51.308774
 
 [Skip to main content](#content-area)
 
@@ -38,6 +38,8 @@ Subagents
 * [Output styles](/docs/en/output-styles)
 * [Hooks](/docs/en/hooks-guide)
 * [Headless mode](/docs/en/headless)
+* [GitHub Actions](/docs/en/github-actions)
+* [GitLab CI/CD](/docs/en/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/docs/en/mcp)
 * [Migrate to Claude Agent SDK](/docs/en/sdk/migration-guide)
 * [Troubleshooting](/docs/en/troubleshooting)
@@ -242,8 +244,6 @@ name: your-sub-agent-name
 description: Description of when this subagent should be invoked
 tools: tool1, tool2, tool3  # Optional - inherits all tools if omitted
 model: sonnet  # Optional - specify model alias or 'inherit'
-permissionMode: default  # Optional - permission mode for the subagent
-skills: skill1, skill2  # Optional - skills to auto-load
 ---
 
 Your subagent's system prompt goes here. This can be multiple paragraphs
@@ -262,8 +262,6 @@ the subagent should follow.
 | `description` | Yes | Natural language description of the subagent’s purpose |
 | `tools` | No | Comma-separated list of specific tools. If omitted, inherits all tools from the main thread |
 | `model` | No | Model to use for this subagent. Can be a model alias (`sonnet`, `opus`, `haiku`) or `'inherit'` to use the main conversation’s model. If omitted, defaults to the [configured subagent model](/docs/en/model-config) |
-| `permissionMode` | No | Permission mode for the subagent. Valid values: `default`, `acceptEdits`, `bypassPermissions`, `plan`, `ignore`. Controls how the subagent handles permission requests |
-| `skills` | No | Comma-separated list of skill names to auto-load when the subagent starts. Skills are loaded into the subagent’s context automatically |
 
 ### [​](#model-selection) Model selection
 

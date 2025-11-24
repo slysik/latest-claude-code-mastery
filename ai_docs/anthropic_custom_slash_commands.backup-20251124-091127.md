@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-11-24T09:11:27.733481
+> Last updated: 2025-11-17T09:11:51.734928
 
 [Skip to main content](#content-area)
 

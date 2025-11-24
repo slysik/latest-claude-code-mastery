@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-11-24T09:11:29.218061
+> Last updated: 2025-11-17T09:11:53.569716
 
 [Skip to main content](#content-area)
 
@@ -33,6 +33,8 @@ Claude Code settings
 ##### Configuration
 
 * [Settings](/docs/en/settings)
+* [Visual Studio Code](/docs/en/vs-code)
+* [JetBrains IDEs](/docs/en/jetbrains)
 * [Terminal configuration](/docs/en/terminal-config)
 * [Model configuration](/docs/en/model-config)
 * [Memory management](/docs/en/memory)
@@ -409,7 +411,6 @@ All environment variables can also be configured in [`settings.json`](#available
 | `ANTHROPIC_DEFAULT_HAIKU_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
 | `ANTHROPIC_DEFAULT_OPUS_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
 | `ANTHROPIC_DEFAULT_SONNET_MODEL` | See [Model configuration](/docs/en/model-config#environment-variables) |
-| `ANTHROPIC_FOUNDRY_API_KEY` | API key for Microsoft Foundry authentication (see [Microsoft Foundry](/docs/en/microsoft-foundry)) |
 | `ANTHROPIC_MODEL` | Name of the model setting to use (see [Model Configuration](/docs/en/model-config#environment-variables)) |
 | `ANTHROPIC_SMALL_FAST_MODEL` | [DEPRECATED] Name of [Haiku-class model for background tasks](/docs/en/costs) |
 | `ANTHROPIC_SMALL_FAST_MODEL_AWS_REGION` | Override AWS region for the Haiku-class model when using Bedrock |
@@ -422,17 +423,14 @@ All environment variables can also be configured in [`settings.json`](#available
 | `CLAUDE_CODE_CLIENT_CERT` | Path to client certificate file for mTLS authentication |
 | `CLAUDE_CODE_CLIENT_KEY_PASSPHRASE` | Passphrase for encrypted CLAUDE\_CODE\_CLIENT\_KEY (optional) |
 | `CLAUDE_CODE_CLIENT_KEY` | Path to client private key file for mTLS authentication |
-| `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` | Set to `1` to disable Anthropic API-specific `anthropic-beta` headers. Use this if experiencing issues like “Unexpected value(s) for the `anthropic-beta` header” when using an LLM gateway with third-party providers |
 | `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC` | Equivalent of setting `DISABLE_AUTOUPDATER`, `DISABLE_BUG_COMMAND`, `DISABLE_ERROR_REPORTING`, and `DISABLE_TELEMETRY` |
 | `CLAUDE_CODE_DISABLE_TERMINAL_TITLE` | Set to `1` to disable automatic terminal title updates based on conversation context |
 | `CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL` | Skip auto-installation of IDE extensions |
 | `CLAUDE_CODE_MAX_OUTPUT_TOKENS` | Set the maximum number of output tokens for most requests |
 | `CLAUDE_CODE_SKIP_BEDROCK_AUTH` | Skip AWS authentication for Bedrock (e.g. when using an LLM gateway) |
-| `CLAUDE_CODE_SKIP_FOUNDRY_AUTH` | Skip Azure authentication for Microsoft Foundry (e.g. when using an LLM gateway) |
 | `CLAUDE_CODE_SKIP_VERTEX_AUTH` | Skip Google authentication for Vertex (e.g. when using an LLM gateway) |
 | `CLAUDE_CODE_SUBAGENT_MODEL` | See [Model configuration](/docs/en/model-config) |
 | `CLAUDE_CODE_USE_BEDROCK` | Use [Bedrock](/docs/en/amazon-bedrock) |
-| `CLAUDE_CODE_USE_FOUNDRY` | Use [Microsoft Foundry](/docs/en/microsoft-foundry) |
 | `CLAUDE_CODE_USE_VERTEX` | Use [Vertex](/docs/en/google-vertex-ai) |
 | `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. |
 | `DISABLE_BUG_COMMAND` | Set to `1` to disable the `/bug` command |
@@ -497,7 +495,7 @@ files by blocking Write operations to certain paths.
 * [IAM and access control](/docs/en/iam#enterprise-managed-policy-settings) - Enterprise policy management
 * [Troubleshooting](/docs/en/troubleshooting#auto-updater-issues) - Solutions for common configuration issues
 
-[Terminal configuration](/docs/en/terminal-config)
+[Visual Studio Code](/docs/en/vs-code)
 
 ⌘I
 

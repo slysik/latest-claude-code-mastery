@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-11-24T09:11:28.047275
+> Last updated: 2025-11-17T09:11:52.066413
 
 [Skip to main content](#content-area)
 
@@ -38,6 +38,8 @@ Output styles
 * [Output styles](/docs/en/output-styles)
 * [Hooks](/docs/en/hooks-guide)
 * [Headless mode](/docs/en/headless)
+* [GitHub Actions](/docs/en/github-actions)
+* [GitLab CI/CD](/docs/en/gitlab-ci-cd)
 * [Model Context Protocol (MCP)](/docs/en/mcp)
 * [Migrate to Claude Agent SDK](/docs/en/sdk/migration-guide)
 * [Troubleshooting](/docs/en/troubleshooting)
