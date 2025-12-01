@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-12-01T09:13:09.459346
+> Last updated: 2025-11-24T09:11:29.218061
 
 [Skip to main content](#content-area)
 
@@ -434,7 +434,6 @@ All environment variables can also be configured in [`settings.json`](#available
 | `CLAUDE_CODE_USE_BEDROCK` | Use [Bedrock](/docs/en/amazon-bedrock) |
 | `CLAUDE_CODE_USE_FOUNDRY` | Use [Microsoft Foundry](/docs/en/microsoft-foundry) |
 | `CLAUDE_CODE_USE_VERTEX` | Use [Vertex](/docs/en/google-vertex-ai) |
-| `CLAUDE_CONFIG_DIR` | Customize where Claude Code stores its configuration and data files |
 | `DISABLE_AUTOUPDATER` | Set to `1` to disable automatic updates. |
 | `DISABLE_BUG_COMMAND` | Set to `1` to disable the `/bug` command |
 | `DISABLE_COST_WARNINGS` | Set to `1` to disable cost warning messages |
@@ -467,17 +466,13 @@ Claude Code has access to a set of powerful tools that help it understand and mo
 
 | Tool | Description | Permission Required |
 | --- | --- | --- |
-| **AskUserQuestion** | Asks the user multiple choice questions to gather information or clarify ambiguity | No |
 | **Bash** | Executes shell commands in your environment | Yes |
-| **BashOutput** | Retrieves output from a background bash shell | No |
 | **Edit** | Makes targeted edits to specific files | Yes |
-| **ExitPlanMode** | Prompts the user to exit plan mode and start coding | Yes |
 | **Glob** | Finds files based on pattern matching | No |
 | **Grep** | Searches for patterns in file contents | No |
-| **KillShell** | Kills a running background bash shell by its ID | No |
 | **NotebookEdit** | Modifies Jupyter notebook cells | Yes |
+| **NotebookRead** | Reads and displays Jupyter notebook contents | No |
 | **Read** | Reads the contents of files | No |
-| **Skill** | Executes a skill within the main conversation | Yes |
 | **SlashCommand** | Runs a [custom slash command](/docs/en/slash-commands#slashcommand-tool) | Yes |
 | **Task** | Runs a sub-agent to handle complex, multi-step tasks | No |
 | **TodoWrite** | Creates and manages structured task lists | No |

@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-12-01T09:13:08.247319
+> Last updated: 2025-11-24T09:11:28.047275
 
 [Skip to main content](#content-area)
 

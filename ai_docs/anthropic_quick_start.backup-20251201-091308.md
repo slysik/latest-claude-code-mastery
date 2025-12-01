@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-12-01T09:13:08.655373
+> Last updated: 2025-11-24T09:11:28.400846
 
 [Skip to main content](#content-area)
 
@@ -39,7 +39,6 @@ Quickstart
 ##### Outside of the terminal
 
 * [Claude Code on the web](/docs/en/claude-code-on-the-web)
-* [Claude Code on desktop](/docs/en/desktop)
 * [Visual Studio Code](/docs/en/vs-code)
 * [JetBrains IDEs](/docs/en/jetbrains)
 * [GitHub Actions](/docs/en/github-actions)

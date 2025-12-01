@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-12-01T09:13:07.937374
+> Last updated: 2025-11-24T09:11:27.733481
 
 [Skip to main content](#content-area)
 
@@ -111,9 +111,7 @@ Copy page
 | `/export [filename]` | Export the current conversation to a file or clipboard |
 | `/help` | Get usage help |
 | `/hooks` | Manage hook configurations for tool events |
-| `/ide` | Manage IDE integrations and show status |
 | `/init` | Initialize project with CLAUDE.md guide |
-| `/install-github-app` | Set up Claude GitHub Actions for a repository |
 | `/login` | Switch Anthropic accounts |
 | `/logout` | Sign out from your Anthropic account |
 | `/mcp` | Manage MCP server connections and OAuth authentication |
@@ -121,15 +119,11 @@ Copy page
 | `/model` | Select or change the AI model |
 | `/output-style [style]` | Set the output style directly or from a selection menu |
 | `/permissions` | View or update [permissions](/docs/en/iam#configuring-permissions) |
-| `/plugin` | Manage Claude Code plugins |
-| `/pr-comments` | View pull request comments |
+| `/pr_comments` | View pull request comments |
 | `/privacy-settings` | View and update your privacy settings |
-| `/release-notes` | View release notes |
-| `/resume` | Resume a conversation |
 | `/review` | Request code review |
-| `/rewind` | Rewind the conversation and/or code |
 | `/sandbox` | Enable sandboxed bash tool with filesystem and network isolation for safer, more autonomous execution |
-| `/security-review` | Complete a security review of pending changes on the current branch |
+| `/rewind` | Rewind the conversation and/or code |
 | `/status` | Open the Settings interface (Status tab) showing version, model, account, and connectivity |
 | `/statusline` | Set up Claude Code’s status line UI |
 | `/terminal-setup` | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |

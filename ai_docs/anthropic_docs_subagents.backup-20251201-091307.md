@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-12-01T09:13:07.502764
+> Last updated: 2025-11-24T09:11:27.339110
 
 [Skip to main content](#content-area)
 
@@ -62,9 +62,7 @@ On this page
 * [Automatic delegation](#automatic-delegation)
 * [Explicit invocation](#explicit-invocation)
 * [Built-in subagents](#built-in-subagents)
-* [General-purpose subagent](#general-purpose-subagent)
 * [Plan subagent](#plan-subagent)
-* [Explore subagent](#explore-subagent)
 * [Example subagents](#example-subagents)
 * [Code reviewer](#code-reviewer)
 * [Debugger](#debugger)
@@ -369,40 +367,6 @@ Ask AI
 
 Claude Code includes built-in subagents that are available out of the box:
 
-### [​](#general-purpose-subagent) General-purpose subagent
-
-The general-purpose subagent is a capable agent for complex, multi-step tasks that require both exploration and action. Unlike the Explore subagent, it can modify files and execute a wider range of operations.
-**Key characteristics:**
-
-* **Model**: Uses Sonnet for more capable reasoning
-* **Tools**: Has access to all tools
-* **Mode**: Can read and write files, execute commands, make changes
-* **Purpose**: Complex research tasks, multi-step operations, code modifications
-
-**When Claude uses it:**
-Claude delegates to the general-purpose subagent when:
-
-* The task requires both exploration and modification
-* Complex reasoning is needed to interpret search results
-* Multiple strategies may be needed if initial searches fail
-* The task has multiple steps that depend on each other
-
-**Example scenario:**
-
-Copy
-
-Ask AI
-
-```
-User: Find all the places where we handle authentication and update them to use the new token format
-
-Claude: [Invokes general-purpose subagent]
-[Agent searches for auth-related code across codebase]
-[Agent reads and analyzes multiple files]
-[Agent makes necessary edits]
-[Returns detailed writeup of changes made]
-```
-
 ### [​](#plan-subagent) Plan subagent
 
 The Plan subagent is a specialized built-in agent designed for use during plan mode. When Claude is operating in plan mode (non-execution mode), it uses the Plan subagent to conduct research and gather information about your codebase before presenting a plan.
@@ -431,56 +395,6 @@ Claude: Based on my research, here's my proposed plan...
 ```
 
 The Plan subagent is only used in plan mode. In normal execution mode, Claude uses the general-purpose agent or other custom subagents you’ve created.
-
-### [​](#explore-subagent) Explore subagent
-
-The Explore subagent is a fast, lightweight agent optimized for searching and analyzing codebases. It operates in strict read-only mode and is designed for rapid file discovery and code exploration.
-**Key characteristics:**
-
-* **Model**: Uses Haiku for fast, low-latency searches
-* **Mode**: Strictly read-only - cannot create, modify, or delete files
-* **Tools available**:
-  + Glob - File pattern matching
-  + Grep - Content searching with regex
-  + Read - Reading file contents
-  + Bash - Read-only commands only (ls, git status, git log, git diff, find, cat, head, tail)
-
-**When Claude uses it:**
-Claude will delegate to the Explore subagent when it needs to search or understand a codebase but doesn’t need to make changes. This is more efficient than the main agent running multiple search commands directly, as content found during the exploration process doesn’t bloat the main conversation.
-**Thoroughness levels:**
-When invoking the Explore subagent, Claude specifies a thoroughness level:
-
-* **Quick** - Basic searches, fastest results. Good for simple lookups.
-* **Medium** - Moderate exploration. Balances speed and thoroughness.
-* **Very thorough** - Comprehensive analysis across multiple locations and naming conventions. Used when the target might be in unexpected places.
-
-**Example scenarios:**
-
-Copy
-
-Ask AI
-
-```
-User: Where are errors from the client handled?
-
-Claude: [Invokes Explore subagent with "medium" thoroughness]
-[Explore uses Grep to search for error handling patterns]
-[Explore uses Read to examine promising files]
-[Returns findings with absolute file paths]
-Claude: Client errors are handled in src/services/process.ts:712...
-```
-
-Copy
-
-Ask AI
-
-```
-User: What's the codebase structure?
-
-Claude: [Invokes Explore subagent with "quick" thoroughness]
-[Explore uses Glob and ls to map directory structure]
-[Returns overview of key directories and their purposes]
-```
 
 [​](#example-subagents) Example subagents
 -----------------------------------------
