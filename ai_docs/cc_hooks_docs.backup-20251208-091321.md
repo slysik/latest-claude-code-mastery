@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-12-08T09:13:21.919912
+> Last updated: 2025-12-01T09:13:07.003217
 
 [Skip to main content](#content-area)
 
@@ -50,8 +50,8 @@ On this page
 * [Configuration](#configuration-2)
 * [Response schema](#response-schema)
 * [Supported hook events](#supported-hook-events)
-* [Example: Intelligent Stop hook](#example%3A-intelligent-stop-hook)
-* [Example: SubagentStop with custom logic](#example%3A-subagentstop-with-custom-logic)
+* [Example: Intelligent Stop hook](#example:-intelligent-stop-hook)
+* [Example: SubagentStop with custom logic](#example:-subagentstop-with-custom-logic)
 * [Comparison with bash command hooks](#comparison-with-bash-command-hooks)
 * [Best practices](#best-practices)
 * [Hook Events](#hook-events)
@@ -76,20 +76,20 @@ On this page
 * [SessionStart Input](#sessionstart-input)
 * [SessionEnd Input](#sessionend-input)
 * [Hook Output](#hook-output)
-* [Simple: Exit Code](#simple%3A-exit-code)
+* [Simple: Exit Code](#simple:-exit-code)
 * [Exit Code 2 Behavior](#exit-code-2-behavior)
-* [Advanced: JSON Output](#advanced%3A-json-output)
+* [Advanced: JSON Output](#advanced:-json-output)
 * [Common JSON Fields](#common-json-fields)
 * [PreToolUse Decision Control](#pretooluse-decision-control)
 * [PermissionRequest Decision Control](#permissionrequest-decision-control)
 * [PostToolUse Decision Control](#posttooluse-decision-control)
 * [UserPromptSubmit Decision Control](#userpromptsubmit-decision-control)
-* [Stop/SubagentStop Decision Control](#stop%2Fsubagentstop-decision-control)
+* [Stop/SubagentStop Decision Control](#stop/subagentstop-decision-control)
 * [SessionStart Decision Control](#sessionstart-decision-control)
 * [SessionEnd Decision Control](#sessionend-decision-control)
-* [Exit Code Example: Bash Command Validation](#exit-code-example%3A-bash-command-validation)
-* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example%3A-userpromptsubmit-to-add-context-and-validation)
-* [JSON Output Example: PreToolUse with Approval](#json-output-example%3A-pretooluse-with-approval)
+* [Exit Code Example: Bash Command Validation](#exit-code-example:-bash-command-validation)
+* [JSON Output Example: UserPromptSubmit to Add Context and Validation](#json-output-example:-userpromptsubmit-to-add-context-and-validation)
+* [JSON Output Example: PreToolUse with Approval](#json-output-example:-pretooluse-with-approval)
 * [Working with MCP Tools](#working-with-mcp-tools)
 * [MCP Tool Naming](#mcp-tool-naming)
 * [Configuring Hooks for MCP Tools](#configuring-hooks-for-mcp-tools)
@@ -398,7 +398,7 @@ Ask AI
 | --- | --- | --- |
 | **Execution** | Runs bash script | Queries LLM |
 | **Decision logic** | You implement in code | LLM evaluates context |
-| **Setup complexity** | Requires script file | Configure prompt |
+| **Setup complexity** | Requires script file | Just configure prompt |
 | **Context awareness** | Limited to script logic | Natural language understanding |
 | **Performance** | Fast (local execution) | Slower (API call) |
 | **Use case** | Deterministic rules | Context-aware decisions |
@@ -544,7 +544,7 @@ exit 0
 ```
 
 **Example: Persisting all environment changes from the hook**
-When your setup modifies the environment (for example, `nvm use`), capture and persist all changes by diffing the environment:
+When your setup modifies the environment (e.g., `nvm use`), capture and persist all changes by diffing the environment:
 
 Copy
 
@@ -769,7 +769,7 @@ Ask AI
 [​](#hook-output) Hook Output
 -----------------------------
 
-There are two mutually exclusive ways for hooks to return output back to Claude Code. The output
+There are two mutually-exclusive ways for hooks to return output back to Claude Code. The output
 communicates whether to block and any feedback that should be shown to Claude
 and the user.
 
@@ -968,7 +968,8 @@ Ask AI
 }
 ```
 
-The JSON format isn’t required for simple use cases. To add context, you can print plain text to stdout with exit code 0. Use JSON when you need to
+The JSON format is not required for simple use cases. To add context, you can
+just print plain text to stdout with exit code 0. Use JSON when you need to
 block prompts or want more structured control.
 
 #### [​](#stop/subagentstop-decision-control) `Stop`/`SubagentStop` Decision Control
@@ -1075,7 +1076,7 @@ if issues:
 
 For `UserPromptSubmit` hooks, you can inject context using either method:
 
-* **Plain text stdout** with exit code 0: Simplest approach, prints text
+* **Plain text stdout** with exit code 0: Simplest approach—just print text
 * **JSON output** with exit code 0: Use `"decision": "block"` to reject prompts,
   or `additionalContext` for structured context injection
 

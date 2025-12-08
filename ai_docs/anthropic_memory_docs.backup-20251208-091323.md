@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-12-08T09:13:23.969696
+> Last updated: 2025-12-01T09:13:09.022998
 
 [Skip to main content](#content-area)
 
@@ -43,8 +43,8 @@ On this page
 * [Determine memory type](#determine-memory-type)
 * [CLAUDE.md imports](#claude-md-imports)
 * [How Claude looks up memories](#how-claude-looks-up-memories)
-* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-%23-shortcut)
-* [Directly edit memories with /memory](#directly-edit-memories-with-%2Fmemory)
+* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-#-shortcut)
+* [Directly edit memories with /memory](#directly-edit-memories-with-/memory)
 * [Set up project memory](#set-up-project-memory)
 * [Organization-level memory management](#organization-level-memory-management)
 * [Memory best practices](#memory-best-practices)
@@ -69,14 +69,12 @@ Claude Code offers four memory locations in a hierarchical structure, each servi
 
 | Memory Type | Location | Purpose | Use Case Examples | Shared With |
 | --- | --- | --- | --- | --- |
-| **Enterprise policy** | • macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md` • Linux: `/etc/claude-code/CLAUDE.md` • Windows: `C:\Program Files\ClaudeCode\CLAUDE.md` | Organization-wide instructions managed by IT/DevOps | Company coding standards, security policies, compliance requirements | All users in organization |
+| **Enterprise policy** | macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md` Linux: `/etc/claude-code/CLAUDE.md` Windows: `C:\ProgramData\ClaudeCode\CLAUDE.md` | Organization-wide instructions managed by IT/DevOps | Company coding standards, security policies, compliance requirements | All users in organization |
 | **Project memory** | `./CLAUDE.md` or `./.claude/CLAUDE.md` | Team-shared instructions for the project | Project architecture, coding standards, common workflows | Team members via source control |
 | **User memory** | `~/.claude/CLAUDE.md` | Personal preferences for all projects | Code styling preferences, personal tooling shortcuts | Just you (all projects) |
-| **Project memory (local)** | `./CLAUDE.local.md` | Personal project-specific preferences | Your sandbox URLs, preferred test data | Just you (current project) |
+| **Project memory (local)** | `./CLAUDE.local.md` | Personal project-specific preferences | *(Deprecated, see below)* Your sandbox URLs, preferred test data | Just you (current project) |
 
 All memory files are automatically loaded into Claude Code’s context when launched. Files higher in the hierarchy take precedence and are loaded first, providing a foundation that more specific memories build upon.
-
-CLAUDE.local.md files are automatically added to .gitignore, making them ideal for private project-specific preferences that shouldn’t be checked into version control.
 
 [​](#claude-md-imports) CLAUDE.md imports
 -----------------------------------------
@@ -94,7 +92,7 @@ See @README for project overview and @package.json for available npm commands fo
 - git workflow @docs/git-instructions.md
 ```
 
-Both relative and absolute paths are allowed. In particular, importing files in user’s home dir is a convenient way for your team members to provide individual instructions that are not checked into the repository. Imports are an alternative to CLAUDE.local.md that work better across multiple git worktrees.
+Both relative and absolute paths are allowed. In particular, importing files in user’s home dir is a convenient way for your team members to provide individual instructions that are not checked into the repository. Previously CLAUDE.local.md served a similar purpose, but is now deprecated in favor of imports since they work better across multiple git worktrees.
 
 Copy
 
@@ -170,7 +168,12 @@ Tips:
 Enterprise organizations can deploy centrally managed CLAUDE.md files that apply to all users.
 To set up organization-level memory management:
 
-1. Create the enterprise memory file at the **Enterprise policy** location shown in the [memory types table above](#determine-memory-type).
+1. Create the enterprise memory file in the appropriate location for your operating system:
+
+* macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md`
+* Linux/WSL: `/etc/claude-code/CLAUDE.md`
+* Windows: `C:\ProgramData\ClaudeCode\CLAUDE.md`
+
 2. Deploy via your configuration management system (MDM, Group Policy, Ansible, etc.) to ensure consistent distribution across all developer machines.
 
 [​](#memory-best-practices) Memory best practices

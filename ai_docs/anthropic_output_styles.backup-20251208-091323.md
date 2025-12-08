@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-12-08T09:13:23.206067
+> Last updated: 2025-12-01T09:13:08.247319
 
 [Skip to main content](#content-area)
 
@@ -50,7 +50,7 @@ On this page
 * [Create a custom output style](#create-a-custom-output-style)
 * [Frontmatter](#frontmatter)
 * [Comparisons to related features](#comparisons-to-related-features)
-* [Output Styles vs. CLAUDE.md vs. —append-system-prompt](#output-styles-vs-claude-md-vs-%E2%80%94append-system-prompt)
+* [Output Styles vs. CLAUDE.md vs. —append-system-prompt](#output-styles-vs-claude-md-vs-—append-system-prompt)
 * [Output Styles vs. Agents](#output-styles-vs-agents)
 * [Output Styles vs. Custom Slash Commands](#output-styles-vs-custom-slash-commands)
 

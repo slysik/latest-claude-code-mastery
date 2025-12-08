@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-12-08T09:13:23.627128
+> Last updated: 2025-12-01T09:13:08.655373
 
 [Skip to main content](#content-area)
 
@@ -48,17 +48,17 @@ Quickstart
 On this page
 
 * [Before you begin](#before-you-begin)
-* [Step 1: Install Claude Code](#step-1%3A-install-claude-code)
-* [Step 2: Log in to your account](#step-2%3A-log-in-to-your-account)
-* [Step 3: Start your first session](#step-3%3A-start-your-first-session)
-* [Step 4: Ask your first question](#step-4%3A-ask-your-first-question)
-* [Step 5: Make your first code change](#step-5%3A-make-your-first-code-change)
-* [Step 6: Use Git with Claude Code](#step-6%3A-use-git-with-claude-code)
-* [Step 7: Fix a bug or add a feature](#step-7%3A-fix-a-bug-or-add-a-feature)
-* [Step 8: Test out other common workflows](#step-8%3A-test-out-other-common-workflows)
+* [Step 1: Install Claude Code](#step-1:-install-claude-code)
+* [Step 2: Log in to your account](#step-2:-log-in-to-your-account)
+* [Step 3: Start your first session](#step-3:-start-your-first-session)
+* [Step 4: Ask your first question](#step-4:-ask-your-first-question)
+* [Step 5: Make your first code change](#step-5:-make-your-first-code-change)
+* [Step 6: Use Git with Claude Code](#step-6:-use-git-with-claude-code)
+* [Step 7: Fix a bug or add a feature](#step-7:-fix-a-bug-or-add-a-feature)
+* [Step 8: Test out other common workflows](#step-8:-test-out-other-common-workflows)
 * [Essential commands](#essential-commands)
 * [Pro tips for beginners](#pro-tips-for-beginners)
-* [What’s next?](#what%E2%80%99s-next)
+* [What’s next?](#what’s-next)
 * [Getting help](#getting-help)
 
 Getting started

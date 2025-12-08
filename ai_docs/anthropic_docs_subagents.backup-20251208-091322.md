@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-12-08T09:13:22.424475
+> Last updated: 2025-12-01T09:13:07.502764
 
 [Skip to main content](#content-area)
 
@@ -56,7 +56,7 @@ On this page
 * [Model selection](#model-selection)
 * [Available tools](#available-tools)
 * [Managing subagents](#managing-subagents)
-* [Using the /agents command (Recommended)](#using-the-%2Fagents-command-recommended)
+* [Using the /agents command (Recommended)](#using-the-/agents-command-recommended)
 * [Direct file management](#direct-file-management)
 * [Using subagents effectively](#using-subagents-effectively)
 * [Automatic delegation](#automatic-delegation)
@@ -118,7 +118,7 @@ Subagents can be fine-tuned with detailed instructions for specific domains, lea
 Reusability
 -----------
 
-Once created, you can use subagents across different projects and share them with your team for consistent workflows.
+Once created, subagents can be used across different projects and shared with your team for consistent workflows.
 
 Flexible permissions
 --------------------
@@ -154,17 +154,17 @@ Choose whether to create a project-level or user-level subagent
 
 Define the subagent
 
-* **Recommended**: generate with Claude first, then customize to make it yours
-* Describe your subagent in detail, including when Claude should use it
-* Select the tools you want to grant access to, or leave this blank to inherit all tools
-* The interface shows all available tools
+* **Recommended**: Generate with Claude first, then customize to make it yours
+* Describe your subagent in detail and when it should be used
+* Select the tools you want to grant access to (or leave blank to inherit all tools)
+* The interface shows all available tools, making selection easy
 * If you’re generating with Claude, you can also edit the system prompt in your own editor by pressing `e`
 
 4
 
 Save and use
 
-Your subagent is now available. Claude uses it automatically when appropriate, or you can invoke it explicitly:
+Your subagent is now available! Claude will use it automatically when appropriate, or you can invoke it explicitly:
 
 Copy
 
@@ -191,7 +191,7 @@ When subagent names conflict, project-level subagents take precedence over user-
 ### [​](#plugin-agents) Plugin agents
 
 [Plugins](/docs/en/plugins) can provide custom subagents that integrate seamlessly with Claude Code. Plugin agents work identically to user-defined agents and appear in the `/agents` interface.
-**Plugin agent locations**: plugins include agents in their `agents/` directory (or custom paths specified in the plugin manifest).
+**Plugin agent locations**: Plugins include agents in their `agents/` directory (or custom paths specified in the plugin manifest).
 **Using plugin agents**:
 
 * Plugin agents appear in `/agents` alongside your custom agents
@@ -312,7 +312,7 @@ This opens an interactive menu where you can:
 * Edit existing custom subagents, including their tool access
 * Delete custom subagents
 * See which subagents are active when duplicates exist
-* **Manage tool permissions** with a complete list of available tools
+* **Easily manage tool permissions** with a complete list of available tools
 
 ### [​](#direct-file-management) Direct file management
 
@@ -336,8 +336,6 @@ You are a test automation expert. When you see code changes, proactively run the
 mkdir -p ~/.claude/agents
 # ... create subagent file
 ```
-
-Subagents created by manually adding files will be loaded the next time you start a Claude Code session. To create and use a subagent immediately without restarting, use the `/agents` command instead.
 
 [​](#using-subagents-effectively) Using subagents effectively
 -------------------------------------------------------------
@@ -443,7 +441,7 @@ The Explore subagent is a fast, lightweight agent optimized for searching and an
 * **Mode**: Strictly read-only - cannot create, modify, or delete files
 * **Tools available**:
   + Glob - File pattern matching
-  + Grep - Content searching with regular expressions
+  + Grep - Content searching with regex
   + Read - Reading file contents
   + Bash - Read-only commands only (ls, git status, git log, git diff, find, cat, head, tail)
 
@@ -452,7 +450,7 @@ Claude will delegate to the Explore subagent when it needs to search or understa
 **Thoroughness levels:**
 When invoking the Explore subagent, Claude specifies a thoroughness level:
 
-* **Quick** - Fast searches with minimal exploration. Good for targeted lookups.
+* **Quick** - Basic searches, fastest results. Good for simple lookups.
 * **Medium** - Moderate exploration. Balances speed and thoroughness.
 * **Very thorough** - Comprehensive analysis across multiple locations and naming conventions. Used when the target might be in unexpected places.
 
@@ -509,7 +507,7 @@ When invoked:
 3. Begin review immediately
 
 Review checklist:
-- Code is clear and readable
+- Code is simple and readable
 - Functions and variables are well-named
 - No duplicated code
 - Proper error handling
@@ -562,7 +560,7 @@ For each issue, provide:
 - Testing approach
 - Prevention recommendations
 
-Focus on fixing the underlying issue, not the symptoms.
+Focus on fixing the underlying issue, not just symptoms.
 ```
 
 ### [​](#data-scientist) Data scientist
