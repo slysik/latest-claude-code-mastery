@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/subagents
-> Last updated: 2025-12-15T09:15:07.146755
+> Last updated: 2025-12-08T09:13:22.424475
 
 [Skip to main content](#content-area)
 
@@ -711,10 +711,6 @@ Keep track of agent IDs for tasks you may want to resume later. Claude Code disp
 * [Slash commands](/docs/en/slash-commands) - Learn about other built-in commands
 * [Settings](/docs/en/settings) - Configure Claude Code behavior
 * [Hooks](/docs/en/hooks) - Automate workflows with event handlers
-
-Was this page helpful?
-
-YesNo
 
 [Plugins](/docs/en/plugins)
 

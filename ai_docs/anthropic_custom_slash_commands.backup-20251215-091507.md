@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-12-15T09:15:07.583160
+> Last updated: 2025-12-08T09:13:22.905869
 
 [Skip to main content](#content-area)
 
@@ -130,7 +130,6 @@ Copy page
 | `/rewind` | Rewind the conversation and/or code |
 | `/sandbox` | Enable sandboxed bash tool with filesystem and network isolation for safer, more autonomous execution |
 | `/security-review` | Complete a security review of pending changes on the current branch |
-| `/stats` | Visualize daily usage, session history, streaks, and model preferences |
 | `/status` | Open the Settings interface (Status tab) showing version, model, account, and connectivity |
 | `/statusline` | Set up Claude Code’s status line UI |
 | `/terminal-setup` | Install Shift+Enter key binding for newlines (iTerm2 and VSCode only) |
@@ -668,10 +667,6 @@ Learn more about [Agent Skills](/docs/en/skills).
 * [CLI reference](/docs/en/cli-reference) - Command-line flags and options
 * [Settings](/docs/en/settings) - Configuration options
 * [Memory management](/docs/en/memory) - Managing Claude’s memory across sessions
-
-Was this page helpful?
-
-YesNo
 
 [Interactive mode](/docs/en/interactive-mode)[Checkpointing](/docs/en/checkpointing)
 

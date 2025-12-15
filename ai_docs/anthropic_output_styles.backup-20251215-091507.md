@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
-> Last updated: 2025-12-15T09:15:07.896247
+> Last updated: 2025-12-08T09:13:23.206067
 
 [Skip to main content](#content-area)
 
@@ -176,10 +176,6 @@ about when to use the agent.
 
 You can think of output styles as “stored system prompts” and custom slash
 commands as “stored prompts”.
-
-Was this page helpful?
-
-YesNo
 
 [Agent Skills](/docs/en/skills)[Hooks](/docs/en/hooks-guide)
 

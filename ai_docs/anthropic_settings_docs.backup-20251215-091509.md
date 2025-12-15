@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/settings
-> Last updated: 2025-12-15T09:15:09.340803
+> Last updated: 2025-12-08T09:13:24.465204
 
 [Skip to main content](#content-area)
 
@@ -44,7 +44,6 @@ On this page
 * [Available settings](#available-settings)
 * [Permission settings](#permission-settings)
 * [Sandbox settings](#sandbox-settings)
-* [Attribution settings](#attribution-settings)
 * [Settings precedence](#settings-precedence)
 * [Key points about the configuration system](#key-points-about-the-configuration-system)
 * [System prompt](#system-prompt)
@@ -143,8 +142,7 @@ Ask AI
 | `cleanupPeriodDays` | Sessions inactive for longer than this period are deleted at startup. Setting to `0` immediately deletes all sessions. (default: 30 days) | `20` |
 | `companyAnnouncements` | Announcement to display to users at startup. If multiple announcements are provided, they will be cycled through at random. | `["Welcome to Acme Corp! Review our code guidelines at docs.acme.com"]` |
 | `env` | Environment variables that will be applied to every session | `{"FOO": "bar"}` |
-| `attribution` | Customize attribution for git commits and pull requests. See [Attribution settings](#attribution-settings) | `{"commit": "🤖 Generated with Claude Code", "pr": ""}` |
-| `includeCoAuthoredBy` | **Deprecated**: Use `attribution` instead. Whether to include the `co-authored-by Claude` byline in git commits and pull requests (default: `true`) | `false` |
+| `includeCoAuthoredBy` | Whether to include the `co-authored-by Claude` byline in git commits and pull requests (default: `true`) | `false` |
 | `permissions` | See table below for structure of permissions. |  |
 | `hooks` | Configure custom commands to run before or after tool executions. See [hooks documentation](/docs/en/hooks) | `{"PreToolUse": {"Bash": "echo 'Running command...'"}}` |
 | `disableAllHooks` | Disable all [hooks](/docs/en/hooks) | `true` |
@@ -160,7 +158,6 @@ Ask AI
 | `deniedMcpServers` | When set in managed-settings.json, denylist of MCP servers that are explicitly blocked. Applies to all scopes including enterprise servers. Denylist takes precedence over allowlist. See [Enterprise MCP configuration](/docs/en/mcp#enterprise-mcp-configuration) | `[{ "serverName": "filesystem" }]` |
 | `awsAuthRefresh` | Custom script that modifies the `.aws` directory (see [advanced credential configuration](/docs/en/amazon-bedrock#advanced-credential-configuration)) | `aws sso login --profile myprofile` |
 | `awsCredentialExport` | Custom script that outputs JSON with AWS credentials (see [advanced credential configuration](/docs/en/amazon-bedrock#advanced-credential-configuration)) | `/bin/generate_aws_grant.sh` |
-| `alwaysThinkingEnabled` | Enable [extended thinking](/docs/en/common-workflows#use-extended-thinking) by default for all sessions. Typically configured via the `/config` command rather than editing directly | `true` |
 
 ### [​](#permission-settings) Permission settings
 
@@ -224,57 +221,6 @@ Ask AI
 * Use `Edit` allow rules to let Claude write to directories beyond the current working directory
 * Use `Edit` deny rules to block writes to specific paths
 * Use `WebFetch` allow/deny rules to control which network domains Claude can access
-
-### [​](#attribution-settings) Attribution settings
-
-Claude Code adds attribution to git commits and pull requests. These are configured separately:
-
-* Commits use [git trailers](https://git-scm.com/docs/git-interpret-trailers) (like `Co-Authored-By`) by default, which can be customized or disabled
-* Pull request descriptions are plain text
-
-| Keys | Description |
-| --- | --- |
-| `commit` | Attribution for git commits, including any trailers. Empty string hides commit attribution |
-| `pr` | Attribution for pull request descriptions. Empty string hides pull request attribution |
-
-**Default commit attribution:**
-
-Copy
-
-Ask AI
-
-```
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-   Co-Authored-By: Claude Sonnet 4.5 <[email protected]>
-```
-
-**Default pull request attribution:**
-
-Copy
-
-Ask AI
-
-```
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-```
-
-**Example:**
-
-Copy
-
-Ask AI
-
-```
-{
-  "attribution": {
-    "commit": "Generated with AI\n\nCo-Authored-By: AI <[email protected]>",
-    "pr": ""
-  }
-}
-```
-
-The `attribution` setting takes precedence over the deprecated `includeCoAuthoredBy` setting. To hide all attribution, set `commit` and `pr` to empty strings.
 
 ### [​](#settings-precedence) Settings precedence
 
@@ -628,10 +574,6 @@ files by blocking Write operations to certain paths.
 * [Identity and Access Management](/docs/en/iam#configuring-permissions) - Learn about Claude Code’s permission system
 * [IAM and access control](/docs/en/iam#enterprise-managed-policy-settings) - Enterprise policy management
 * [Troubleshooting](/docs/en/troubleshooting#auto-updater-issues) - Solutions for common configuration issues
-
-Was this page helpful?
-
-YesNo
 
 [Terminal configuration](/docs/en/terminal-config)
 

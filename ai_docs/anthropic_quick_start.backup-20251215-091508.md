@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-12-15T09:15:08.431974
+> Last updated: 2025-12-08T09:13:23.627128
 
 [Skip to main content](#content-area)
 
@@ -44,7 +44,6 @@ Quickstart
 * [JetBrains IDEs](/docs/en/jetbrains)
 * [GitHub Actions](/docs/en/github-actions)
 * [GitLab CI/CD](/docs/en/gitlab-ci-cd)
-* [Claude Code in Slack](/docs/en/slack)
 
 On this page
 
@@ -130,16 +129,6 @@ Ask AI
 
 ```
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
-```
-
-If you have [Node.js 18 or newer installed](https://nodejs.org/en/download/):
-
-Copy
-
-Ask AI
-
-```
-npm install -g @anthropic-ai/claude-code
 ```
 
 [​](#step-2:-log-in-to-your-account) Step 2: Log in to your account
@@ -513,10 +502,6 @@ Run tasks asynchronously in the cloud](/docs/en/claude-code-on-the-web)
 * **In Claude Code**: Type `/help` or ask “how do I…”
 * **Documentation**: You’re here! Browse other guides
 * **Community**: Join our [Discord](https://www.anthropic.com/discord) for tips and support
-
-Was this page helpful?
-
-YesNo
 
 [Overview](/docs/en/overview)[Common workflows](/docs/en/common-workflows)
 

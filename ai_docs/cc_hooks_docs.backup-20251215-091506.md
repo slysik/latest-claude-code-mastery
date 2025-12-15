@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-12-15T09:15:06.550706
+> Last updated: 2025-12-08T09:13:21.919912
 
 [Skip to main content](#content-area)
 
@@ -1343,10 +1343,6 @@ Progress messages appear in verbose mode (ctrl+o) showing:
 * Command being executed
 * Success/failure status
 * Output or error messages
-
-Was this page helpful?
-
-YesNo
 
 [Checkpointing](/docs/en/checkpointing)[Plugins reference](/docs/en/plugins-reference)
 

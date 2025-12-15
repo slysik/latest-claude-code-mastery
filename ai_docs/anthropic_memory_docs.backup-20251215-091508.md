@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-12-15T09:15:08.817618
+> Last updated: 2025-12-08T09:13:23.969696
 
 [Skip to main content](#content-area)
 
@@ -43,15 +43,9 @@ On this page
 * [Determine memory type](#determine-memory-type)
 * [CLAUDE.md imports](#claude-md-imports)
 * [How Claude looks up memories](#how-claude-looks-up-memories)
+* [Quickly add memories with the # shortcut](#quickly-add-memories-with-the-%23-shortcut)
 * [Directly edit memories with /memory](#directly-edit-memories-with-%2Fmemory)
 * [Set up project memory](#set-up-project-memory)
-* [Modular rules with .claude/rules/](#modular-rules-with-claude%2Frules%2F)
-* [Basic structure](#basic-structure)
-* [Path-specific rules](#path-specific-rules)
-* [Glob patterns](#glob-patterns)
-* [Subdirectories](#subdirectories)
-* [Symlinks](#symlinks)
-* [User-level rules](#user-level-rules)
 * [Organization-level memory management](#organization-level-memory-management)
 * [Memory best practices](#memory-best-practices)
 
@@ -77,7 +71,6 @@ Claude Code offers four memory locations in a hierarchical structure, each servi
 | --- | --- | --- | --- | --- |
 | **Enterprise policy** | • macOS: `/Library/Application Support/ClaudeCode/CLAUDE.md` • Linux: `/etc/claude-code/CLAUDE.md` • Windows: `C:\Program Files\ClaudeCode\CLAUDE.md` | Organization-wide instructions managed by IT/DevOps | Company coding standards, security policies, compliance requirements | All users in organization |
 | **Project memory** | `./CLAUDE.md` or `./.claude/CLAUDE.md` | Team-shared instructions for the project | Project architecture, coding standards, common workflows | Team members via source control |
-| **Project rules** | `./.claude/rules/*.md` | Modular, topic-specific project instructions | Language-specific guidelines, testing conventions, API standards | Team members via source control |
 | **User memory** | `~/.claude/CLAUDE.md` | Personal preferences for all projects | Code styling preferences, personal tooling shortcuts | Just you (all projects) |
 | **Project memory (local)** | `./CLAUDE.local.md` | Personal project-specific preferences | Your sandbox URLs, preferred test data | Just you (current project) |
 
@@ -130,6 +123,21 @@ Imported files can recursively import additional files, with a max-depth of 5 ho
 Claude Code reads memories recursively: starting in the cwd, Claude Code recurses up to (but not including) the root directory */* and reads any CLAUDE.md or CLAUDE.local.md files it finds. This is especially convenient when working in large repositories where you run Claude Code in *foo/bar/*, and have memories in both *foo/CLAUDE.md* and *foo/bar/CLAUDE.md*.
 Claude will also discover CLAUDE.md nested in subtrees under your current working directory. Instead of loading them at launch, they are only included when Claude reads files in those subtrees.
 
+[​](#quickly-add-memories-with-the-#-shortcut) Quickly add memories with the `#` shortcut
+-----------------------------------------------------------------------------------------
+
+The fastest way to add a memory is to start your input with the `#` character:
+
+Copy
+
+Ask AI
+
+```
+# Always use descriptive variable names
+```
+
+You’ll be prompted to select which memory file to store this in.
+
 [​](#directly-edit-memories-with-/memory) Directly edit memories with `/memory`
 -------------------------------------------------------------------------------
 
@@ -156,152 +164,6 @@ Tips:
 * Add important architectural patterns specific to your project
 * CLAUDE.md memories can be used for both instructions shared with your team and for your individual preferences.
 
-[​](#modular-rules-with-claude/rules/) Modular rules with `.claude/rules/`
---------------------------------------------------------------------------
-
-For larger projects, you can organize instructions into multiple files using the `.claude/rules/` directory. This allows teams to maintain focused, well-organized rule files instead of one large CLAUDE.md.
-
-### [​](#basic-structure) Basic structure
-
-Place markdown files in your project’s `.claude/rules/` directory:
-
-Copy
-
-Ask AI
-
-```
-your-project/
-├── .claude/
-│   ├── CLAUDE.md           # Main project instructions
-│   └── rules/
-│       ├── code-style.md   # Code style guidelines
-│       ├── testing.md      # Testing conventions
-│       └── security.md     # Security requirements
-```
-
-All `.md` files in `.claude/rules/` are automatically loaded as project memory, with the same priority as `.claude/CLAUDE.md`.
-
-### [​](#path-specific-rules) Path-specific rules
-
-Rules can be scoped to specific files using YAML frontmatter with the `paths` field. These conditional rules only apply when Claude is working with files matching the specified patterns.
-
-Copy
-
-Ask AI
-
-```
----
-paths: src/api/**/*.ts
----
-
-# API Development Rules
-
-- All API endpoints must include input validation
-- Use the standard error response format
-- Include OpenAPI documentation comments
-```
-
-Rules without a `paths` field are loaded unconditionally and apply to all files.
-
-### [​](#glob-patterns) Glob patterns
-
-The `paths` field supports standard glob patterns:
-
-| Pattern | Matches |
-| --- | --- |
-| `**/*.ts` | All TypeScript files in any directory |
-| `src/**/*` | All files under `src/` directory |
-| `*.md` | Markdown files in the project root |
-| `src/components/*.tsx` | React components in a specific directory |
-
-You can use braces to match multiple patterns efficiently:
-
-Copy
-
-Ask AI
-
-```
----
-paths: src/**/*.{ts,tsx}
----
-
-# TypeScript/React Rules
-```
-
-This expands to match both `src/**/*.ts` and `src/**/*.tsx`. You can also combine multiple patterns with commas:
-
-Copy
-
-Ask AI
-
-```
----
-paths: {src,lib}/**/*.ts, tests/**/*.test.ts
----
-```
-
-### [​](#subdirectories) Subdirectories
-
-Rules can be organized into subdirectories for better structure:
-
-Copy
-
-Ask AI
-
-```
-.claude/rules/
-├── frontend/
-│   ├── react.md
-│   └── styles.md
-├── backend/
-│   ├── api.md
-│   └── database.md
-└── general.md
-```
-
-All `.md` files are discovered recursively.
-
-### [​](#symlinks) Symlinks
-
-The `.claude/rules/` directory supports symlinks, allowing you to share common rules across multiple projects:
-
-Copy
-
-Ask AI
-
-```
-# Symlink a shared rules directory
-ln -s ~/shared-claude-rules .claude/rules/shared
-
-# Symlink individual rule files
-ln -s ~/company-standards/security.md .claude/rules/security.md
-```
-
-Symlinks are resolved and their contents are loaded normally. Circular symlinks are detected and handled gracefully.
-
-### [​](#user-level-rules) User-level rules
-
-You can create personal rules that apply to all your projects in `~/.claude/rules/`:
-
-Copy
-
-Ask AI
-
-```
-~/.claude/rules/
-├── preferences.md    # Your personal coding preferences
-└── workflows.md      # Your preferred workflows
-```
-
-User-level rules are loaded before project rules, giving project rules higher priority.
-
-Best practices for `.claude/rules/`:
-
-* **Keep rules focused**: Each file should cover one topic (e.g., `testing.md`, `api-design.md`)
-* **Use descriptive filenames**: The filename should indicate what the rules cover
-* **Use conditional rules sparingly**: Only add `paths` frontmatter when rules truly apply to specific file types
-* **Organize with subdirectories**: Group related rules (e.g., `frontend/`, `backend/`)
-
 [​](#organization-level-memory-management) Organization-level memory management
 -------------------------------------------------------------------------------
 
@@ -317,10 +179,6 @@ To set up organization-level memory management:
 * **Be specific**: “Use 2-space indentation” is better than “Format code properly”.
 * **Use structure to organize**: Format each individual memory as a bullet point and group related memories under descriptive markdown headings.
 * **Review periodically**: Update memories as your project evolves to ensure Claude is always using the most up to date information and context.
-
-Was this page helpful?
-
-YesNo
 
 [Model configuration](/docs/en/model-config)[Status line configuration](/docs/en/statusline)
 
