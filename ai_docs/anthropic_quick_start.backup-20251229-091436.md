@@ -1,8 +1,8 @@
-# Slash Commands
+# Quick Start
 
 > Updated from Anthropic's official documentation
-> Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2025-12-29T09:14:35.567151
+> Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
+> Last updated: 2025-12-22T09:13:36.218422
 
 Loading...
 
