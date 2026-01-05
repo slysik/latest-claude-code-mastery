@@ -1,8 +1,8 @@
-# Slash Commands
+# Output Styles
 
 > Updated from Anthropic's official documentation
-> Source: https://docs.anthropic.com/en/docs/claude-code/slash-commands
-> Last updated: 2026-01-05T09:15:29.502907
+> Source: https://docs.anthropic.com/en/docs/claude-code/output-styles
+> Last updated: 2025-12-29T09:14:35.915461
 
 Loading...
 

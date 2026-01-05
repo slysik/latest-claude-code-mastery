@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/quickstart
-> Last updated: 2025-12-29T09:14:36.216773
+> Last updated: 2026-01-05T09:15:31.141226
 
 Loading...
 

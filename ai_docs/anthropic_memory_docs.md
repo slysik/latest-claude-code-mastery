@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/memory
-> Last updated: 2025-12-29T09:14:37.505429
+> Last updated: 2026-01-05T09:15:31.437738
 
 Loading...
 

@@ -2,7 +2,7 @@
 
 > Updated from Anthropic's official documentation
 > Source: https://docs.anthropic.com/en/docs/claude-code/hooks
-> Last updated: 2025-12-29T09:14:34.296021
+> Last updated: 2026-01-05T09:15:28.286565
 
 Loading...
 
