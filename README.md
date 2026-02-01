@@ -4,6 +4,21 @@
 
 <img src="images/hooked.png" alt="Claude Code Hooks" style="max-width: 800px; width: 100%;" />
 
+## Table of Contents
+
+- [Prerequisites](#prerequisites)
+- [Hook Lifecycle & Payloads](#hook-lifecycle--payloads)
+- [What This Shows](#what-this-shows)
+- [UV Single-File Scripts Architecture](#uv-single-file-scripts-architecture)
+- [Key Files](#key-files)
+- [Features Demonstrated](#features-demonstrated)
+- [Hook Error Codes & Flow Control](#hook-error-codes--flow-control)
+- [UserPromptSubmit Hook Deep Dive](#userpromptsubmit-hook-deep-dive)
+- [Claude Code Sub-Agents](#claude-code-sub-agents)
+- [Team-Based Validation System](#team-based-validation-system)
+- [Output Styles Collection](#output-styles-collection)
+- [Custom Status Lines](#custom-status-lines)
+
 ## Prerequisites
 
 This requires:
