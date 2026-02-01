@@ -1,6 +1,6 @@
 # Claude Code Hooks Mastery
 
-[Claude Code Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) - Quickly master how to use Claude Code hooks to add deterministic (or non-deterministic) control over Claude Code's behavior. Plus learn about [Claude Code Sub-Agents](#claude-code-sub-agents) and the powerful [Meta-Agent](#the-meta-agent).
+[Claude Code Hooks](https://docs.anthropic.com/en/docs/claude-code/hooks) - Quickly master how to use Claude Code hooks to add deterministic (or non-deterministic) control over Claude Code's behavior. Plus learn about [Claude Code Sub-Agents](#claude-code-sub-agents), the powerful [Meta-Agent](#the-meta-agent), and [Team-Based Validation](#team-based-validation-system) with agent orchestration.
 
 <img src="images/hooked.png" alt="Claude Code Hooks" style="max-width: 800px; width: 100%;" />
 
@@ -10,6 +10,8 @@ This requires:
 - **[Astral UV](https://docs.astral.sh/uv/getting-started/installation/)** - Fast Python package installer and resolver
 - **[Claude Code](https://docs.anthropic.com/en/docs/claude-code)** - Anthropic's CLI for Claude AI
 
+### Optional Setup:
+
 Optional:
 - **[ElevenLabs](https://elevenlabs.io/)** - Text-to-speech provider (with MCP server integration)
 - **[ElevenLabs MCP Server](https://github.com/elevenlabs/elevenlabs-mcp)** - MCP server for ElevenLabs
@@ -18,22 +20,69 @@ Optional:
 - **[Anthropic](https://www.anthropic.com/)** - Language model provider
 - **[Ollama](https://ollama.com/)** - Local language model provider
 
-### Optional: Ollama Setup
-
-If using Ollama for local LLM completion messages:
-```bash
-# Install Ollama from https://ollama.com/download
-# Pull the GPT-OSS model (13GB)
-ollama pull gpt-oss:20b
-# Start Ollama server
-ollama serve
-```
-
-The stop hook will use Ollama as fallback after OpenAI/Anthropic for generating completion messages.
-
 ## Hook Lifecycle & Payloads
 
-This demo captures all 8 Claude Code hook lifecycle events with their JSON payloads:
+This demo captures all 13 Claude Code hook lifecycle events with their JSON payloads:
+
+### Hook Lifecycle Overview
+
+```mermaid
+flowchart TB
+    subgraph SESSION["🟢 Session Lifecycle"]
+        direction TB
+        SETUP[["🔧 Setup<br/>(init/maintenance)"]]
+        START[["▶️ SessionStart<br/>(startup/resume/clear)"]]
+        END[["⏹️ SessionEnd<br/>(exit/sigint/error)"]]
+    end
+
+    subgraph MAIN["🔄 Main Conversation Loop"]
+        direction TB
+        PROMPT[["📝 UserPromptSubmit"]]
+        CLAUDE["Claude Processes"]
+
+        subgraph TOOLS["🛠️ Tool Execution"]
+            direction TB
+            PRE[["🔒 PreToolUse"]]
+            PERM[["❓ PermissionRequest"]]
+            EXEC["Tool Executes"]
+            POST[["✅ PostToolUse"]]
+            FAIL[["❌ PostToolUseFailure"]]
+        end
+
+        subgraph SUBAGENT["🤖 Subagent Lifecycle"]
+            direction TB
+            SSTART[["🚀 SubagentStart"]]
+            SWORK["Subagent Works"]
+            SSTOP[["🏁 SubagentStop"]]
+        end
+
+        NOTIFY[["🔔 Notification<br/>(Async)"]]
+        STOP[["🛑 Stop"]]
+    end
+
+    subgraph COMPACT["🗜️ Maintenance"]
+        PRECOMPACT[["📦 PreCompact"]]
+    end
+
+    SETUP --> START
+    START --> PROMPT
+    PROMPT --> CLAUDE
+    CLAUDE --> PRE
+    PRE --> PERM
+    PERM --> EXEC
+    EXEC --> POST
+    EXEC -.-> FAIL
+    CLAUDE -.-> SSTART
+    SSTART --> SWORK
+    SWORK --> SSTOP
+    POST --> CLAUDE
+    CLAUDE --> STOP
+    CLAUDE -.-> NOTIFY
+    STOP --> PROMPT
+    STOP -.-> END
+    PROMPT -.-> PRECOMPACT
+    PRECOMPACT -.-> PROMPT
+```
 
 ### 1. UserPromptSubmit Hook
 **Fires:** Immediately when user submits a prompt (before Claude processes it)  
@@ -70,20 +119,46 @@ This demo captures all 8 Claude Code hook lifecycle events with their JSON paylo
 **Enhanced:** Transcript backup, verbose feedback for manual compaction
 
 ### 8. SessionStart Hook
-**Fires:** When Claude Code starts a new session or resumes an existing one  
-**Payload:** `source` ("startup", "resume", or "clear"), session info  
+**Fires:** When Claude Code starts a new session or resumes an existing one
+**Payload:** `source` ("startup", "resume", or "clear"), session info
 **Enhanced:** Development context loading (git status, recent issues, context files)
+
+### 9. SessionEnd Hook
+**Fires:** When Claude Code session ends (exit, sigint, or error)
+**Payload:** `session_id`, `transcript_path`, `cwd`, `permission_mode`, `reason`
+**Enhanced:** Session logging with optional cleanup tasks (removes temp files, stale logs)
+
+### 10. PermissionRequest Hook
+**Fires:** When user is shown a permission dialog
+**Payload:** `tool_name`, `tool_input`, `tool_use_id`, session info
+**Enhanced:** Permission auditing, auto-allow for read-only ops (Read, Glob, Grep, safe Bash)
+
+### 11. PostToolUseFailure Hook
+**Fires:** When a tool execution fails
+**Payload:** `tool_name`, `tool_input`, `tool_use_id`, `error` object
+**Enhanced:** Structured error logging with timestamps and full context
+
+### 12. SubagentStart Hook
+**Fires:** When a subagent (Task tool) spawns
+**Payload:** `agent_id`, `agent_type`, session info
+**Enhanced:** Subagent spawn logging with optional TTS announcement
+
+### 13. Setup Hook
+**Fires:** When Claude enters a repository (init) or periodically (maintenance)
+**Payload:** `trigger` ("init" or "maintenance"), session info
+**Enhanced:** Environment persistence via `CLAUDE_ENV_FILE`, context injection via `additionalContext`
 
 
 ## What This Shows
 
-- **Complete hook lifecycle coverage** - All 8 hook events implemented and logging
+- **Complete hook lifecycle coverage** - All 13 hook events implemented and logging (11/13 validated via automated testing)
 - **Prompt-level control** - UserPromptSubmit validates and enhances prompts before Claude sees them
 - **Intelligent TTS system** - AI-generated audio feedback with voice priority (ElevenLabs > OpenAI > pyttsx3)
 - **Security enhancements** - Blocks dangerous commands and sensitive file access at multiple levels
 - **Personalized experience** - Uses engineer name from environment variables
-- **Automatic logging** - All hook events are logged as JSON to `logs/` directory  
+- **Automatic logging** - All hook events are logged as JSON to `logs/` directory
 - **Chat transcript extraction** - PostToolUse hook converts JSONL transcripts to readable JSON format
+- **Team-based validation** - Builder/Validator agent pattern with code quality hooks
 
 > **Warning:** The `chat.json` file contains only the most recent Claude Code conversation. It does not preserve conversations from previous sessions - each new conversation is fully copied and overwrites the previous one. This is unlike the other logs which are appended to from every claude code session.
 
@@ -107,19 +182,34 @@ This approach ensures your hooks remain functional across different environments
   - `user_prompt_submit.py` - Prompt validation, logging, and context injection
   - `pre_tool_use.py` - Security blocking and logging
   - `post_tool_use.py` - Logging and transcript conversion
+  - `post_tool_use_failure.py` - Error logging with structured details
   - `notification.py` - Logging with optional TTS (--notify flag)
   - `stop.py` - AI-generated completion messages with TTS
   - `subagent_stop.py` - Simple "Subagent Complete" TTS
+  - `subagent_start.py` - Subagent spawn logging with optional TTS
   - `pre_compact.py` - Transcript backup and compaction logging
   - `session_start.py` - Development context loading and session logging
+  - `session_end.py` - Session cleanup and logging
+  - `permission_request.py` - Permission auditing and auto-allow
+  - `setup.py` - Repository initialization and maintenance
+  - `validators/` - Code quality validation hooks
+    - `ruff_validator.py` - Python linting via Ruff (PostToolUse)
+    - `ty_validator.py` - Python type checking (PostToolUse)
   - `utils/` - Intelligent TTS and LLM utility scripts
     - `tts/` - Text-to-speech providers (ElevenLabs, OpenAI, pyttsx3)
+      - `tts_queue.py` - Queue-based TTS management (prevents overlapping audio)
     - `llm/` - Language model integrations (OpenAI, Anthropic, Ollama)
+      - `task_summarizer.py` - LLM-powered task completion summaries
 - `.claude/status_lines/` - Real-time terminal status displays
   - `status_line.py` - Basic MVP with git info
   - `status_line_v2.py` - Smart prompts with color coding
   - `status_line_v3.py` - Agent sessions with history
   - `status_line_v4.py` - Extended metadata support
+  - `status_line_v5.py` - Cost tracking with line changes
+  - `status_line_v6.py` - Context window usage bar
+  - `status_line_v7.py` - Session duration timer
+  - `status_line_v8.py` - Token usage with cache stats
+  - `status_line_v9.py` - Minimal powerline style
 - `.claude/output-styles/` - Response formatting configurations
   - `genui.md` - Generates beautiful HTML with embedded styling
   - `table-based.md` - Organizes information in markdown tables
@@ -131,11 +221,15 @@ This approach ensures your hooks remain functional across different environments
   - `tts-summary.md` - Audio feedback via TTS
 - `.claude/commands/` - Custom slash commands
   - `prime.md` - Project analysis and understanding
+  - `plan_w_team.md` - Team-based build/validate workflow
   - `crypto_research.md` - Cryptocurrency research workflows
   - `cook.md` - Advanced task execution
   - `update_status_line.md` - Dynamic status updates
 - `.claude/agents/` - Sub-agent configurations
   - `crypto/` - Cryptocurrency analysis agents
+  - `team/` - Team-based workflow agents
+    - `builder.md` - Implementation agent (all tools)
+    - `validator.md` - Read-only validation agent
   - `hello-world-agent.md` - Simple greeting example
   - `llm-ai-agents-and-eng-research.md` - AI research specialist
   - `meta-agent.md` - Agent that creates other agents
@@ -144,18 +238,26 @@ This approach ensures your hooks remain functional across different environments
   - `user_prompt_submit.json` - User prompt submissions with validation
   - `pre_tool_use.json` - Tool use events with security blocking
   - `post_tool_use.json` - Tool completion events
+  - `post_tool_use_failure.json` - Tool failure events with error details
   - `notification.json` - Notification events
   - `stop.json` - Stop events with completion messages
   - `subagent_stop.json` - Subagent completion events
+  - `subagent_start.json` - Subagent spawn events
   - `pre_compact.json` - Pre-compaction events with trigger type
   - `session_start.json` - Session start events with source type
+  - `session_end.json` - Session end events with reason
+  - `permission_request.json` - Permission request audit log
+  - `setup.json` - Setup events with trigger type
   - `chat.json` - Readable conversation transcript (generated by --chat flag)
 - `ai_docs/` - Documentation resources
   - `cc_hooks_docs.md` - Complete hooks documentation from Anthropic
+  - `claude_code_status_lines_docs.md` - Status line input schema and configuration
   - `user_prompt_submit_hook.md` - Comprehensive UserPromptSubmit hook documentation
   - `uv-single-file-scripts.md` - UV script architecture documentation
   - `anthropic_custom_slash_commands.md` - Slash commands documentation
   - `anthropic_docs_subagents.md` - Sub-agents documentation
+- `ruff.toml` - Ruff linter configuration for Python code quality
+- `ty.toml` - Type checker configuration for Python type validation
 
 Hooks provide deterministic control over Claude Code behavior without relying on LLM decisions.
 
@@ -427,12 +529,14 @@ The hook is configured in `.claude/settings.json`:
     "hooks": [
       {
         "type": "command",
-        "command": "uv run .claude/hooks/user_prompt_submit.py --log-only"
+        "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py --log-only"
       }
     ]
   }
 ]
 ```
+
+> **Important:** Use `$CLAUDE_PROJECT_DIR` prefix for hook paths in settings.json to ensure reliable path resolution across different working directories.
 
 Options:
 - `--log-only`: Just log prompts (default)
@@ -584,6 +688,122 @@ The meta-agent (`.claude/agents/meta-agent.md`) is a specialized sub-agent that 
 
 The meta-agent follows the principle: "Figure out how to scale it up. Build the thing that builds the thing." This compound effect accelerates your engineering capabilities exponentially.
 
+## Team-Based Validation System
+
+> **Watch the walkthrough:** See agent teams and the `/plan_w_team` workflow in action at [https://youtu.be/4_2j5wgt_ds](https://youtu.be/4_2j5wgt_ds)
+
+<img src="images/cctask.png" alt="Claude Code Task System" style="max-width: 800px; width: 100%;" />
+
+This repository includes a powerful build/validate workflow pattern using the Claude Code task system to orchestrate specialized agent teams.
+
+### The `/plan_w_team` Meta Prompt
+
+The `/plan_w_team` command (`.claude/commands/plan_w_team.md`) is not an ordinary prompt—it has three powerful components:
+
+#### 1. Self-Validating
+
+The prompt includes embedded hooks in its front matter that validate its own output:
+
+```yaml
+hooks:
+  stop:
+    - command: "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/validate_new_file.py specs/*.md"
+    - command: "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/validate_file_contains.py"
+```
+
+After the planning agent finishes, these validators ensure:
+- A spec file was created in the correct directory
+- The file contains required sections (team orchestration, step-by-step tasks, etc.)
+
+If validation fails, the agent receives feedback and continues working until the output meets criteria.
+
+#### 2. Agent Orchestration
+
+The prompt leverages Claude Code's task system to build and coordinate agent teams:
+
+| Task Tool    | Purpose                                                  |
+| ------------ | -------------------------------------------------------- |
+| `TaskCreate` | Create new tasks with owners, descriptions, dependencies |
+| `TaskUpdate` | Update status, add blockers, communicate completion      |
+| `TaskList`   | View all tasks and their current state                   |
+| `TaskGet`    | Retrieve full task details                               |
+
+**How it works:**
+1. Primary agent creates a task list with specific owners (builder/validator)
+2. Tasks can run in parallel or have dependency blockers
+3. Subagents complete work and ping back to the primary agent
+4. Primary agent reacts in real-time as work completes
+5. Blocked tasks automatically unblock when dependencies finish
+
+This enables longer-running threads of work because the task system handles coordination—no bash sleep loops needed.
+
+#### 3. Templating
+
+`/plan_w_team` is a **template meta prompt**—a prompt that generates prompts in a specific, vetted format:
+
+```markdown
+## Plan Format (embedded in the meta prompt)
+
+### {{PLAN_NAME}}
+**Task:** {{TASK_DESCRIPTION}}
+**Objective:** {{OBJECTIVE}}
+
+### Team Orchestration
+{{TEAM_MEMBERS}}
+
+### Step-by-Step Tasks
+{{TASKS}}
+```
+
+The generated plan follows your engineering patterns exactly. This is the difference between agentic engineering and "vibe coding"—you know the outcome your agent will generate because you've templated the format.
+
+### Team Agents
+
+| Agent         | File                | Tools                     | Self-Validation        | Purpose                                         |
+| ------------- | ------------------- | ------------------------- | ---------------------- | ----------------------------------------------- |
+| **Builder**   | `team/builder.md`   | All tools                 | Ruff + Ty on .py files | Execute implementation tasks, build the thing   |
+| **Validator** | `team/validator.md` | Read-only (no Write/Edit) | None                   | Verify builder's work meets acceptance criteria |
+
+This two-agent pairing increases compute to increase trust that work was delivered correctly.
+
+### Code Quality Validators
+
+PostToolUse validators automatically enforce code quality:
+
+| Validator | File                | Trigger                 | Action                |
+| --------- | ------------------- | ----------------------- | --------------------- |
+| **Ruff**  | `ruff_validator.py` | Write/Edit on .py files | Blocks on lint errors |
+| **Ty**    | `ty_validator.py`   | Write/Edit on .py files | Blocks on type errors |
+
+### Workflow Example
+
+```bash
+# 1. Create a plan with team orchestration
+/plan_w_team
+
+# User prompt: "Update the hooks documentation and add missing status lines"
+# Orchestration prompt: "Create groups of agents for each hook, one builder and one validator"
+
+# 2. Plan is generated with:
+#    - Team members (session_end_builder, session_end_validator, etc.)
+#    - Step-by-step tasks with dependencies
+#    - Validation commands
+
+# 3. Execute the plan
+/build
+
+# 4. Watch agents work in parallel:
+#    - Builders implement features
+#    - Validators verify completion
+#    - Task system coordinates everything
+```
+
+### Configuration
+
+- `ruff.toml` - Ruff linter rules
+- `ty.toml` - Type checker settings
+- `.claude/agents/team/` - Team agent definitions
+
 ## Output Styles Collection
 
 > **Watch the walkthrough:** See these features in action at [https://youtu.be/mJhsWrEv-Go](https://youtu.be/mJhsWrEv-Go)
@@ -622,12 +842,17 @@ This project includes enhanced Claude Code status lines that display real-time c
 
 **Location:** `.claude/status_lines/`
 
-| Version | File                | Description       | Features                                                 |
-| ------- | ------------------- | ----------------- | -------------------------------------------------------- |
-| **v1**  | `status_line.py`    | Basic MVP         | Git branch, directory, model info                        |
-| **v2**  | `status_line_v2.py` | Smart prompts     | Latest prompt (250 chars), color-coded by task type      |
-| **v3**  | `status_line_v3.py` | Agent sessions    | Agent name, model, last 3 prompts                        |
-| **v4**  | `status_line_v4.py` | Extended metadata | Agent name, model, latest prompt, custom key-value pairs |
+| Version | File                | Description       | Features                                                        |
+| ------- | ------------------- | ----------------- | --------------------------------------------------------------- |
+| **v1**  | `status_line.py`    | Basic MVP         | Git branch, directory, model info                               |
+| **v2**  | `status_line_v2.py` | Smart prompts     | Latest prompt (250 chars), color-coded by task type             |
+| **v3**  | `status_line_v3.py` | Agent sessions    | Agent name, model, last 3 prompts                               |
+| **v4**  | `status_line_v4.py` | Extended metadata | Agent name, model, latest prompt, custom key-value pairs        |
+| **v5**  | `status_line_v5.py` | Cost tracking     | Model, cost ($), line changes (+/-), session duration           |
+| **v6**  | `status_line_v6.py` | Context window    | Visual usage bar, percentage, tokens remaining                  |
+| **v7**  | `status_line_v7.py` | Duration timer    | Session time, start time, optional end time                     |
+| **v8**  | `status_line_v8.py` | Token/cache stats | Input/output tokens, cache creation/read stats                  |
+| **v9**  | `status_line_v9.py` | Powerline minimal | Stylized segments with powerline separators, git branch, % used |
 
 ### Session Management
 
@@ -664,8 +889,9 @@ Set your preferred status line in `.claude/settings.json`:
 
 ```json
 {
-  "StatusLine": {
-    "command": "uv run .claude/status_lines/status_line_v3.py"
+  "statusLine": {
+    "type": "command",
+    "command": "uv run $CLAUDE_PROJECT_DIR/.claude/status_lines/status_line_v3.py"
   }
 }
 ```
@@ -686,9 +912,10 @@ Set your preferred status line in `.claude/settings.json`:
 
 
 
-## Master AI Coding
-> And prepare for Agentic Engineering
+## Master Agentic Coding
 
-Learn to code with AI with foundational [Principles of AI Coding](https://agenticengineer.com/principled-ai-coding?y=cchmgenui)
+> Prepare for the future of software engineering
 
-Follow the [IndyDevDan youtube channel](https://www.youtube.com/@indydevdan) for more AI coding tips and tricks.
+Learn tactical agentic coding patterns with [Tactical Agentic Coding](https://agenticengineer.com/tactical-agentic-coding?y=ssvhooks)
+
+Follow the [IndyDevDan YouTube channel](https://www.youtube.com/@indydevdan) to improve your agentic coding advantage.

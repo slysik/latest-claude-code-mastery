@@ -114,3 +114,10 @@ extras/
 
 # Claude Code data
 .claude/data/
+
+# Database files
+*.db
+*.sqlite
+
+# Task manager data
+apps/task-manager/data/
