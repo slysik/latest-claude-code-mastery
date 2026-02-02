@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan With Team - Agentic Workflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .workflow {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .phase {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .phase-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .phase-1 .phase-number { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .phase-2 .phase-number { background: linear-gradient(135deg, #f093fb, #f5576c); }
+        .phase-3 .phase-number { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        .phase-4 .phase-number { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .phase-5 .phase-number { background: linear-gradient(135deg, #fa709a, #fee140); }
+
+        .phase-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .phase-content {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 200px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            position: relative;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #00d4ff;
+        }
+
+        .step-desc {
+            font-size: 0.9rem;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .arrow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+            font-size: 2rem;
+        }
+
+        .agents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+        }
+
+        .agent {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .agent:hover {
+            transform: translateY(-2px);
+            border-color: #00d4ff;
+        }
+
+        .agent.builder {
+            border-left: 3px solid #43e97b;
+        }
+
+        .agent.validator {
+            border-left: 3px solid #f5576c;
+        }
+
+        .agent-icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+        }
+
+        .agent-name {
+            font-size: 0.85rem;
+            color: #ddd;
+        }
+
+        .agent-type {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .task-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        .task-node {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            border: 1px solid #444;
+        }
+
+        .task-arrow {
+            color: #00d4ff;
+            font-size: 1.5rem;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(123, 44, 191, 0.1));
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .highlight-box h3 {
+            color: #00d4ff;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .highlight-box li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            color: #ccc;
+        }
+
+        .highlight-box li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #43e97b;
+        }
+
+        .command-box {
+            background: #0d1117;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            margin: 10px 0;
+            border: 1px solid #30363d;
+        }
+
+        .command-box .prompt {
+            color: #7ee787;
+        }
+
+        .command-box .command {
+            color: #79c0ff;
+        }
+
+        .parallel-indicator {
+            display: inline-block;
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+            color: #000;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .tools-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        .tools-section h4 {
+            color: #f5576c;
+            margin-bottom: 12px;
+        }
+
+        .tool-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tool-badge {
+            background: rgba(245, 87, 108, 0.2);
+            border: 1px solid rgba(245, 87, 108, 0.4);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #f5576c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 /plan_w_team Agentic Workflow</h1>
+        <p class="subtitle">How Claude Code orchestrates teams of agents to execute complex tasks</p>
+
+        <div class="workflow">
+            <!-- Phase 1: Invocation -->
+            <div class="phase phase-1">
+                <div class="phase-header">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">User Invokes Planning</div>
+                </div>
+                <div class="phase-content">
+                    <div class="step">
+                        <div class="step-icon">👤</div>
+                        <div class="step-title">You Run Command</div>
+                        <div class="command-box">
+                            <span class="prompt">❯</span> <span class="command">/plan_w_team</span>
+                        </div>
+                        <div class="step-desc">Provide your task description and optional orchestration hints</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🧠</div>
+                        <div class="step-title">Planning Agent Activates</div>
+                        <div class="step-desc">Claude analyzes requirements, explores codebase, designs team structure and task breakdown</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">📋</div>
+                        <div class="step-title">Plan Spec Created</div>
+                        <div class="step-desc">Detailed plan saved to <code>specs/&lt;name&gt;.md</code> with team members, tasks, and dependencies</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- Phase 2: Review & Approve -->
+            <div class="phase phase-2">
+                <div class="phase-header">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">Review & Execute</div>
+                </div>
+                <div class="phase-content">
+                    <div class="step">
+                        <div class="step-icon">👁️</div>
+                        <div class="step-title">You Review Plan</div>
+                        <div class="step-desc">Check team composition, task breakdown, dependencies, and acceptance criteria</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">▶️</div>
+                        <div class="step-title">Execute with /build</div>
+                        <div class="command-box">
+                            <span class="prompt">❯</span> <span class="command">/build specs/my-plan.md</span>
+                        </div>
+                        <div class="step-desc">Or simply say "go" / "execute" to start</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- Phase 3: Task Orchestration -->
+            <div class="phase phase-3">
+                <div class="phase-header">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">Task Orchestration</div>
+                </div>
+                <div class="phase-content">
+                    <div class="step" style="flex: 2;">
+                        <div class="step-icon">📝</div>
+                        <div class="step-title">Create Task List</div>
+                        <div class="step-desc">Orchestrator uses TaskCreate to build the shared task list</div>
+                        <div class="task-flow">
+                            <div class="task-node">#1 Foundation</div>
+                            <span class="task-arrow">→</span>
+                            <div class="task-node">#2 Core Work</div>
+                            <span class="task-arrow">→</span>
+                            <div class="task-node">#3 Validation</div>
+                            <span class="task-arrow">→</span>
+                            <div class="task-node">#4 Documentation</div>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🔗</div>
+                        <div class="step-title">Set Dependencies</div>
+                        <div class="step-desc">TaskUpdate links tasks with blockedBy relationships. Blocked tasks wait automatically.</div>
+                    </div>
+                </div>
+
+                <div class="tools-section">
+                    <h4>🛠️ Orchestration Tools</h4>
+                    <div class="tool-list">
+                        <span class="tool-badge">TaskCreate</span>
+                        <span class="tool-badge">TaskUpdate</span>
+                        <span class="tool-badge">TaskList</span>
+                        <span class="tool-badge">TaskGet</span>
+                        <span class="tool-badge">Task (deploy agent)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- Phase 4: Parallel Execution -->
+            <div class="phase phase-4">
+                <div class="phase-header">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">Parallel Agent Execution <span class="parallel-indicator">PARALLEL</span></div>
+                </div>
+                <div class="phase-content" style="flex-direction: column;">
+                    <p style="color: #aaa; margin-bottom: 16px;">Multiple agents work simultaneously on independent tasks:</p>
+                    <div class="agents-grid">
+                        <div class="agent builder">
+                            <div class="agent-icon">🔨</div>
+                            <div class="agent-name">hook-builder-1</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent builder">
+                            <div class="agent-icon">🔨</div>
+                            <div class="agent-name">hook-builder-2</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent builder">
+                            <div class="agent-icon">🔨</div>
+                            <div class="agent-name">feature-builder</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent builder">
+                            <div class="agent-icon">🔨</div>
+                            <div class="agent-name">status-line-builder</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent validator">
+                            <div class="agent-icon">✅</div>
+                            <div class="agent-name">code-validator</div>
+                            <div class="agent-type">Validator Agent</div>
+                        </div>
+                        <div class="agent validator">
+                            <div class="agent-icon">✅</div>
+                            <div class="agent-name">test-validator</div>
+                            <div class="agent-type">Validator Agent</div>
+                        </div>
+                    </div>
+                    <p style="color: #666; margin-top: 16px; font-size: 0.85rem;">
+                        💡 Each agent operates in its own context window, can be resumed with full history, and reports back to the orchestrator
+                    </p>
+                </div>
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <!-- Phase 5: Completion -->
+            <div class="phase phase-5">
+                <div class="phase-header">
+                    <div class="phase-number">5</div>
+                    <div class="phase-title">Completion & Validation</div>
+                </div>
+                <div class="phase-content">
+                    <div class="step">
+                        <div class="step-icon">📊</div>
+                        <div class="step-title">Agents Complete Tasks</div>
+                        <div class="step-desc">Each agent marks their task complete via TaskUpdate. Blocked tasks automatically unblock.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🔍</div>
+                        <div class="step-title">Validation Pass</div>
+                        <div class="step-desc">Validator agents verify work meets acceptance criteria. Report PASS/FAIL.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">📝</div>
+                        <div class="step-title">Final Documentation</div>
+                        <div class="step-desc">Documentation agents update README, add comments, finalize deliverables.</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-icon">🎉</div>
+                        <div class="step-title">Complete!</div>
+                        <div class="step-desc">All tasks done. Orchestrator provides final summary to you.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Can I use this for any task? -->
+        <div class="highlight-box">
+            <h3>🤔 Can I use /plan_w_team for ANY task?</h3>
+            <ul>
+                <li><strong>Yes!</strong> It's a general-purpose planning workflow for any engineering task</li>
+                <li>Best for <strong>complex tasks</strong> that benefit from parallel work streams</li>
+                <li>Great for <strong>multi-file changes</strong> across your codebase</li>
+                <li>Perfect when you want <strong>validation</strong> after implementation</li>
+                <li>Works for: feature development, refactoring, migrations, documentation, testing</li>
+                <li>Overkill for: single-file fixes, quick questions, simple changes</li>
+            </ul>
+
+            <div class="command-box" style="margin-top: 16px;">
+                <div style="color: #888; margin-bottom: 8px;"># Example prompts that work great with /plan_w_team:</div>
+                <div><span class="prompt">❯</span> <span class="command">/plan_w_team "Refactor auth system to use JWT tokens"</span></div>
+                <div><span class="prompt">❯</span> <span class="command">/plan_w_team "Add comprehensive test coverage for API endpoints"</span></div>
+                <div><span class="prompt">❯</span> <span class="command">/plan_w_team "Migrate database schema and update all models"</span></div>
+                <div><span class="prompt">❯</span> <span class="command">/plan_w_team "Implement dark mode across the entire UI"</span></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

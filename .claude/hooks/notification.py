@@ -50,30 +50,46 @@ def get_tts_script_path():
     return None
 
 
-def announce_notification():
-    """Announce that the agent needs user input."""
+def announce_notification(notification_type: str = "unknown"):
+    """Announce that the agent needs user input.
+
+    Args:
+        notification_type: Type of notification (permission_prompt, idle_prompt,
+                          auth_success, elicitation_dialog, or unknown)
+    """
     try:
         tts_script = get_tts_script_path()
         if not tts_script:
             return  # No TTS scripts available
-        
+
         # Get engineer name if available
         engineer_name = os.getenv('ENGINEER_NAME', '').strip()
-        
+
+        # Create notification message based on notification_type
+        type_messages = {
+            "permission_prompt": "your agent needs permission",
+            "idle_prompt": "your agent is waiting for input",
+            "auth_success": "authentication successful",
+            "elicitation_dialog": "your agent needs additional information",
+        }
+
+        # Get type-specific message or default
+        base_message = type_messages.get(notification_type, "your agent needs your input")
+
         # Create notification message with 30% chance to include name
         if engineer_name and random.random() < 0.3:
-            notification_message = f"{engineer_name}, your agent needs your input"
+            notification_message = f"{engineer_name}, {base_message}"
         else:
-            notification_message = "Your agent needs your input"
-        
+            notification_message = base_message.capitalize() if not engineer_name else base_message
+
         # Call the TTS script with the notification message
         subprocess.run([
             "uv", "run", tts_script, notification_message
-        ], 
+        ],
         capture_output=True,  # Suppress output
         timeout=10  # 10-second timeout
         )
-        
+
     except (subprocess.TimeoutExpired, subprocess.SubprocessError, FileNotFoundError):
         # Fail silently if TTS encounters issues
         pass
@@ -88,16 +104,21 @@ def main():
         parser = argparse.ArgumentParser()
         parser.add_argument('--notify', action='store_true', help='Enable TTS notifications')
         args = parser.parse_args()
-        
+
         # Read JSON input from stdin
         input_data = json.loads(sys.stdin.read())
-        
+
+        # Extract notification_type from input (new field)
+        # Valid types: permission_prompt, idle_prompt, auth_success, elicitation_dialog
+        notification_type = input_data.get('notification_type', 'unknown')
+
         # Ensure log directory exists
         import os
+        from datetime import datetime
         log_dir = os.path.join(os.getcwd(), 'logs')
         os.makedirs(log_dir, exist_ok=True)
         log_file = os.path.join(log_dir, 'notification.json')
-        
+
         # Read existing log data or initialize empty list
         if os.path.exists(log_file):
             with open(log_file, 'r') as f:
@@ -107,18 +128,32 @@ def main():
                     log_data = []
         else:
             log_data = []
-        
-        # Append new data
-        log_data.append(input_data)
-        
+
+        # Create verbose log entry with notification_type prominently displayed
+        verbose_log_entry = {
+            "timestamp": datetime.now().isoformat(),
+            "notification_type": notification_type,
+            "message": input_data.get('message', ''),
+            "session_id": input_data.get('session_id', ''),
+            "hook_event_name": input_data.get('hook_event_name', ''),
+            "cwd": input_data.get('cwd', ''),
+            "permission_mode": input_data.get('permission_mode', ''),
+            "transcript_path": input_data.get('transcript_path', ''),
+            "raw_input": input_data  # Preserve full input for debugging
+        }
+
+        # Append verbose log entry
+        log_data.append(verbose_log_entry)
+
         # Write back to file with formatting
         with open(log_file, 'w') as f:
             json.dump(log_data, f, indent=2)
         
         # Announce notification via TTS only if --notify flag is set
         # Skip TTS for the generic "Claude is waiting for your input" message
+        # Pass notification_type for type-aware announcements
         if args.notify and input_data.get('message') != 'Claude is waiting for your input':
-            announce_notification()
+            announce_notification(notification_type)
         
         sys.exit(0)
         

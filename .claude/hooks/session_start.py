@@ -8,7 +8,6 @@
 
 import argparse
 import json
-import os
 import sys
 import subprocess
 from pathlib import Path
@@ -98,13 +97,27 @@ def get_recent_issues():
     return None
 
 
-def load_development_context(source):
-    """Load relevant development context based on session source."""
+def load_development_context(source, model=None, agent_type=None):
+    """Load relevant development context based on session source.
+
+    Args:
+        source: Session source - "startup", "resume", "clear", or "compact"
+        model: The model identifier (e.g., "claude-sonnet-4-20250514")
+        agent_type: Present when Claude Code started with `claude --agent <name>`
+    """
     context_parts = []
-    
+
     # Add timestamp
     context_parts.append(f"Session started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     context_parts.append(f"Session source: {source}")
+
+    # Add model information if available
+    if model:
+        context_parts.append(f"Model: {model}")
+
+    # Add agent type if started with --agent flag
+    if agent_type:
+        context_parts.append(f"Agent type: {agent_type}")
     
     # Add git information
     branch, changes = get_git_status()
@@ -155,15 +168,16 @@ def main():
         input_data = json.loads(sys.stdin.read())
         
         # Extract fields
-        session_id = input_data.get('session_id', 'unknown')
-        source = input_data.get('source', 'unknown')  # "startup", "resume", or "clear"
-        
+        source = input_data.get('source', 'unknown')  # "startup", "resume", "clear", or "compact"
+        model = input_data.get('model')  # e.g., "claude-sonnet-4-20250514"
+        agent_type = input_data.get('agent_type')  # present if started with --agent flag
+
         # Log the session start event
         log_session_start(input_data)
-        
+
         # Load development context if requested
         if args.load_context:
-            context = load_development_context(source)
+            context = load_development_context(source, model=model, agent_type=agent_type)
             if context:
                 # Using JSON output to add context
                 output = {
@@ -186,7 +200,8 @@ def main():
                     messages = {
                         "startup": "Claude Code session started",
                         "resume": "Resuming previous session",
-                        "clear": "Starting fresh session"
+                        "clear": "Starting fresh session",
+                        "compact": "Session compacted"
                     }
                     message = messages.get(source, "Session started")
                     

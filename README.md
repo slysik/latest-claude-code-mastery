@@ -46,7 +46,7 @@ flowchart TB
     subgraph SESSION["🟢 Session Lifecycle"]
         direction TB
         SETUP[["🔧 Setup<br/>(init/maintenance)"]]
-        START[["▶️ SessionStart<br/>(startup/resume/clear)"]]
+        START[["▶️ SessionStart<br/>(startup/resume/clear/compact)"]]
         END[["⏹️ SessionEnd<br/>(exit/sigint/error)"]]
     end
 
@@ -105,17 +105,18 @@ flowchart TB
 **Enhanced:** Prompt validation, logging, context injection, security filtering
 
 ### 2. PreToolUse Hook
-**Fires:** Before any tool execution  
-**Payload:** `tool_name`, `tool_input` parameters  
+**Fires:** Before any tool execution
+**Payload:** `tool_name`, `tool_input` parameters
 **Enhanced:** Blocks dangerous commands (`rm -rf`, `.env` access)
+**JSON Output:** Supports `updatedInput` to modify tool inputs and `additionalContext` to inject context for Claude
 
 ### 3. PostToolUse Hook  
 **Fires:** After successful tool completion  
 **Payload:** `tool_name`, `tool_input`, `tool_response` with results
 
 ### 4. Notification Hook
-**Fires:** When Claude Code sends notifications (waiting for input, etc.)  
-**Payload:** `message` content  
+**Fires:** When Claude Code sends notifications (waiting for input, etc.)
+**Payload:** `message` content, `notification_type` (permission_prompt, idle_prompt, auth_success, elicitation_dialog)
 **Enhanced:** TTS alerts - "Your agent needs your input" (30% chance includes name)
 
 ### 5. Stop Hook
@@ -124,18 +125,19 @@ flowchart TB
 **Enhanced:** AI-generated completion messages with TTS playback (LLM priority: OpenAI > Anthropic > Ollama > random)
 
 ### 6. SubagentStop Hook
-**Fires:** When Claude Code subagents (Task tools) finish responding  
-**Payload:** `stop_hook_active` boolean flag  
+**Fires:** When Claude Code subagents (Task tools) finish responding
+**Payload:** `stop_hook_active` boolean flag, `agent_transcript_path` (path to subagent transcript)
 **Enhanced:** TTS playback - "Subagent Complete"
 
 ### 7. PreCompact Hook
-**Fires:** Before Claude Code performs a compaction operation  
-**Payload:** `trigger` ("manual" or "auto"), `custom_instructions` (for manual), session info  
+**Fires:** Before Claude Code performs a compaction operation
+**Payload:** `trigger` ("manual" or "auto"), `custom_instructions` (for manual), session info
 **Enhanced:** Transcript backup, verbose feedback for manual compaction
+**Matchers:** Supports trigger matchers to differentiate between `manual` and `auto` compaction
 
 ### 8. SessionStart Hook
 **Fires:** When Claude Code starts a new session or resumes an existing one
-**Payload:** `source` ("startup", "resume", or "clear"), session info
+**Payload:** `source` ("startup", "resume", "clear", or "compact"), `model`, `agent_type`, session info
 **Enhanced:** Development context loading (git status, recent issues, context files)
 
 ### 9. SessionEnd Hook
@@ -147,6 +149,7 @@ flowchart TB
 **Fires:** When user is shown a permission dialog
 **Payload:** `tool_name`, `tool_input`, `tool_use_id`, session info
 **Enhanced:** Permission auditing, auto-allow for read-only ops (Read, Glob, Grep, safe Bash)
+**JSON Output:** Supports `updatedInput` to modify tool inputs when returning an allow decision
 
 ### 11. PostToolUseFailure Hook
 **Fires:** When a tool execution fails
@@ -225,6 +228,11 @@ This approach ensures your hooks remain functional across different environments
   - `status_line_v7.py` - Session duration timer
   - `status_line_v8.py` - Token usage with cache stats
   - `status_line_v9.py` - Minimal powerline style
+  - `status_line_v10.py` - API response time tracking
+  - `status_line_v11.py` - Code changes stats
+  - `status_line_v12.py` - Emoji segments display
+  - `status_line_v13.py` - Compact sparkline visualization
+  - `status_line_v14.py` - Activity pulse with progress bar
 - `.claude/output-styles/` - Response formatting configurations
   - `genui.md` - Generates beautiful HTML with embedded styling
   - `table-based.md` - Organizes information in markdown tables
@@ -359,6 +367,41 @@ if is_dangerous_rm_command(command):
 - **Exit Code 2 Behavior**: N/A - shows stderr to user only, no blocking capability
 - **Use Cases**: Loading development context, session initialization, environment setup
 - **Example**: Our `session_start.py` loads git status, recent issues, and context files
+
+### Prompt-Based Hooks
+
+Hooks can use `type: "prompt"` instead of `type: "command"` for LLM-based evaluation. This is particularly useful for Stop and SubagentStop hooks where you want intelligent, context-aware decisions about whether to continue or stop.
+
+**Configuration Example:**
+```json
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Review the work completed. If all acceptance criteria are met, allow stopping. Otherwise, block with specific guidance on what remains."
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**Use Cases:**
+- **Stop Hook**: Use an LLM to evaluate if all tasks are complete before allowing Claude to stop
+- **SubagentStop Hook**: Verify subagent output quality and completeness
+- **Intelligent Validation**: Context-aware decisions that command-based hooks cannot make
+
+**How It Works:**
+1. When a prompt-based hook fires, Claude Code sends the hook context to an LLM
+2. The LLM evaluates the prompt with access to the current conversation context
+3. The LLM's response determines whether to block or allow the action
+4. This enables sophisticated, context-aware hook logic without writing code
+
+**Note:** Prompt-based hooks add latency compared to command-based hooks since they require an LLM call. Use them when intelligent evaluation is needed, not for simple pattern matching.
 
 ### Advanced JSON Output Control
 
@@ -868,6 +911,11 @@ This project includes enhanced Claude Code status lines that display real-time c
 | **v7**  | `status_line_v7.py` | Duration timer    | Session time, start time, optional end time                     |
 | **v8**  | `status_line_v8.py` | Token/cache stats | Input/output tokens, cache creation/read stats                  |
 | **v9**  | `status_line_v9.py` | Powerline minimal | Stylized segments with powerline separators, git branch, % used |
+| **v10** | `status_line_v10.py` | API Response Time | API duration (color coded), total time, cost |
+| **v11** | `status_line_v11.py` | Code Changes Stats | Lines added/removed, net change, cost, output style |
+| **v12** | `status_line_v12.py` | Emoji Segments | Emoji-separated segments for model, dir, branch, cost, context |
+| **v13** | `status_line_v13.py` | Compact Sparkline | Unicode block chars for context visualization |
+| **v14** | `status_line_v14.py` | Activity Pulse | Progress bar for context, session timer |
 
 ### Session Management
 

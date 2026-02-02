@@ -5,14 +5,33 @@
 #     "python-dotenv",
 # ]
 # ///
+"""
+SubagentStart Hook - Runs when a subagent is spawned.
+
+Input schema (from docs):
+{
+    "session_id": "abc123",
+    "transcript_path": "~/.claude/projects/.../transcript.jsonl",
+    "cwd": "/Users/...",
+    "permission_mode": "default",
+    "hook_event_name": "SubagentStart",
+    "agent_id": "agent-abc123",
+    "agent_type": "Explore"
+}
+
+Fields:
+- agent_id: Unique identifier for the subagent
+- agent_type: Agent name - built-in agents like "Bash", "Explore", "Plan",
+              or custom agent names
+"""
 
 import argparse
 import json
 import os
-import sys
 import subprocess
-from pathlib import Path
+import sys
 from datetime import datetime
+from pathlib import Path
 
 try:
     from dotenv import load_dotenv

@@ -5,6 +5,28 @@
 #     "python-dotenv",
 # ]
 # ///
+"""
+SessionEnd Hook - Runs when a Claude Code session ends.
+
+Input schema (from docs):
+{
+    "session_id": "abc123",
+    "transcript_path": "~/.claude/projects/.../transcript.jsonl",
+    "cwd": "/Users/...",
+    "permission_mode": "default",
+    "hook_event_name": "SessionEnd",
+    "reason": "exit"
+}
+
+The 'reason' field will be one of:
+- "clear" - Session cleared with /clear command
+- "logout" - User logged out
+- "prompt_input_exit" - User exited while prompt input was visible
+- "other" - Other exit reasons
+
+Output: SessionEnd hooks cannot block session termination but can perform
+cleanup tasks. N/A for exit codes - shows stderr to user only.
+"""
 
 import argparse
 import json
@@ -17,6 +39,9 @@ try:
     load_dotenv()
 except ImportError:
     pass  # dotenv is optional
+
+# Valid session end reasons per docs
+VALID_SESSION_END_REASONS = {"clear", "logout", "prompt_input_exit", "other"}
 
 
 def log_session_end(input_data):
@@ -88,8 +113,24 @@ def main():
         # Read JSON input from stdin
         input_data = json.loads(sys.stdin.read())
 
-        # Extract session_id for cleanup logging
+        # Extract fields per docs
         session_id = input_data.get('session_id', 'unknown')
+        reason = input_data.get('reason', 'other')
+
+        # Validate and log the reason field per docs
+        # Valid reasons: clear, logout, prompt_input_exit, other
+        if reason not in VALID_SESSION_END_REASONS:
+            # Log unexpected reason for debugging
+            input_data['_unexpected_reason'] = True
+            input_data['_expected_reasons'] = list(VALID_SESSION_END_REASONS)
+
+        # Add reason-specific metadata
+        input_data['_reason_description'] = {
+            'clear': 'Session cleared with /clear command',
+            'logout': 'User logged out',
+            'prompt_input_exit': 'User exited while prompt input was visible',
+            'other': 'Other exit reasons'
+        }.get(reason, f'Unknown reason: {reason}')
 
         # Log the session end event
         log_session_end(input_data)

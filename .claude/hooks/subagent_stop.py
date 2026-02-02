@@ -203,9 +203,15 @@ def main() -> None:
         # Read JSON input from stdin
         input_data = json.load(sys.stdin)
 
-        # Extract required fields (used for logging context)
-        _ = input_data.get("session_id", "")
-        _ = input_data.get("stop_hook_active", False)
+        # SubagentStop Input Schema fields:
+        # - session_id: The parent session ID
+        # - transcript_path: Path to parent session transcript
+        # - cwd: Current working directory
+        # - permission_mode: Permission mode (e.g., "default")
+        # - hook_event_name: "SubagentStop"
+        # - stop_hook_active: Whether stop hook is active
+        # - agent_id: Unique identifier for the subagent
+        # - agent_transcript_path: Path to subagent's own transcript in subagents/ folder
 
         # Ensure log directory exists
         log_dir = os.path.join(os.getcwd(), "logs")

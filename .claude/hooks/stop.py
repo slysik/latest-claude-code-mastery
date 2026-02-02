@@ -5,15 +5,40 @@
 #     "python-dotenv",
 # ]
 # ///
+"""
+Stop Hook - Runs when the main Claude Code agent has finished responding.
+
+Input schema (from docs):
+{
+    "session_id": "abc123",
+    "transcript_path": "~/.claude/projects/.../transcript.jsonl",
+    "cwd": "/Users/...",
+    "permission_mode": "default",
+    "hook_event_name": "Stop",
+    "stop_hook_active": true  // true when Claude is continuing from a stop hook
+}
+
+Output schema options (from docs):
+1. Exit code 0 - allows Claude to stop
+2. Exit code 2 - blocks stoppage, shows stderr to Claude
+3. JSON output with decision control:
+   {
+     "decision": "block" | undefined,
+     "reason": "Must be provided when Claude is blocked from stopping"
+   }
+
+Note: "block" prevents Claude from stopping. You must populate reason
+      for Claude to know how to proceed.
+      stop_hook_active should be checked to prevent infinite loops.
+"""
 
 import argparse
 import json
 import os
-import sys
 import random
 import subprocess
+import sys
 from pathlib import Path
-from datetime import datetime
 
 try:
     from dotenv import load_dotenv
@@ -165,9 +190,23 @@ def main():
         # Read JSON input from stdin
         input_data = json.load(sys.stdin)
 
-        # Extract required fields
-        session_id = input_data.get("session_id", "")
+        # Extract required fields per docs
+        # stop_hook_active is true when Claude is continuing from a stop hook
+        # Check this to prevent infinite loops
         stop_hook_active = input_data.get("stop_hook_active", False)
+
+        # Example: Block stopping if stop_hook_active is False and some condition
+        # Uncomment to use decision/reason output format per docs:
+        # if not stop_hook_active and should_continue():
+        #     output = {
+        #         "decision": "block",
+        #         "reason": "Please complete the remaining tasks before stopping"
+        #     }
+        #     print(json.dumps(output))
+        #     sys.exit(0)
+
+        # Log stop_hook_active status for debugging
+        _ = stop_hook_active  # Acknowledged but not blocking by default
 
         # Ensure log directory exists
         log_dir = os.path.join(os.getcwd(), "logs")

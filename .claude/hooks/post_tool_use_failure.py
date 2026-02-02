@@ -5,6 +5,26 @@
 #     "python-dotenv",
 # ]
 # ///
+"""
+PostToolUseFailure Hook - Runs after a tool fails.
+
+Input schema (similar to PostToolUse but with error instead of tool_response):
+{
+    "session_id": "abc123",
+    "transcript_path": "/path/to/transcript.jsonl",
+    "cwd": "/path/to/cwd",
+    "permission_mode": "default",
+    "hook_event_name": "PostToolUseFailure",
+    "tool_name": "Bash",
+    "tool_input": { ... },
+    "error": { ... },  // Error object with failure details
+    "tool_use_id": "toolu_01ABC123..."
+}
+
+The 'error' field contains details about why the tool failed.
+This hook is useful for logging failures, triggering alerts, or
+providing feedback to Claude about the failure.
+"""
 
 import json
 import sys

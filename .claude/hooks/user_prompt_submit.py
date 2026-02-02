@@ -8,10 +8,8 @@
 
 import argparse
 import json
-import os
 import sys
 from pathlib import Path
-from datetime import datetime
 
 try:
     from dotenv import load_dotenv
@@ -127,14 +125,41 @@ def validate_prompt(prompt):
         # Add any patterns you want to block
         # Example: ('rm -rf /', 'Dangerous command detected'),
     ]
-    
+
     prompt_lower = prompt.lower()
-    
+
     for pattern, reason in blocked_patterns:
         if pattern.lower() in prompt_lower:
             return False, reason
-    
+
     return True, None
+
+
+def output_block_decision(reason):
+    """
+    Output JSON to block the prompt with a reason.
+    Per docs: "decision": "block" prevents the prompt from being processed.
+    The submitted prompt is erased from context. "reason" is shown to the user.
+    """
+    output = {
+        "decision": "block",
+        "reason": reason
+    }
+    print(json.dumps(output))
+
+
+def output_additional_context(context):
+    """
+    Output JSON with additionalContext for Claude.
+    Per docs: additionalContext is added as context for Claude.
+    """
+    output = {
+        "hookSpecificOutput": {
+            "hookEventName": "UserPromptSubmit",
+            "additionalContext": context
+        }
+    }
+    print(json.dumps(output))
 
 
 def main():
@@ -169,14 +194,26 @@ def main():
         if args.validate and not args.log_only:
             is_valid, reason = validate_prompt(prompt)
             if not is_valid:
-                # Exit code 2 blocks the prompt with error message
-                print(f"Prompt blocked: {reason}", file=sys.stderr)
-                sys.exit(2)
-        
+                # Option 1: Exit code 2 blocks the prompt with error message (stderr shown to user)
+                # print(f"Prompt blocked: {reason}", file=sys.stderr)
+                # sys.exit(2)
+
+                # Option 2: JSON output with decision: "block" (preferred per docs)
+                # This erases prompt from context and shows reason to user
+                output_block_decision(f"Prompt blocked: {reason}")
+                sys.exit(0)
+
         # Add context information (optional)
-        # You can print additional context that will be added to the prompt
-        # Example: print(f"Current time: {datetime.now()}")
-        
+        # Per docs, there are two ways to add context:
+        # 1. Plain text stdout (simpler): Any non-JSON text written to stdout
+        # 2. JSON with additionalContext (structured): Use hookSpecificOutput format
+        #
+        # Example plain text:
+        # print(f"Current time: {datetime.now()}")
+        #
+        # Example JSON (use output_additional_context helper):
+        # output_additional_context(f"Current time: {datetime.now()}")
+
         # Success - prompt will be processed
         sys.exit(0)
         
