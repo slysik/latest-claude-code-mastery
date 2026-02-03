@@ -35,8 +35,8 @@ def prompt_llm(prompt_text):
             api_key="ollama",  # required, but unused
         )
 
-        # Default to 20b model, can override with OLLAMA_MODEL env var
-        model = os.getenv("OLLAMA_MODEL", "gpt-oss:20b")
+        # Default to 3b model for memory efficiency, can override with OLLAMA_MODEL env var
+        model = os.getenv("OLLAMA_MODEL", "llama3.2:3b")
 
         response = client.chat.completions.create(
             model=model,

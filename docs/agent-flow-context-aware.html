@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context-Aware 2-Tier Orchestration</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #172554 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        .container { max-width: 1600px; margin: 0 auto; }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #22d3ee, #a78bfa, #fb7185);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 40px;
+        }
+
+        /* Main flow */
+        .main-flow {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            overflow-x: auto;
+            padding: 20px 0;
+        }
+
+        .stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .stage-label {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        .stage-label.plan { background: rgba(59, 130, 246, 0.3); border: 1px solid #3b82f6; color: #93c5fd; }
+        .stage-label.check { background: rgba(251, 191, 36, 0.3); border: 1px solid #fbbf24; color: #fde68a; }
+        .stage-label.work { background: rgba(34, 197, 94, 0.3); border: 1px solid #22c55e; color: #86efac; }
+        .stage-label.validate { background: rgba(249, 115, 22, 0.3); border: 1px solid #f97316; color: #fdba74; }
+        .stage-label.save { background: rgba(168, 85, 247, 0.3); border: 1px solid #a855f7; color: #d8b4fe; }
+        .stage-label.pause { background: rgba(239, 68, 68, 0.3); border: 1px solid #ef4444; color: #fca5a5; }
+        .stage-label.done { background: rgba(16, 185, 129, 0.3); border: 1px solid #10b981; color: #6ee7b7; }
+
+        .node {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 16px 20px;
+            min-width: 160px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 32px rgba(0, 212, 255, 0.2);
+        }
+
+        .node.orchestrator {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.3), rgba(124, 58, 237, 0.3));
+            border-color: #3b82f6;
+        }
+
+        .node.context-check {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+            border-color: #fbbf24;
+        }
+
+        .node.worker {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(16, 185, 129, 0.2));
+            border-color: #22c55e;
+        }
+
+        .node.validator {
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(234, 88, 12, 0.2));
+            border-color: #f97316;
+        }
+
+        .node.checkpoint {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(139, 92, 246, 0.2));
+            border-color: #a855f7;
+        }
+
+        .node.pause {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.3));
+            border-color: #ef4444;
+        }
+
+        .node.complete {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.3), rgba(5, 150, 105, 0.3));
+            border-color: #10b981;
+        }
+
+        .node-icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .node-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }
+        .node-desc { font-size: 0.7rem; color: #94a3b8; line-height: 1.3; }
+
+        .arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 12px;
+            color: #475569;
+            font-size: 1.5rem;
+            min-width: 50px;
+        }
+
+        .arrow-label {
+            font-size: 0.6rem;
+            color: #64748b;
+            text-align: center;
+            max-width: 60px;
+        }
+
+        .arrow-down {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            color: #475569;
+        }
+
+        /* Decision diamond */
+        .decision-box {
+            position: relative;
+            padding: 30px;
+        }
+
+        .decision-diamond {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.3), rgba(245, 158, 11, 0.3));
+            border: 2px solid #fbbf24;
+            transform: rotate(45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .decision-content {
+            transform: rotate(-45deg);
+            text-align: center;
+        }
+
+        .decision-icon { font-size: 1.5rem; }
+        .decision-text { font-size: 0.7rem; font-weight: 600; margin-top: 4px; }
+
+        /* Branch labels */
+        .branch {
+            position: absolute;
+            font-size: 0.65rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 8px;
+        }
+
+        .branch.yes {
+            background: rgba(34, 197, 94, 0.3);
+            color: #86efac;
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .branch.no {
+            background: rgba(239, 68, 68, 0.3);
+            color: #fca5a5;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* Loop indicator */
+        .loop-container {
+            border: 2px dashed rgba(34, 197, 94, 0.4);
+            border-radius: 20px;
+            padding: 24px;
+            background: rgba(34, 197, 94, 0.05);
+            position: relative;
+        }
+
+        .loop-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(90deg, #22c55e, #10b981);
+            color: #000;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .loop-content {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        /* Threshold bar */
+        .threshold-bar {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin: 30px 0;
+        }
+
+        .threshold-title {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        .bar-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            height: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bar-segment {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: bold;
+        }
+
+        .bar-segment.safe {
+            left: 0;
+            width: 70%;
+            background: linear-gradient(90deg, #22c55e, #16a34a);
+            color: #fff;
+        }
+
+        .bar-segment.warn {
+            left: 70%;
+            width: 15%;
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            color: #000;
+        }
+
+        .bar-segment.danger {
+            left: 85%;
+            width: 5%;
+            background: linear-gradient(90deg, #f97316, #ea580c);
+            color: #fff;
+        }
+
+        .bar-segment.stop {
+            left: 90%;
+            width: 10%;
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        .bar-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 0.65rem;
+            color: #64748b;
+        }
+
+        /* Checkpoint file */
+        .checkpoint-preview {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.7rem;
+            margin: 20px auto;
+            max-width: 400px;
+        }
+
+        .checkpoint-preview .key { color: #7ee787; }
+        .checkpoint-preview .string { color: #a5d6ff; }
+        .checkpoint-preview .number { color: #79c0ff; }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .legend-icon.orch { background: linear-gradient(135deg, rgba(59, 130, 246, 0.5), rgba(124, 58, 237, 0.5)); }
+        .legend-icon.ctx { background: linear-gradient(135deg, rgba(251, 191, 36, 0.5), rgba(245, 158, 11, 0.5)); }
+        .legend-icon.work { background: linear-gradient(135deg, rgba(34, 197, 94, 0.5), rgba(16, 185, 129, 0.5)); }
+        .legend-icon.val { background: linear-gradient(135deg, rgba(249, 115, 22, 0.5), rgba(234, 88, 12, 0.5)); }
+        .legend-icon.chk { background: linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(139, 92, 246, 0.5)); }
+        .legend-icon.stop { background: linear-gradient(135deg, rgba(239, 68, 68, 0.5), rgba(220, 38, 38, 0.5)); }
+
+        .legend-text { font-size: 0.8rem; color: #94a3b8; }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #475569;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Context-Aware 2-Tier Orchestration</h1>
+        <p class="subtitle">Proactive pause at 90% context usage with checkpoint/resume support</p>
+
+        <!-- Context Threshold Bar -->
+        <div class="threshold-bar">
+            <div class="threshold-title">Context Usage Thresholds</div>
+            <div class="bar-container">
+                <div class="bar-segment safe">0-70% SAFE</div>
+                <div class="bar-segment warn">WARN</div>
+                <div class="bar-segment danger">85%</div>
+                <div class="bar-segment stop">PAUSE</div>
+            </div>
+            <div class="bar-markers">
+                <span>0%</span>
+                <span>70%</span>
+                <span>85%</span>
+                <span>90% STOP</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <!-- Main Flow -->
+        <div class="main-flow">
+            <!-- Start -->
+            <div class="stage">
+                <span class="stage-label plan">Start</span>
+                <div class="node orchestrator">
+                    <div class="node-icon">🎯</div>
+                    <div class="node-title">Orchestrator</div>
+                    <div class="node-desc">Load plan & checkpoint</div>
+                </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <!-- Loop: For Each Task -->
+            <div class="stage" style="min-width: fit-content;">
+                <span class="stage-label work">For Each Task</span>
+                <div class="loop-container">
+                    <span class="loop-label">Repeat Until Done or Paused</span>
+                    <div class="loop-content">
+                        <!-- Context Check -->
+                        <div class="stage">
+                            <div class="decision-box">
+                                <div class="decision-diamond">
+                                    <div class="decision-content">
+                                        <div class="decision-icon">📊</div>
+                                        <div class="decision-text">Context<br>&lt;90%?</div>
+                                    </div>
+                                </div>
+                                <span class="branch yes">✓ YES</span>
+                                <span class="branch no">✗ NO</span>
+                            </div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <!-- Deploy Worker -->
+                        <div class="stage">
+                            <div class="node worker">
+                                <div class="node-icon">🔨</div>
+                                <div class="node-title">Deploy Worker</div>
+                                <div class="node-desc">Single-focus task</div>
+                            </div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <!-- Validate -->
+                        <div class="stage">
+                            <div class="node validator">
+                                <div class="node-icon">✅</div>
+                                <div class="node-title">Validate</div>
+                                <div class="node-desc">Read-only check</div>
+                            </div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <!-- Stop Worker -->
+                        <div class="stage">
+                            <div class="node" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(220, 38, 38, 0.15)); border-color: #f87171;">
+                                <div class="node-icon">🛑</div>
+                                <div class="node-title">Stop Worker</div>
+                                <div class="node-desc">Free context</div>
+                            </div>
+                        </div>
+
+                        <div class="arrow">→</div>
+
+                        <!-- Checkpoint -->
+                        <div class="stage">
+                            <div class="node checkpoint">
+                                <div class="node-icon">💾</div>
+                                <div class="node-title">Checkpoint</div>
+                                <div class="node-desc">Save progress</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <!-- Complete -->
+            <div class="stage">
+                <span class="stage-label done">Done</span>
+                <div class="node complete">
+                    <div class="node-icon">🎉</div>
+                    <div class="node-title">Complete!</div>
+                    <div class="node-desc">All tasks done</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Branch -->
+        <div style="display: flex; justify-content: center; margin: 20px 0;">
+            <div class="arrow-down">
+                <span style="font-size: 0.65rem; color: #ef4444; margin-bottom: 4px;">Context ≥90%</span>
+                <span>↓</span>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+            <div class="node pause" style="min-width: 180px;">
+                <div class="node-icon">⏸️</div>
+                <div class="node-title">PAUSE</div>
+                <div class="node-desc">Save state & exit<br>User resumes later</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="checkpoint-preview">
+                <span class="key">"tasks"</span>: {<br>
+                &nbsp;&nbsp;<span class="string">"task-1"</span>: <span class="string">"completed"</span>,<br>
+                &nbsp;&nbsp;<span class="string">"task-2"</span>: <span class="string">"in_progress"</span>,<br>
+                &nbsp;&nbsp;<span class="string">"task-3"</span>: <span class="string">"pending"</span><br>
+                },<br>
+                <span class="key">"context_paused_at"</span>: <span class="number">0.92</span>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="node orchestrator" style="min-width: 180px;">
+                <div class="node-icon">▶️</div>
+                <div class="node-title">Resume</div>
+                <div class="node-desc">/build plan.md --resume<br>Skip completed tasks</div>
+            </div>
+        </div>
+
+        <!-- Key Differences -->
+        <div style="margin-top: 50px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div class="node" style="max-width: none; text-align: left;">
+                <div class="node-title" style="color: #fbbf24; margin-bottom: 12px;">🆕 Proactive Context Check</div>
+                <div class="node-desc" style="font-size: 0.8rem;">
+                    Check context BEFORE deploying each worker.<br>
+                    Pause at 90% instead of waiting for 100% compaction.
+                </div>
+            </div>
+            <div class="node" style="max-width: none; text-align: left;">
+                <div class="node-title" style="color: #a855f7; margin-bottom: 12px;">🆕 Checkpoint After Each Task</div>
+                <div class="node-desc" style="font-size: 0.8rem;">
+                    Save completed/pending state to JSON file.<br>
+                    Resume picks up exactly where we left off.
+                </div>
+            </div>
+            <div class="node" style="max-width: none; text-align: left;">
+                <div class="node-title" style="color: #22c55e; margin-bottom: 12px;">🆕 Single-Focus Workers</div>
+                <div class="node-desc" style="font-size: 0.8rem;">
+                    Each worker owns ONE task, then stops.<br>
+                    Frees context immediately after completion.
+                </div>
+            </div>
+            <div class="node" style="max-width: none; text-align: left;">
+                <div class="node-title" style="color: #f87171; margin-bottom: 12px;">🆕 Explicit Agent Cleanup</div>
+                <div class="node-desc" style="font-size: 0.8rem;">
+                    <code style="color: #fca5a5;">TaskStop(agent_id)</code> after every worker.<br>
+                    Track active agents, cleanup on pause.
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-icon orch">🎯</div>
+                <span class="legend-text">Orchestrator (Tier 1)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon ctx">📊</div>
+                <span class="legend-text">Context Check</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon work">🔨</div>
+                <span class="legend-text">Worker (Tier 2)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon val">✅</div>
+                <span class="legend-text">Validator (Tier 2)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon chk">💾</div>
+                <span class="legend-text">Checkpoint Save</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon" style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(248, 113, 113, 0.3));">🛑</div>
+                <span class="legend-text">Stop/Cleanup Worker</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-icon stop">⏸️</div>
+                <span class="legend-text">Pause (≥90%)</span>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Context-Aware 2-Tier Orchestration for Claude Code</p>
+            <p style="margin-top: 8px; font-family: monospace; color: #64748b;">
+                /plan_w_team_v2 → docs/agent-flow-context-aware.html
+            </p>
+        </div>
+    </div>
+</body>
+</html>

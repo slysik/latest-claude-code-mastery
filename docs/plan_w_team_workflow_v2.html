@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan With Team - Complete Workflow Diagram</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, #00d4ff, #7b2cbf, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        /* Main workflow container */
+        .workflow-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-badge.execution {
+            background: linear-gradient(135deg, #43e97b, #38f9d7);
+            color: #000;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #fff;
+        }
+
+        /* Flowchart styles */
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .flow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .flow-node {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px 24px;
+            min-width: 200px;
+            max-width: 280px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-node:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 212, 255, 0.5);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .flow-node.start {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            border-color: #667eea;
+        }
+
+        .flow-node.process {
+            background: linear-gradient(135deg, rgba(79, 172, 254, 0.2), rgba(0, 242, 254, 0.2));
+            border-color: #4facfe;
+        }
+
+        .flow-node.decision {
+            background: linear-gradient(135deg, rgba(250, 112, 154, 0.2), rgba(254, 225, 64, 0.2));
+            border-color: #fa709a;
+            transform: rotate(0deg);
+        }
+
+        .flow-node.output {
+            background: linear-gradient(135deg, rgba(67, 233, 123, 0.2), rgba(56, 249, 215, 0.2));
+            border-color: #43e97b;
+        }
+
+        .flow-node.agent {
+            background: linear-gradient(135deg, rgba(240, 147, 251, 0.2), rgba(245, 87, 108, 0.2));
+            border-color: #f093fb;
+        }
+
+        .node-number {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #7b2cbf);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .node-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .node-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .node-desc {
+            font-size: 0.85rem;
+            color: #aaa;
+            line-height: 1.4;
+        }
+
+        .node-tool {
+            margin-top: 10px;
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            color: #00d4ff;
+            font-family: 'Monaco', monospace;
+        }
+
+        /* Arrow styles */
+        .arrow {
+            color: #666;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .arrow.down {
+            transform: rotate(90deg);
+        }
+
+        .arrow-label {
+            font-size: 0.7rem;
+            color: #888;
+            margin: 0 8px;
+        }
+
+        /* Parallel execution box */
+        .parallel-box {
+            background: rgba(67, 233, 123, 0.1);
+            border: 2px dashed rgba(67, 233, 123, 0.4);
+            border-radius: 20px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .parallel-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .parallel-badge {
+            background: linear-gradient(90deg, #43e97b, #38f9d7);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .parallel-title {
+            color: #43e97b;
+            font-size: 1.1rem;
+        }
+
+        .agents-row {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .agent-card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+            padding: 16px;
+            min-width: 140px;
+            text-align: center;
+            border-left: 3px solid;
+            transition: all 0.3s ease;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .agent-card.builder { border-color: #43e97b; }
+        .agent-card.validator { border-color: #f5576c; }
+        .agent-card.explorer { border-color: #4facfe; }
+
+        .agent-emoji {
+            font-size: 1.8rem;
+            margin-bottom: 6px;
+        }
+
+        .agent-name {
+            font-size: 0.85rem;
+            color: #ddd;
+            margin-bottom: 4px;
+        }
+
+        .agent-type {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        /* Tools section */
+        .tools-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .tool-badge {
+            background: rgba(240, 147, 251, 0.2);
+            border: 1px solid rgba(240, 147, 251, 0.4);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: #f093fb;
+            font-family: 'Monaco', monospace;
+        }
+
+        /* Hooks indicator */
+        .hooks-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(250, 112, 154, 0.3);
+            border: 1px solid #fa709a;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            color: #fa709a;
+        }
+
+        /* Output file box */
+        .output-file {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 16px 24px;
+            font-family: 'Monaco', monospace;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .output-file .path {
+            color: #43e97b;
+        }
+
+        /* Legend */
+        .legend {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 40px;
+        }
+
+        .legend h3 {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid;
+        }
+
+        .legend-color.start { border-color: #667eea; background: rgba(102, 126, 234, 0.3); }
+        .legend-color.process { border-color: #4facfe; background: rgba(79, 172, 254, 0.2); }
+        .legend-color.decision { border-color: #fa709a; background: rgba(250, 112, 154, 0.2); }
+        .legend-color.output { border-color: #43e97b; background: rgba(67, 233, 123, 0.2); }
+        .legend-color.agent { border-color: #f093fb; background: rgba(240, 147, 251, 0.2); }
+
+        .legend-label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+
+        /* Command example */
+        .command-example {
+            background: #0d1117;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 24px 0;
+            font-family: 'Monaco', monospace;
+            border: 1px solid #30363d;
+        }
+
+        .command-example .prompt {
+            color: #7ee787;
+        }
+
+        .command-example .command {
+            color: #79c0ff;
+        }
+
+        .command-example .comment {
+            color: #6e7681;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .flow-node {
+                min-width: 160px;
+                padding: 16px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>/plan_w_team Workflow</h1>
+        <p class="subtitle">A complete visual guide to the agentic planning and execution system</p>
+
+        <!-- PHASE 1: PLANNING -->
+        <div class="workflow-section">
+            <div class="section-header">
+                <span class="section-badge">Phase 1</span>
+                <h2 class="section-title">Planning (The /plan_w_team Skill)</h2>
+            </div>
+
+            <div class="flowchart">
+                <!-- Row 1: User Input -->
+                <div class="flow-row">
+                    <div class="flow-node start">
+                        <span class="node-number">1</span>
+                        <div class="node-icon">👤</div>
+                        <div class="node-title">User Invokes Skill</div>
+                        <div class="node-desc">User runs command with task description</div>
+                        <div class="command-example" style="margin-top: 12px; padding: 10px; font-size: 0.75rem;">
+                            <span class="prompt">❯</span> <span class="command">/plan_w_team "Add auth"</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 2: Analysis Steps -->
+                <div class="flow-row">
+                    <div class="flow-node process">
+                        <span class="node-number">2</span>
+                        <div class="node-icon">🔍</div>
+                        <div class="node-title">Analyze Requirements</div>
+                        <div class="node-desc">Parse USER_PROMPT to understand core problem and desired outcome</div>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node process">
+                        <span class="node-number">3</span>
+                        <div class="node-icon">📂</div>
+                        <div class="node-title">Understand Codebase</div>
+                        <div class="node-desc">Directly explore patterns, architecture, and relevant files</div>
+                        <span class="node-tool">Read, Glob, Grep</span>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node process">
+                        <span class="node-number">4</span>
+                        <div class="node-icon">🎨</div>
+                        <div class="node-title">Design Solution</div>
+                        <div class="node-desc">Develop technical approach and implementation strategy</div>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 3: Team Definition -->
+                <div class="flow-row">
+                    <div class="flow-node decision">
+                        <span class="node-number">5</span>
+                        <div class="node-icon">👥</div>
+                        <div class="node-title">Define Team Members</div>
+                        <div class="node-desc">Select from <code>.claude/agents/team/*.md</code> or use general-purpose</div>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node decision">
+                        <span class="node-number">6</span>
+                        <div class="node-icon">📋</div>
+                        <div class="node-title">Define Step-by-Step Tasks</div>
+                        <div class="node-desc">Write out tasks with IDs, dependencies, and assignments</div>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 4: Output -->
+                <div class="flow-row">
+                    <div class="flow-node output">
+                        <span class="hooks-indicator">🪝 Stop Hooks</span>
+                        <span class="node-number">7</span>
+                        <div class="node-icon">💾</div>
+                        <div class="node-title">Save Plan</div>
+                        <div class="node-desc">Write comprehensive plan document</div>
+                        <div class="output-file">
+                            <span class="path">specs/&lt;plan-name&gt;.md</span>
+                        </div>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node output">
+                        <span class="node-number">8</span>
+                        <div class="node-icon">📊</div>
+                        <div class="node-title">Report Summary</div>
+                        <div class="node-desc">Present file location, key components, team list, and next steps</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hooks validation info -->
+            <div style="background: rgba(250, 112, 154, 0.1); border: 1px solid rgba(250, 112, 154, 0.3); border-radius: 12px; padding: 16px; margin-top: 24px;">
+                <h4 style="color: #fa709a; margin-bottom: 8px;">🪝 Stop Hooks Validation</h4>
+                <p style="color: #aaa; font-size: 0.85rem;">Before the plan is finalized, hooks validate:</p>
+                <div class="tools-row" style="justify-content: flex-start; margin-top: 12px;">
+                    <span class="tool-badge" style="background: rgba(250, 112, 154, 0.2); border-color: rgba(250, 112, 154, 0.4); color: #fa709a;">New file in specs/</span>
+                    <span class="tool-badge" style="background: rgba(250, 112, 154, 0.2); border-color: rgba(250, 112, 154, 0.4); color: #fa709a;">Contains required sections</span>
+                    <span class="tool-badge" style="background: rgba(250, 112, 154, 0.2); border-color: rgba(250, 112, 154, 0.4); color: #fa709a;">Team Orchestration defined</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHASE 2: EXECUTION -->
+        <div class="workflow-section">
+            <div class="section-header">
+                <span class="section-badge execution">Phase 2</span>
+                <h2 class="section-title">Execution (The /build Skill)</h2>
+            </div>
+
+            <div class="flowchart">
+                <!-- Row 1: Build Invocation -->
+                <div class="flow-row">
+                    <div class="flow-node start">
+                        <span class="node-number">1</span>
+                        <div class="node-icon">▶️</div>
+                        <div class="node-title">Execute Plan</div>
+                        <div class="node-desc">User triggers execution with plan path</div>
+                        <div class="command-example" style="margin-top: 12px; padding: 10px; font-size: 0.75rem;">
+                            <span class="prompt">❯</span> <span class="command">/build specs/my-plan.md</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 2: Task Creation -->
+                <div class="flow-row">
+                    <div class="flow-node process">
+                        <span class="node-number">2</span>
+                        <div class="node-icon">📝</div>
+                        <div class="node-title">Create Task List</div>
+                        <div class="node-desc">Orchestrator creates shared task list from plan</div>
+                        <span class="node-tool">TaskCreate</span>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node process">
+                        <span class="node-number">3</span>
+                        <div class="node-icon">🔗</div>
+                        <div class="node-title">Set Dependencies</div>
+                        <div class="node-desc">Link tasks with blockedBy relationships</div>
+                        <span class="node-tool">TaskUpdate</span>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node process">
+                        <span class="node-number">4</span>
+                        <div class="node-icon">👤</div>
+                        <div class="node-title">Assign Owners</div>
+                        <div class="node-desc">Assign team members to each task</div>
+                        <span class="node-tool">TaskUpdate</span>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Parallel Execution Box -->
+                <div class="parallel-box">
+                    <div class="parallel-header">
+                        <span class="parallel-badge">Parallel Execution</span>
+                        <span class="parallel-title">Multiple Agents Work Simultaneously</span>
+                    </div>
+
+                    <div class="agents-row">
+                        <div class="agent-card builder">
+                            <div class="agent-emoji">🔨</div>
+                            <div class="agent-name">builder-1</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent-card builder">
+                            <div class="agent-emoji">🔨</div>
+                            <div class="agent-name">builder-2</div>
+                            <div class="agent-type">Builder Agent</div>
+                        </div>
+                        <div class="agent-card explorer">
+                            <div class="agent-emoji">🔍</div>
+                            <div class="agent-name">explorer</div>
+                            <div class="agent-type">Explore Agent</div>
+                        </div>
+                        <div class="agent-card validator">
+                            <div class="agent-emoji">✅</div>
+                            <div class="agent-name">validator</div>
+                            <div class="agent-type">Validator Agent</div>
+                        </div>
+                    </div>
+
+                    <div style="text-align: center; margin-top: 16px; color: #666; font-size: 0.85rem;">
+                        <code>run_in_background: true</code> enables concurrent execution
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 3: Monitoring -->
+                <div class="flow-row">
+                    <div class="flow-node process">
+                        <span class="node-number">5</span>
+                        <div class="node-icon">📊</div>
+                        <div class="node-title">Monitor Progress</div>
+                        <div class="node-desc">Track task completion and agent outputs</div>
+                        <span class="node-tool">TaskList, TaskOutput</span>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node agent">
+                        <span class="node-number">6</span>
+                        <div class="node-icon">🔄</div>
+                        <div class="node-title">Resume Agents</div>
+                        <div class="node-desc">Continue agent work with preserved context</div>
+                        <span class="node-tool">Task(resume: "id")</span>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node process">
+                        <span class="node-number">7</span>
+                        <div class="node-icon">✓</div>
+                        <div class="node-title">Mark Complete</div>
+                        <div class="node-desc">Update task status when work is done</div>
+                        <span class="node-tool">TaskUpdate</span>
+                    </div>
+                </div>
+
+                <div class="arrow down">→</div>
+
+                <!-- Row 4: Validation & Complete -->
+                <div class="flow-row">
+                    <div class="flow-node decision">
+                        <span class="node-number">8</span>
+                        <div class="node-icon">🔍</div>
+                        <div class="node-title">Validation Pass</div>
+                        <div class="node-desc">Validator agents verify acceptance criteria</div>
+                    </div>
+
+                    <span class="arrow">→</span>
+
+                    <div class="flow-node output">
+                        <span class="node-number">9</span>
+                        <div class="node-icon">🎉</div>
+                        <div class="node-title">Complete!</div>
+                        <div class="node-desc">All tasks done, final summary provided</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Reference -->
+        <div class="workflow-section">
+            <div class="section-header">
+                <span class="section-badge" style="background: linear-gradient(135deg, #f093fb, #f5576c);">Reference</span>
+                <h2 class="section-title">Orchestration Tools</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">TaskCreate</div>
+                    <div class="node-desc">Create tasks in the shared task list with subject, description, and activeForm</div>
+                </div>
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">TaskUpdate</div>
+                    <div class="node-desc">Update status, owner, or dependencies (addBlockedBy)</div>
+                </div>
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">TaskList</div>
+                    <div class="node-desc">View all tasks with status, owner, and blockedBy</div>
+                </div>
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">TaskGet</div>
+                    <div class="node-desc">Get full details of a specific task by ID</div>
+                </div>
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">Task</div>
+                    <div class="node-desc">Deploy an agent with subagent_type, model, and optional run_in_background</div>
+                </div>
+                <div class="flow-node" style="max-width: none;">
+                    <div class="node-title" style="color: #00d4ff;">TaskOutput</div>
+                    <div class="node-desc">Check progress or wait for background agent completion</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color start"></div>
+                    <span class="legend-label">Start/Input</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color process"></div>
+                    <span class="legend-label">Process Step</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color decision"></div>
+                    <span class="legend-label">Decision/Definition</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color output"></div>
+                    <span class="legend-label">Output/Complete</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color agent"></div>
+                    <span class="legend-label">Agent Action</span>
+                </div>
+                <div class="legend-item">
+                    <div style="width: 20px; height: 20px; border: 2px dashed #43e97b; border-radius: 6px;"></div>
+                    <span class="legend-label">Parallel Execution Zone</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Reference -->
+        <div style="margin-top: 40px; text-align: center; color: #666;">
+            <p>Created for Claude Code Hooks Mastery</p>
+            <p style="font-size: 0.85rem; margin-top: 8px;">
+                <code style="color: #888;">docs/plan_w_team_workflow_v2.html</code>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
