@@ -10,14 +10,17 @@
 import os
 import sys
 from dotenv import load_dotenv
+from retry import with_retry
 
 
-def prompt_llm(prompt_text):
+@with_retry(max_attempts=2, backoff=1.0)
+def prompt_llm(prompt_text, temperature=0.7):
     """
     Base Anthropic LLM prompting method using fastest model.
 
     Args:
         prompt_text (str): The prompt to send to the model
+        temperature (float): Temperature for generation (default 0.7)
 
     Returns:
         str: The model's response text, or None if error
@@ -36,7 +39,8 @@ def prompt_llm(prompt_text):
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",  # Fastest Anthropic model
             max_tokens=100,
-            temperature=0.7,
+            temperature=temperature,
+            extra_headers={"anthropic-beta": "effort-2025-11-24"},
             messages=[{"role": "user", "content": prompt_text}],
         )
 
@@ -139,7 +143,8 @@ Name:"""
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",  # Fast model
             max_tokens=20,
-            temperature=0.7,
+            temperature=0.3,
+            extra_headers={"anthropic-beta": "effort-2025-11-24"},
             messages=[{"role": "user", "content": prompt_text}],
         )
         
@@ -165,8 +170,6 @@ Name:"""
 
 def main():
     """Command line interface for testing."""
-    import json
-    
     if len(sys.argv) > 1:
         if sys.argv[1] == "--completion":
             message = generate_completion_message()

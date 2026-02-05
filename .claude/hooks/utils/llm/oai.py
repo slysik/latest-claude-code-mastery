@@ -10,9 +10,11 @@
 import os
 import sys
 from dotenv import load_dotenv
+from retry import with_retry
 
 
-def prompt_llm(prompt_text):
+@with_retry(max_attempts=2, backoff=1.0)
+def prompt_llm(prompt_text, temperature=0.7):
     """
     Base OpenAI LLM prompting method using fastest model.
 
@@ -37,7 +39,7 @@ def prompt_llm(prompt_text):
             model="gpt-4.1-nano",  # Fastest OpenAI model
             messages=[{"role": "user", "content": prompt_text}],
             max_tokens=100,
-            temperature=0.7,
+            temperature=temperature,
         )
 
         return response.choices[0].message.content.strip()
@@ -140,7 +142,7 @@ Name:"""
             model="gpt-4o-mini",  # Fast, cost-effective model
             messages=[{"role": "user", "content": prompt_text}],
             max_tokens=20,
-            temperature=0.7,
+            temperature=0.3,
         )
         
         # Extract and clean the name
@@ -165,8 +167,6 @@ Name:"""
 
 def main():
     """Command line interface for testing."""
-    import json
-    
     if len(sys.argv) > 1:
         if sys.argv[1] == "--completion":
             message = generate_completion_message()

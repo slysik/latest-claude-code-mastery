@@ -18,7 +18,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "uv run $CLAUDE_PROJECT_DIR/.claude/status_lines/status_line_v6.py",
+    "command": "uv run $CLAUDE_PROJECT_DIR/.claude/status_lines/status_line_v10.py",
     "padding": 0
   },
   "hooks": {
@@ -40,6 +40,23 @@
           {
             "type": "command",
             "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/post_tool_use.py"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/tsc_validator.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/ruff_validator.py"
+          },
+          {
+            "type": "command",
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/validators/ty_validator.py"
           }
         ]
       }

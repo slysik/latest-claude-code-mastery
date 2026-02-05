@@ -12,14 +12,17 @@ import os
 import sys
 import traceback
 from dotenv import load_dotenv
+from retry import with_retry
 
 
-def prompt_llm(prompt_text):
+@with_retry(max_attempts=2, backoff=1.0)
+def prompt_llm(prompt_text, temperature=0.7):
     """
     Base Ollama LLM prompting method using GPT-OSS model.
 
     Args:
         prompt_text (str): The prompt to send to the model
+        temperature (float): Temperature for generation (default 0.7)
 
     Returns:
         str: The model's response text, or None if error
@@ -42,6 +45,7 @@ def prompt_llm(prompt_text):
             model=model,
             messages=[{"role": "user", "content": prompt_text}],
             max_tokens=1000,
+            temperature=temperature,
         )
 
         return response.choices[0].message.content.strip()
@@ -173,8 +177,6 @@ Name:"""
 
 def main():
     """Command line interface for testing."""
-    import json
-
     if len(sys.argv) > 1:
         if sys.argv[1] == "--completion":
             message = generate_completion_message()

@@ -828,10 +828,13 @@ This two-agent pairing increases compute to increase trust that work was deliver
 
 PostToolUse validators automatically enforce code quality:
 
-| Validator | File                | Trigger                 | Action                |
-| --------- | ------------------- | ----------------------- | --------------------- |
-| **Ruff**  | `ruff_validator.py` | Write/Edit on .py files | Blocks on lint errors |
-| **Ty**    | `ty_validator.py`   | Write/Edit on .py files | Blocks on type errors |
+| Validator | File                | Trigger                    | Action                     |
+| --------- | ------------------- | -------------------------- | -------------------------- |
+| **Ruff**  | `ruff_validator.py` | Write/Edit on .py files    | Blocks on lint errors      |
+| **Ty**    | `ty_validator.py`   | Write/Edit on .py files    | Blocks on type errors      |
+| **TSC**   | `tsc_validator.py`  | Write/Edit on .ts/.tsx files | Blocks on TypeScript errors |
+
+The TSC validator automatically detects the package manager (npm, yarn, pnpm, bun) and runs `tsc --noEmit` in the nearest directory containing a `tsconfig.json`.
 
 ### Workflow Example
 

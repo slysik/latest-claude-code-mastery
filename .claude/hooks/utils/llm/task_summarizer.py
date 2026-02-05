@@ -70,7 +70,7 @@ Task completed: {task_description}
 Context: {agent_context}
 
 Requirements:
-- Address the user as "Dan" directly (but not always at the start)
+- Address the user as "Steve" directly (but not always at the start)
 - Keep it under 20 words
 - Focus on the outcome and value delivered
 - Be conversational and personalized
@@ -79,10 +79,10 @@ Requirements:
 - Return ONLY the summary text
 
 Example styles:
-- "Dan, authentication is ready with secure JWT token support."
+- "Steve, authentication is ready with secure JWT token support."
 - "Your file watcher is now monitoring for changes."
 - "Builder finished setting up the TTS queue with file locks."
-- "Dan, the new API endpoints are live and tested."
+- "Steve, the new API endpoints are live and tested."
 
 Generate ONE summary:"""
 
@@ -97,7 +97,8 @@ Generate ONE summary:"""
         message = client.messages.create(
             model="claude-haiku-4-5-20251001",  # Haiku 4.5 - fast and cost-effective
             max_tokens=100,
-            temperature=0.7,
+            temperature=0.2,
+            extra_headers={"anthropic-beta": "effort-2025-11-24"},
             messages=[{"role": "user", "content": prompt}],
         )
         debug_log("API call completed")
