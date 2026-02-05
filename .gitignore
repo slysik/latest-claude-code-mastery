@@ -121,3 +121,7 @@ extras/
 
 # Task manager data
 apps/task-manager/data/
+
+# Collected env files (contain real API keys)
+steve-env*
+collect-env.sh

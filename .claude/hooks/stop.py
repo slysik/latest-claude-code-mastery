@@ -153,6 +153,199 @@ def get_llm_completion_message():
     messages = get_completion_messages()
     return random.choice(messages)
 
+def extract_recent_activity(transcript_path, max_entries=50):
+    """
+    Extract recent user and assistant messages from the transcript.
+    Returns a brief summary of what happened this session.
+    """
+    if not transcript_path or not os.path.exists(transcript_path):
+        return None
+
+    messages = []
+    try:
+        with open(transcript_path, 'r') as f:
+            lines = f.readlines()
+
+        # Read last N lines for recent activity
+        recent_lines = lines[-max_entries:] if len(lines) > max_entries else lines
+
+        for line in recent_lines:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                entry = json.loads(line)
+                entry_type = entry.get("type", "")
+
+                if entry_type == "user":
+                    message = entry.get("message", {})
+                    content = message.get("content", "") if isinstance(message, dict) else ""
+                    if isinstance(content, str) and content:
+                        messages.append(f"- User: {content[:150]}")
+                    elif isinstance(content, list):
+                        for block in content:
+                            if isinstance(block, dict) and block.get("type") == "text":
+                                text = block.get("text", "")
+                                if text:
+                                    messages.append(f"- User: {text[:150]}")
+                                    break
+
+                elif entry_type == "assistant":
+                    message = entry.get("message", {})
+                    content = message.get("content", "") if isinstance(message, dict) else ""
+                    if isinstance(content, list):
+                        for block in content:
+                            if isinstance(block, dict) and block.get("type") == "text":
+                                text = block.get("text", "")
+                                if text:
+                                    messages.append(f"- Assistant: {text[:150]}")
+                                    break
+                    elif isinstance(content, str) and content:
+                        messages.append(f"- Assistant: {content[:150]}")
+
+            except json.JSONDecodeError:
+                continue
+
+    except Exception:
+        return None
+
+    return messages[-20:] if messages else None  # Last 20 messages max
+
+
+def generate_scratchpad_summary(transcript_path, llm_dir):
+    """
+    Generate a scratchpad summary using LLM or structured extraction.
+    Returns a markdown-formatted scratchpad update or None.
+    """
+    activity = extract_recent_activity(transcript_path)
+    if not activity:
+        return None
+
+    activity_text = "\n".join(activity)
+
+    # Try LLM-based summarization (OpenAI > Anthropic > Ollama)
+    prompt_text = (
+        "Summarize this Claude Code session into a scratchpad update. "
+        "Extract: (1) what task was being worked on, (2) what was completed, "
+        "(3) what remains to be done, (4) any key decisions or details, "
+        "(5) specific resume instructions for the next session. "
+        "Be concise but include specific file paths and technical details.\n\n"
+        f"Session activity:\n{activity_text}"
+    )
+
+    # LLM scripts accept the prompt as positional args (not --prompt flag)
+    # Try OpenAI
+    if os.getenv('OPENAI_API_KEY'):
+        oai_script = llm_dir / "oai.py"
+        if oai_script.exists():
+            try:
+                result = subprocess.run(
+                    ["uv", "run", str(oai_script), prompt_text],
+                    capture_output=True, text=True, timeout=15
+                )
+                if result.returncode == 0 and result.stdout.strip():
+                    return result.stdout.strip()
+            except (subprocess.TimeoutExpired, subprocess.SubprocessError):
+                pass
+
+    # Try Anthropic
+    if os.getenv('ANTHROPIC_API_KEY'):
+        anth_script = llm_dir / "anth.py"
+        if anth_script.exists():
+            try:
+                result = subprocess.run(
+                    ["uv", "run", str(anth_script), prompt_text],
+                    capture_output=True, text=True, timeout=15
+                )
+                if result.returncode == 0 and result.stdout.strip():
+                    return result.stdout.strip()
+            except (subprocess.TimeoutExpired, subprocess.SubprocessError):
+                pass
+
+    # Try Ollama
+    ollama_script = llm_dir / "ollama.py"
+    if ollama_script.exists():
+        try:
+            result = subprocess.run(
+                ["uv", "run", str(ollama_script), prompt_text],
+                capture_output=True, text=True, timeout=15
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                return result.stdout.strip()
+        except (subprocess.TimeoutExpired, subprocess.SubprocessError):
+            pass
+
+    # Fallback: structured extraction without LLM
+    from datetime import datetime
+    fallback = f"""Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+
+## Recent Activity (auto-extracted)
+
+{activity_text}
+
+## Resume Instructions
+
+Review the activity above and continue where the session left off.
+Check specs/state.md for plan alignment and TaskList for pending tasks."""
+
+    return fallback
+
+
+def save_scratchpad(transcript_path, cwd):
+    """
+    Auto-save scratchpad from session transcript.
+    Reads transcript, generates summary, writes to SCRATCHPAD.md.
+    """
+    from datetime import datetime
+
+    script_dir = Path(__file__).parent
+    llm_dir = script_dir / "utils" / "llm"
+
+    scratchpad_path = Path(cwd) / "SCRATCHPAD.md"
+
+    # Generate summary from transcript
+    summary = generate_scratchpad_summary(transcript_path, llm_dir)
+
+    if summary:
+        # Build updated scratchpad
+        header = (
+            "# Scratchpad\n\n"
+            "> Session bridge file. Auto-injected into Claude's context via UserPromptSubmit hook.\n"
+            "> Updated automatically by Stop hook or manually via `/checkpoint`.\n"
+            "> After `/clear`, Claude reads this to resume without re-explanation.\n\n"
+            f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} (auto-saved by stop hook)\n\n"
+        )
+
+        try:
+            # Read existing scratchpad to preserve any manual sections
+            existing_content = ""
+            if scratchpad_path.exists():
+                existing_content = scratchpad_path.read_text()
+
+            # Check if existing has manual content we should keep
+            # (look for content that's not template/auto-generated)
+            manual_sections = []
+            if existing_content and "## Key Details Not Yet In Files" in existing_content:
+                # Extract manual key details section if it has content
+                parts = existing_content.split("## Key Details Not Yet In Files")
+                if len(parts) > 1:
+                    details_section = parts[1].split("##")[0].strip()
+                    if details_section and "(Anything decided" not in details_section:
+                        manual_sections.append(
+                            f"## Key Details Not Yet In Files\n\n{details_section}"
+                        )
+
+            # Write updated scratchpad
+            content = header + summary
+            if manual_sections:
+                content += "\n\n" + "\n\n".join(manual_sections)
+
+            scratchpad_path.write_text(content)
+
+        except Exception:
+            pass  # Don't block session stop on scratchpad errors
+
+
 def announce_completion():
     """Announce completion using the best available TTS service."""
     try:
@@ -185,6 +378,8 @@ def main():
         parser = argparse.ArgumentParser()
         parser.add_argument('--chat', action='store_true', help='Copy transcript to chat.json')
         parser.add_argument('--notify', action='store_true', help='Enable TTS completion announcement')
+        parser.add_argument('--save-scratchpad', action='store_true',
+                          help='Auto-save session state to SCRATCHPAD.md')
         args = parser.parse_args()
         
         # Read JSON input from stdin
@@ -252,6 +447,11 @@ def main():
                         json.dump(chat_data, f, indent=2)
                 except Exception:
                     pass  # Fail silently
+
+        # Auto-save scratchpad from session transcript
+        if args.save_scratchpad and 'transcript_path' in input_data:
+            cwd = input_data.get('cwd', os.getcwd())
+            save_scratchpad(input_data['transcript_path'], cwd)
 
         # Announce completion via TTS (only if --notify flag is set)
         if args.notify:

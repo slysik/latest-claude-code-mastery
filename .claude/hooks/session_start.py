@@ -107,6 +107,9 @@ def load_development_context(source, model=None, agent_type=None):
     """
     context_parts = []
 
+    # Personalized greeting
+    context_parts.append("Greet the user with 'Welcome Back Steve'")
+
     # Add timestamp
     context_parts.append(f"Session started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     context_parts.append(f"Session source: {source}")
@@ -175,6 +178,10 @@ def main():
         # Log the session start event
         log_session_start(input_data)
 
+        # Print greeting to terminal (stderr shows directly in Claude Code UI)
+        if source != "compact":
+            print("Welcome Back Steve 👋", file=sys.stderr)
+
         # Load development context if requested
         if args.load_context:
             context = load_development_context(source, model=model, agent_type=agent_type)
@@ -198,9 +205,9 @@ def main():
                 
                 if tts_script.exists():
                     messages = {
-                        "startup": "Claude Code session started",
-                        "resume": "Resuming previous session",
-                        "clear": "Starting fresh session",
+                        "startup": "Welcome Back Steve",
+                        "resume": "Welcome Back Steve",
+                        "clear": "Welcome Back Steve, starting fresh",
                         "compact": "Session compacted"
                     }
                     message = messages.get(source, "Session started")

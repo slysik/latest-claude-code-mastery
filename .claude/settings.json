@@ -88,7 +88,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/stop.py --chat"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/stop.py --chat --save-scratchpad"
           }
         ]
       }
@@ -109,7 +109,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py --log-only --store-last-prompt --name-agent"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/user_prompt_submit.py --log-only --store-last-prompt --name-agent --inject-context"
           }
         ]
       }
@@ -140,7 +140,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --type startup"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --load-context --announce"
           }
         ]
       },
@@ -149,7 +149,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --type resume"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --load-context --announce"
           }
         ]
       },
@@ -158,7 +158,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --type clear"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --load-context --announce"
           }
         ]
       },
@@ -167,7 +167,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --type compact"
+            "command": "uv run $CLAUDE_PROJECT_DIR/.claude/hooks/session_start.py --load-context"
           }
         ]
       }

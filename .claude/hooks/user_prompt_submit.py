@@ -8,6 +8,7 @@
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -16,6 +17,49 @@ try:
     load_dotenv()
 except ImportError:
     pass  # dotenv is optional
+
+
+# Max characters to inject from each context file (prevent bloating context)
+SCRATCHPAD_MAX_CHARS = 3000
+STATE_MAX_CHARS = 2000
+
+
+def load_context_files(cwd):
+    """
+    Load SCRATCHPAD.md and specs/state.md for context injection.
+    Returns combined context string or None if no files found.
+    """
+    context_parts = []
+
+    # Load SCRATCHPAD.md (session bridge)
+    scratchpad_path = Path(cwd) / "SCRATCHPAD.md"
+    if scratchpad_path.exists():
+        try:
+            content = scratchpad_path.read_text().strip()
+            # Skip if it's just the template (not yet filled in)
+            if content and "(not yet)" not in content.split('\n')[5:6]:
+                if len(content) > SCRATCHPAD_MAX_CHARS:
+                    content = content[:SCRATCHPAD_MAX_CHARS] + "\n\n... (truncated)"
+                context_parts.append(f"## Session Scratchpad\n{content}")
+        except Exception:
+            pass
+
+    # Load specs/state.md (plan alignment)
+    state_path = Path(cwd) / "specs" / "state.md"
+    if state_path.exists():
+        try:
+            content = state_path.read_text().strip()
+            # Skip if it's just the template
+            if content and "(not yet)" not in content.split('\n')[5:6]:
+                if len(content) > STATE_MAX_CHARS:
+                    content = content[:STATE_MAX_CHARS] + "\n\n... (truncated)"
+                context_parts.append(f"## State Alignment\n{content}")
+        except Exception:
+            pass
+
+    if context_parts:
+        return "\n\n---\n\n".join(context_parts)
+    return None
 
 
 def log_user_prompt(session_id, input_data):
@@ -174,6 +218,8 @@ def main():
                           help='Store the last prompt for status line display')
         parser.add_argument('--name-agent', action='store_true',
                           help='Generate an agent name for the session')
+        parser.add_argument('--inject-context', action='store_true',
+                          help='Inject SCRATCHPAD.md and specs/state.md as context')
         args = parser.parse_args()
         
         # Read JSON input from stdin
@@ -203,16 +249,13 @@ def main():
                 output_block_decision(f"Prompt blocked: {reason}")
                 sys.exit(0)
 
-        # Add context information (optional)
-        # Per docs, there are two ways to add context:
-        # 1. Plain text stdout (simpler): Any non-JSON text written to stdout
-        # 2. JSON with additionalContext (structured): Use hookSpecificOutput format
-        #
-        # Example plain text:
-        # print(f"Current time: {datetime.now()}")
-        #
-        # Example JSON (use output_additional_context helper):
-        # output_additional_context(f"Current time: {datetime.now()}")
+        # Inject context from SCRATCHPAD.md and specs/state.md
+        if args.inject_context:
+            cwd = input_data.get('cwd', os.getcwd())
+            context = load_context_files(cwd)
+            if context:
+                output_additional_context(context)
+                sys.exit(0)
 
         # Success - prompt will be processed
         sys.exit(0)
