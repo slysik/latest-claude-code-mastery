@@ -112,12 +112,17 @@ outputs/
 
 extras/
 
+# Next.js build output
+.next/
+
 # Claude Code data
 .claude/data/
 
 # Database files
 *.db
 *.sqlite
+*.db-wal
+*.db-shm
 
 # Task manager data
 apps/task-manager/data/
