@@ -859,6 +859,26 @@ The TSC validator automatically detects the package manager (npm, yarn, pnpm, bu
 #    - Task system coordinates everything
 ```
 
+### `/plan_w_team_v3` — Iterative Multi-Model Review
+
+The v3 evolution adds **7 review cycles** across 3 tiers before any code is written: local models (free), cross-model APIs (Codex + Gemini), and Claude Opus subagents. Each review receives all prior review outputs for cumulative refinement.
+
+<img src="images/plan-v3-architecture.png" alt="/plan_w_team_v3 Architecture — 9 phases, 7 reviews, 7 drafts" style="max-width: 800px; width: 100%;" />
+
+| Phase | Review | Model | Cost | Focus |
+|-------|--------|-------|------|-------|
+| 1 | Draft Plan | Orchestrator (Opus) | — | Parse requirements, explore codebase, write initial draft |
+| 2 | Review 0A | llama3.2:3b via Ollama | Free | Simplicity — over-engineering, unnecessary complexity |
+| 3 | Review 0B | llama3.2:3b via Ollama | Free | Security — vulns, auth gaps, input validation |
+| 4 | Review 1A | codex-mini-latest (OpenAI) | API | Architecture blind spots, completeness gaps |
+| 5 | Review 1C | gemini-2.5-flash (Google) | API | Cross-model perspective, different blind spots |
+| 6 | Review 1B | Claude Opus (subagent) | API | Architecture coherence, pattern consistency |
+| 7 | Review 2 | Claude Opus (subagent) | API | Implementation feasibility, risk assessment |
+| 8 | Review 3 | Claude Opus (subagent) | API | Quality Gate — PASS / CONDITIONAL PASS / FAIL |
+| 9 | Finalize | Orchestrator (Opus) | — | Incorporate adjustments, add review history, save to specs/ |
+
+**Key principle:** Local reviews run first (free, instant) to catch obvious issues before burning API credits on cross-model and Claude reviews. Each review produces a new draft in `specs/drafts/` for full auditability.
+
 ### Configuration
 
 - `ruff.toml` - Ruff linter rules
