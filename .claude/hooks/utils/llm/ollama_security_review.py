@@ -19,8 +19,10 @@ Usage:
     uv run ollama_security_review.py specs/drafts/my-plan-draft-2.md --review-type security
 """
 
+import json
 import os
 import sys
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -160,6 +162,7 @@ Provide your security review now. Be specific about attack vectors and reference
 
         print(f"Calling {model} via Ollama for {review_type} review...", file=sys.stderr)
 
+        start_time = time.time()
         response = client.chat.completions.create(
             model=model,
             messages=[
@@ -175,6 +178,8 @@ Provide your security review now. Be specific about attack vectors and reference
 
         review_text = response.choices[0].message.content.strip()
 
+        duration_ms = int((time.time() - start_time) * 1000)
+
         result = f"""## Ollama Security Review ({review_type.title()})
 **Model**: {model} (local via Ollama)
 **Review Type**: {review_type}
@@ -183,6 +188,25 @@ Provide your security review now. Be specific about attack vectors and reference
 ---
 
 {review_text}"""
+
+        # Log telemetry
+        try:
+            project_dir = os.getenv("CLAUDE_PROJECT_DIR", ".")
+            telemetry_path = os.path.join(project_dir, "logs", "review_telemetry.jsonl")
+            os.makedirs(os.path.dirname(telemetry_path), exist_ok=True)
+            telemetry_entry = {
+                "plan_id": os.path.basename(plan_path).replace(".md", ""),
+                "review_id": "0B",
+                "model_name": model,
+                "review_type": review_type,
+                "duration_ms": duration_ms,
+                "raw_markdown": review_text,
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            }
+            with open(telemetry_path, "a", encoding="utf-8") as tf:
+                tf.write(json.dumps(telemetry_entry) + "\n")
+        except Exception as te:
+            print(f"Warning: Failed to write telemetry: {te}", file=sys.stderr)
 
         return result
 

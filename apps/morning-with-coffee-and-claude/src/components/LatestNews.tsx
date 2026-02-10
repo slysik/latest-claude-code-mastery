@@ -33,7 +33,7 @@ export default function LatestNews({ items }: LatestNewsProps) {
   if (items.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="font-body text-anthropic-mid-gray italic">
+        <p className="font-body text-anthropic-dark/60 italic">
           No headlines yet — check back after the morning edition.
         </p>
       </div>

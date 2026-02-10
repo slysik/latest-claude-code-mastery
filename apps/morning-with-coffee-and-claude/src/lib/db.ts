@@ -5,6 +5,10 @@ import type {
   SentimentDailySnapshot,
   EcosystemEntry,
   DashboardData,
+  ChangelogHighlight,
+  ReviewTelemetryEntry,
+  ReviewTelemetrySummary,
+  AgentConfigMeta,
 } from './types'
 
 // ---------------------------------------------------------------------------
@@ -58,8 +62,49 @@ function rowToClassifiedItem(row: Record<string, unknown>): ClassifiedItem {
     oneLineQuote: (row.one_line_quote as string) ?? null,
     isTip: Boolean(row.is_tip),
     tipConfidence: (row.tip_confidence as number) ?? null,
+    communityAction: (row.community_action as string) ?? null,
+    patternType: (row.pattern_type as ClassifiedItem['patternType']) ?? null,
+    patternRecipe: (row.pattern_recipe as string) ?? null,
     fetchedAt: row.fetched_at as string,
     createdAt: row.created_at as string,
+  }
+}
+
+function rowToChangelogHighlight(row: Record<string, unknown>): ChangelogHighlight {
+  return {
+    id: row.id as number,
+    date: row.date as string,
+    releaseTag: row.release_tag as string,
+    prevReleaseTag: (row.prev_release_tag as string) ?? null,
+    releaseUrl: row.release_url as string,
+    hookRelevance: safeParseJson<string[]>(row.hook_relevance as string | null, []),
+    highlights: safeParseJson<string[]>(row.highlights as string | null, []),
+    breakingChanges: safeParseJson<string[]>(row.breaking_changes as string | null, []),
+    diffStats: safeParseJson<ChangelogHighlight['diffStats']>(
+      row.diff_stats as string | null,
+      null,
+    ),
+    rawBody: (row.raw_body as string) ?? '',
+    fetchedAt: row.fetched_at as string,
+  }
+}
+
+function rowToReviewTelemetryEntry(row: Record<string, unknown>): ReviewTelemetryEntry {
+  return {
+    id: row.id as number,
+    date: row.date as string,
+    planId: row.plan_id as string,
+    reviewId: row.review_id as string,
+    modelName: row.model_name as string,
+    reviewType: row.review_type as string,
+    criticalIssues: (row.critical_issues as number) ?? 0,
+    improvements: (row.improvements as number) ?? 0,
+    suggestions: (row.suggestions as number) ?? 0,
+    strengths: (row.strengths as number) ?? 0,
+    verdict: (row.verdict as string) ?? null,
+    confidenceScore: (row.confidence_score as number) ?? null,
+    durationMs: (row.duration_ms as number) ?? null,
+    fetchedAt: row.fetched_at as string,
   }
 }
 
@@ -78,6 +123,10 @@ function rowToEcosystemEntry(row: Record<string, unknown>): EcosystemEntry {
       [],
     ),
     mentionCount: (row.mention_count as number) ?? 0,
+    agentMeta: safeParseJson<AgentConfigMeta | null>(
+      row.agent_meta as string | null,
+      null,
+    ),
   }
 }
 
@@ -130,6 +179,7 @@ async function initSchema(): Promise<void> {
       one_line_quote TEXT,
       is_tip INTEGER DEFAULT 0,
       tip_confidence REAL,
+      community_action TEXT,
       fetched_at TEXT NOT NULL,
       created_at TEXT NOT NULL
     )
@@ -180,6 +230,79 @@ async function initSchema(): Promise<void> {
     'CREATE INDEX IF NOT EXISTS idx_ecosystem_stars ON ecosystem(stars)',
   )
 
+  // New tables
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS changelog_highlights (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date TEXT NOT NULL,
+      release_tag TEXT NOT NULL UNIQUE,
+      prev_release_tag TEXT,
+      release_url TEXT NOT NULL,
+      hook_relevance TEXT DEFAULT '[]',
+      highlights TEXT DEFAULT '[]',
+      breaking_changes TEXT DEFAULT '[]',
+      diff_stats TEXT,
+      raw_body TEXT DEFAULT '',
+      fetched_at TEXT NOT NULL
+    )
+  `)
+
+  await db.execute(
+    'CREATE INDEX IF NOT EXISTS idx_changelog_date ON changelog_highlights(date)',
+  )
+
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS review_telemetry (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      date TEXT NOT NULL,
+      plan_id TEXT NOT NULL,
+      review_id TEXT NOT NULL,
+      model_name TEXT NOT NULL,
+      review_type TEXT NOT NULL,
+      critical_issues INTEGER DEFAULT 0,
+      improvements INTEGER DEFAULT 0,
+      suggestions INTEGER DEFAULT 0,
+      strengths INTEGER DEFAULT 0,
+      verdict TEXT,
+      confidence_score REAL,
+      duration_ms INTEGER,
+      fetched_at TEXT NOT NULL,
+      UNIQUE(plan_id, review_id)
+    )
+  `)
+
+  await db.execute(
+    'CREATE INDEX IF NOT EXISTS idx_telemetry_date ON review_telemetry(date)',
+  )
+  await db.execute(
+    'CREATE INDEX IF NOT EXISTS idx_telemetry_model ON review_telemetry(model_name)',
+  )
+
+  // Migrations for existing databases
+  try {
+    await db.execute('ALTER TABLE items ADD COLUMN community_action TEXT')
+  } catch {
+    // Column already exists — ignore
+  }
+
+  try {
+    await db.execute('ALTER TABLE items ADD COLUMN pattern_type TEXT')
+  } catch {
+    // Column already exists — ignore
+  }
+
+  try {
+    await db.execute('ALTER TABLE items ADD COLUMN pattern_recipe TEXT')
+  } catch {
+    // Column already exists — ignore
+  }
+
+  try {
+    await db.execute('ALTER TABLE ecosystem ADD COLUMN agent_meta TEXT')
+  } catch {
+    // Column already exists — ignore
+  }
+
   schemaInitialized = true
 }
 
@@ -191,12 +314,17 @@ const ITEM_UPSERT_SQL = `
   INSERT INTO items (
     date, source, category, title, url, author, excerpt, thumbnail_url,
     engagement_score, raw_metrics, sentiment, sentiment_confidence,
-    topic_tags, one_line_quote, is_tip, tip_confidence, fetched_at, created_at
-  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    topic_tags, one_line_quote, is_tip, tip_confidence, community_action,
+    pattern_type, pattern_recipe,
+    fetched_at, created_at
+  ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   ON CONFLICT(url) DO UPDATE SET
     engagement_score = excluded.engagement_score,
     raw_metrics = excluded.raw_metrics,
-    excerpt = excluded.excerpt
+    excerpt = excluded.excerpt,
+    community_action = excluded.community_action,
+    pattern_type = excluded.pattern_type,
+    pattern_recipe = excluded.pattern_recipe
 `
 
 function classifiedItemToParams(item: ClassifiedItem): unknown[] {
@@ -217,6 +345,9 @@ function classifiedItemToParams(item: ClassifiedItem): unknown[] {
     item.oneLineQuote,
     item.isTip ? 1 : 0,
     item.tipConfidence,
+    item.communityAction,
+    item.patternType,
+    item.patternRecipe,
     item.fetchedAt,
     item.createdAt,
   ]
@@ -321,21 +452,60 @@ export async function runPipelineTransaction(
 // Query functions
 // ---------------------------------------------------------------------------
 
+export async function getRecentReleases(
+  limit = 10,
+): Promise<ClassifiedItem[]> {
+  await initSchema()
+  const db = getDb()
+
+  const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString().split('T')[0]
+
+  const result = await db.execute({
+    sql: `
+      SELECT * FROM items
+      WHERE source = 'github' AND category = 'feature'
+        AND date >= ?
+      ORDER BY created_at DESC
+      LIMIT ?
+    `,
+    args: [cutoff, limit],
+  })
+
+  return result.rows.map((row) =>
+    rowToClassifiedItem(row as unknown as Record<string, unknown>),
+  )
+}
+
 export async function getDashboardData(): Promise<DashboardData> {
   try {
     await initSchema()
-    const [items, sentiment, sentimentHistory, ecosystem] = await Promise.all([
+    const [
+      items, releases, sentiment, sentimentHistory, ecosystem,
+      changelog, patternOfTheDay, reviewTelemetry,
+    ] = await Promise.all([
       getLatestItems(),
+      getRecentReleases(),
       getSentimentSnapshot(),
       getSentimentHistory(),
       getEcosystemEntries(),
+      getChangelogHighlights(),
+      getPatternOfTheDay(),
+      getReviewTelemetrySummary(),
     ])
 
+    // Merge releases into items (dedup by URL)
+    const itemUrls = new Set(items.map((i) => i.url))
+    const uniqueReleases = releases.filter((r) => !itemUrls.has(r.url))
+    const allItems = [...items, ...uniqueReleases]
+
     return {
-      items,
+      items: allItems,
       sentiment,
       sentimentHistory,
       ecosystem,
+      changelog,
+      patternOfTheDay,
+      reviewTelemetry,
       lastUpdated: new Date().toISOString(),
     }
   } catch {
@@ -344,6 +514,9 @@ export async function getDashboardData(): Promise<DashboardData> {
       sentiment: null,
       sentimentHistory: [],
       ecosystem: [],
+      changelog: [],
+      patternOfTheDay: null,
+      reviewTelemetry: null,
       lastUpdated: null,
     }
   }
@@ -360,11 +533,11 @@ export async function getLatestItems(
   const result = await db.execute({
     sql: `
       SELECT * FROM items
-      WHERE date = ?
+      WHERE date >= date(?, '-2 days') AND date <= ?
       ORDER BY engagement_score DESC
       LIMIT ?
     `,
-    args: [targetDate, limit],
+    args: [targetDate, targetDate, limit],
   })
 
   return result.rows.map((row) =>
@@ -452,6 +625,7 @@ export async function getSentimentHistory(
         tp.topic_tags AS tp_topic_tags,
         tp.one_line_quote AS tp_one_line_quote,
         tp.is_tip AS tp_is_tip, tp.tip_confidence AS tp_tip_confidence,
+        tp.community_action AS tp_community_action,
         tp.fetched_at AS tp_fetched_at, tp.created_at AS tp_created_at,
         tn.id AS tn_id, tn.date AS tn_date, tn.source AS tn_source,
         tn.category AS tn_category, tn.title AS tn_title, tn.url AS tn_url,
@@ -464,6 +638,7 @@ export async function getSentimentHistory(
         tn.topic_tags AS tn_topic_tags,
         tn.one_line_quote AS tn_one_line_quote,
         tn.is_tip AS tn_is_tip, tn.tip_confidence AS tn_tip_confidence,
+        tn.community_action AS tn_community_action,
         tn.fetched_at AS tn_fetched_at, tn.created_at AS tn_created_at
       FROM sentiment_daily s
       LEFT JOIN items tp ON s.top_positive_id = tp.id
@@ -496,6 +671,7 @@ export async function getSentimentHistory(
           one_line_quote: r.tp_one_line_quote,
           is_tip: r.tp_is_tip,
           tip_confidence: r.tp_tip_confidence,
+          community_action: r.tp_community_action,
           fetched_at: r.tp_fetched_at,
           created_at: r.tp_created_at,
         })
@@ -520,6 +696,7 @@ export async function getSentimentHistory(
           one_line_quote: r.tn_one_line_quote,
           is_tip: r.tn_is_tip,
           tip_confidence: r.tn_tip_confidence,
+          community_action: r.tn_community_action,
           fetched_at: r.tn_fetched_at,
           created_at: r.tn_created_at,
         })
@@ -613,33 +790,260 @@ export async function upsertEcosystemEntries(
   const db = getDb()
 
   for (const entry of entries) {
+    if (entry.githubUrl) {
+      // Upsert by github_url for entries with a URL
+      await db.execute({
+        sql: `
+          INSERT INTO ecosystem (
+            name, type, author, description, github_url,
+            stars, last_updated, category_tags, mention_count, agent_meta
+          ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(github_url) DO UPDATE SET
+            name = excluded.name,
+            stars = excluded.stars,
+            last_updated = excluded.last_updated,
+            description = excluded.description,
+            mention_count = excluded.mention_count,
+            category_tags = excluded.category_tags,
+            agent_meta = excluded.agent_meta
+        `,
+        args: [
+          entry.name,
+          entry.type,
+          entry.author,
+          entry.description,
+          entry.githubUrl,
+          entry.stars,
+          entry.lastUpdated,
+          JSON.stringify(entry.categoryTags),
+          entry.mentionCount,
+          entry.agentMeta ? JSON.stringify(entry.agentMeta) : null,
+        ],
+      })
+    } else {
+      // For entries without github_url, check by name to avoid duplicates
+      const existing = await db.execute({
+        sql: 'SELECT id FROM ecosystem WHERE name = ? AND github_url IS NULL',
+        args: [entry.name],
+      })
+      if (existing.rows.length === 0) {
+        await db.execute({
+          sql: `
+            INSERT INTO ecosystem (
+              name, type, author, description, github_url,
+              stars, last_updated, category_tags, mention_count, agent_meta
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `,
+          args: [
+            entry.name,
+            entry.type,
+            entry.author,
+            entry.description,
+            null,
+            entry.stars,
+            entry.lastUpdated,
+            JSON.stringify(entry.categoryTags),
+            entry.mentionCount,
+            entry.agentMeta ? JSON.stringify(entry.agentMeta) : null,
+          ],
+        })
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Changelog highlights
+// ---------------------------------------------------------------------------
+
+export async function upsertChangelogHighlights(
+  highlights: ChangelogHighlight[],
+): Promise<void> {
+  await initSchema()
+  const db = getDb()
+
+  for (const h of highlights) {
     await db.execute({
       sql: `
-        INSERT INTO ecosystem (
-          name, type, author, description, github_url,
-          stars, last_updated, category_tags, mention_count
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(github_url) DO UPDATE SET
-          name = excluded.name,
-          stars = excluded.stars,
-          last_updated = excluded.last_updated,
-          description = excluded.description,
-          mention_count = excluded.mention_count
+        INSERT INTO changelog_highlights (
+          date, release_tag, prev_release_tag, release_url,
+          hook_relevance, highlights, breaking_changes,
+          diff_stats, raw_body, fetched_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(release_tag) DO UPDATE SET
+          hook_relevance = excluded.hook_relevance,
+          highlights = excluded.highlights,
+          breaking_changes = excluded.breaking_changes,
+          diff_stats = excluded.diff_stats,
+          raw_body = excluded.raw_body,
+          fetched_at = excluded.fetched_at
       `,
       args: [
-        entry.name,
-        entry.type,
-        entry.author,
-        entry.description,
-        entry.githubUrl,
-        entry.stars,
-        entry.lastUpdated,
-        JSON.stringify(entry.categoryTags),
-        entry.mentionCount,
+        h.date,
+        h.releaseTag,
+        h.prevReleaseTag,
+        h.releaseUrl,
+        JSON.stringify(h.hookRelevance),
+        JSON.stringify(h.highlights),
+        JSON.stringify(h.breakingChanges),
+        h.diffStats ? JSON.stringify(h.diffStats) : null,
+        h.rawBody,
+        h.fetchedAt,
       ],
     })
   }
 }
+
+export async function getChangelogHighlights(
+  limit = 5,
+): Promise<ChangelogHighlight[]> {
+  await initSchema()
+  const db = getDb()
+
+  const result = await db.execute({
+    sql: 'SELECT * FROM changelog_highlights ORDER BY date DESC LIMIT ?',
+    args: [limit],
+  })
+
+  return result.rows.map((row) =>
+    rowToChangelogHighlight(row as unknown as Record<string, unknown>),
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Pattern of the Day
+// ---------------------------------------------------------------------------
+
+export async function getPatternOfTheDay(
+  date?: string,
+): Promise<ClassifiedItem | null> {
+  await initSchema()
+  const db = getDb()
+
+  const targetDate = date ?? new Date().toISOString().split('T')[0]
+  const result = await db.execute({
+    sql: `
+      SELECT * FROM items
+      WHERE pattern_type IS NOT NULL
+        AND date >= date(?, '-2 days') AND date <= ?
+      ORDER BY engagement_score DESC
+      LIMIT 1
+    `,
+    args: [targetDate, targetDate],
+  })
+
+  if (result.rows.length === 0) return null
+  return rowToClassifiedItem(result.rows[0] as unknown as Record<string, unknown>)
+}
+
+// ---------------------------------------------------------------------------
+// Review telemetry
+// ---------------------------------------------------------------------------
+
+export async function upsertReviewTelemetry(
+  entries: ReviewTelemetryEntry[],
+): Promise<void> {
+  await initSchema()
+  const db = getDb()
+
+  for (const entry of entries) {
+    await db.execute({
+      sql: `
+        INSERT INTO review_telemetry (
+          date, plan_id, review_id, model_name, review_type,
+          critical_issues, improvements, suggestions, strengths,
+          verdict, confidence_score, duration_ms, fetched_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(plan_id, review_id) DO UPDATE SET
+          critical_issues = excluded.critical_issues,
+          improvements = excluded.improvements,
+          suggestions = excluded.suggestions,
+          strengths = excluded.strengths,
+          verdict = excluded.verdict,
+          confidence_score = excluded.confidence_score,
+          duration_ms = excluded.duration_ms,
+          fetched_at = excluded.fetched_at
+      `,
+      args: [
+        entry.date,
+        entry.planId,
+        entry.reviewId,
+        entry.modelName,
+        entry.reviewType,
+        entry.criticalIssues,
+        entry.improvements,
+        entry.suggestions,
+        entry.strengths,
+        entry.verdict,
+        entry.confidenceScore,
+        entry.durationMs,
+        entry.fetchedAt,
+      ],
+    })
+  }
+}
+
+export async function getReviewTelemetrySummary(
+  days = 30,
+): Promise<ReviewTelemetrySummary | null> {
+  await initSchema()
+  const db = getDb()
+
+  const cutoff = `-${days} days`
+
+  const [countResult, byModelResult, recentResult] = await Promise.all([
+    db.execute({
+      sql: "SELECT COUNT(*) as total FROM review_telemetry WHERE date >= date('now', ?)",
+      args: [cutoff],
+    }),
+    db.execute({
+      sql: `
+        SELECT
+          model_name,
+          COUNT(*) as review_count,
+          AVG(critical_issues) as avg_critical_issues,
+          AVG(improvements) as avg_improvements
+        FROM review_telemetry
+        WHERE date >= date('now', ?)
+        GROUP BY model_name
+        ORDER BY review_count DESC
+      `,
+      args: [cutoff],
+    }),
+    db.execute({
+      sql: `
+        SELECT * FROM review_telemetry
+        WHERE date >= date('now', ?)
+        ORDER BY date DESC, fetched_at DESC
+        LIMIT 10
+      `,
+      args: [cutoff],
+    }),
+  ])
+
+  const total = (countResult.rows[0] as unknown as Record<string, unknown>).total as number
+  if (total === 0) return null
+
+  return {
+    totalReviews: total,
+    byModel: byModelResult.rows.map((row) => {
+      const r = row as unknown as Record<string, unknown>
+      return {
+        modelName: r.model_name as string,
+        reviewCount: r.review_count as number,
+        avgCriticalIssues: Math.round(((r.avg_critical_issues as number) ?? 0) * 10) / 10,
+        avgImprovements: Math.round(((r.avg_improvements as number) ?? 0) * 10) / 10,
+      }
+    }),
+    recentReviews: recentResult.rows.map((row) =>
+      rowToReviewTelemetryEntry(row as unknown as Record<string, unknown>),
+    ),
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Prune
+// ---------------------------------------------------------------------------
 
 export async function pruneOldData(
   itemDays = 90,

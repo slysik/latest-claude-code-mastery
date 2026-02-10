@@ -17,7 +17,7 @@ async function callSummaryApi(
   const itemLines = items
     .map((item, i) => {
       const excerpt = item.excerpt ? item.excerpt.slice(0, 200) : '(no excerpt)';
-      return `${i + 1}. [${item.source}/${item.category}] "${item.title}" — ${excerpt}`;
+      return `${i + 1}. [${item.source}/${item.category}] "${item.title}" (${item.url}) — ${excerpt}`;
     })
     .join('\n');
 
@@ -26,8 +26,14 @@ async function callSummaryApi(
     : '';
 
   const prompt = `You are the editor of "Morning with Coffee & Claude," a daily Claude Code ecosystem briefing.
-Write a 2-4 sentence conversational summary highlighting the top 3 developments from today.
+Write a 3-5 sentence conversational summary highlighting the top 3 developments from today.
 Tone: like a tech newsletter intro — warm, opinionated, not sterile.
+
+CRITICAL RULES:
+1. When you mention a tool, project, or article, link to it using markdown: [name](url). Use ONLY the URLs provided in the items below — NEVER invent or guess URLs.
+2. NEVER fabricate install commands, brew formulas, CLI commands, or signup links. If the source excerpt mentions a specific command, you may quote it. Otherwise, just link to the source and let the reader find instructions there.
+3. If you want to suggest an action (like "check it out" or "try it"), link to the actual source URL.
+4. DO NOT end with questions like "Would you like me to elaborate?" — this is a static briefing, not a conversation.
 
 Today's top items:
 ${itemLines}
@@ -37,7 +43,7 @@ ${continuityLine}`;
     try {
       const response = await client.messages.create({
         model: 'claude-3-5-haiku-20241022',
-        max_tokens: 512,
+        max_tokens: 768,
         messages: [{ role: 'user', content: prompt }],
       });
 

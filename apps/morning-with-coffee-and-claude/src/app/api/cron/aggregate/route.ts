@@ -6,7 +6,12 @@ import {
   fetchAnthropic,
   fetchTwitter,
   fetchRss,
+  fetchHackerNews,
+  fetchAwesomeLists,
+  fetchAgentConfigs,
 } from '@/lib/fetchers'
+import { fetchReleasesRaw } from '@/lib/fetchers/github'
+import { classifyChangelogs } from '@/lib/changelog-classifier'
 import { classifyItems } from '@/lib/sentiment'
 import { generateSummary } from '@/lib/summarizer'
 import { rankItems } from '@/lib/ranker'
@@ -15,8 +20,11 @@ import {
   runPipelineTransaction,
   getSentimentSnapshot,
   upsertEcosystemEntries,
+  upsertChangelogHighlights,
+  upsertReviewTelemetry,
   pruneOldData,
 } from '@/lib/db'
+import { fetchReviewTelemetry } from '@/lib/fetchers/review-telemetry'
 import type { FetchedItem, EcosystemEntry } from '@/lib/types'
 
 export const dynamic = 'force-dynamic'
@@ -55,16 +63,28 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // 4. Fetch from all 6 sources in parallel
-    const results = await Promise.allSettled([
-      fetchReddit(),
-      fetchYouTube(),
-      fetchGitHub(),
-      fetchAnthropic(),
-      fetchTwitter(),
-      fetchRss(),
+    // 4. Fetch from all 7 sources in parallel (+ ecosystem from awesome lists)
+    const [itemResults, awesomeResult, agentConfigResult] = await Promise.all([
+      Promise.allSettled([
+        fetchReddit(),
+        fetchYouTube(),
+        fetchGitHub(),
+        fetchAnthropic(),
+        fetchTwitter(),
+        fetchRss(),
+        fetchHackerNews(),
+      ]),
+      fetchAwesomeLists().catch((err) => {
+        console.error('[awesome] Failed:', err)
+        return []
+      }),
+      fetchAgentConfigs().catch((err) => {
+        console.error('[agent-configs] Failed:', err)
+        return []
+      }),
     ])
 
+    const results = itemResults
     const sourceNames = [
       'reddit',
       'youtube',
@@ -72,6 +92,7 @@ export async function GET(request: NextRequest) {
       'anthropic',
       'twitter',
       'rss',
+      'hackernews',
     ]
     const allItems: FetchedItem[] = []
     const sourceCounts: Record<string, number> = {}
@@ -95,6 +116,13 @@ export async function GET(request: NextRequest) {
 
     // 6. Classify sentiment
     const classified = await classifyItems(ranked)
+
+    // 6b. Changelog analysis
+    const rawReleases = await fetchReleasesRaw()
+    const changelogHighlights = await classifyChangelogs(rawReleases.slice(0, 3))
+    if (changelogHighlights.length > 0) {
+      await upsertChangelogHighlights(changelogHighlights)
+    }
 
     // 7. Generate summary
     const yesterday = new Date(Date.now() - 86400000)
@@ -145,12 +173,17 @@ export async function GET(request: NextRequest) {
       summary,
     })
 
-    // 10. Ecosystem population from GitHub plugin results
+    // 10. Ecosystem population from awesome lists + GitHub plugin results
+    const allEcosystemEntries: EcosystemEntry[] = [...awesomeResult, ...agentConfigResult]
+
+    // Also include GitHub trending repos classified as plugins
     const pluginItems = classified.filter(
       (i) => i.source === 'github' && i.category === 'plugin',
     )
-    if (pluginItems.length > 0) {
-      const ecosystemEntries: EcosystemEntry[] = pluginItems.map((item) => ({
+    for (const item of pluginItems) {
+      // Skip if already in awesome list results (by URL)
+      if (allEcosystemEntries.some((e) => e.githubUrl === item.url)) continue
+      allEcosystemEntries.push({
         name: item.title,
         type: 'plugin' as const,
         author: item.author,
@@ -160,8 +193,18 @@ export async function GET(request: NextRequest) {
         lastUpdated: item.createdAt,
         categoryTags: [],
         mentionCount: 0,
-      }))
-      await upsertEcosystemEntries(ecosystemEntries)
+        agentMeta: null,
+      })
+    }
+
+    if (allEcosystemEntries.length > 0) {
+      await upsertEcosystemEntries(allEcosystemEntries)
+    }
+
+    // 10b. Review telemetry
+    const telemetryEntries = await fetchReviewTelemetry()
+    if (telemetryEntries.length > 0) {
+      await upsertReviewTelemetry(telemetryEntries)
     }
 
     // 11. Data retention
@@ -181,7 +224,7 @@ export async function GET(request: NextRequest) {
       totalItems: classified.length,
       sentimentClassified: sampleSize,
       summaryGenerated: !!summary,
-      ecosystemEntries: pluginItems.length,
+      ecosystemEntries: allEcosystemEntries.length,
       pruned,
       durationMs,
       errors,

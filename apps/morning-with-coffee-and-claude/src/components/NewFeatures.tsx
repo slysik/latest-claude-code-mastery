@@ -9,7 +9,7 @@ export default function NewFeatures({ releases }: NewFeaturesProps) {
   if (releases.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="font-body text-anthropic-mid-gray italic">
+        <p className="font-body text-white/60 italic">
           No recent releases to report.
         </p>
       </div>
@@ -18,7 +18,7 @@ export default function NewFeatures({ releases }: NewFeaturesProps) {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-heading text-h3 text-anthropic-dark">Changelog</h2>
+      <h2 className="font-heading text-h3 text-white">Changelog</h2>
       <div className="space-y-4">
         {releases.map((release) => {
           const isBreaking =
@@ -34,8 +34,8 @@ export default function NewFeatures({ releases }: NewFeaturesProps) {
               key={release.url}
               className={`border-l-4 rounded-lg p-4 ${
                 isBreaking
-                  ? 'border-l-anthropic-orange bg-anthropic-orange/5'
-                  : 'border-l-anthropic-light-gray bg-anthropic-light-gray/30'
+                  ? 'border-l-anthropic-orange bg-anthropic-dark/90'
+                  : 'border-l-anthropic-mid-gray bg-anthropic-dark/80'
               }`}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -50,7 +50,7 @@ export default function NewFeatures({ releases }: NewFeaturesProps) {
                 href={release.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-heading text-small font-medium text-anthropic-dark hover:text-anthropic-blue transition-colors"
+                className="font-heading text-small font-medium text-white hover:text-anthropic-blue transition-colors"
               >
                 {release.title}
               </a>
@@ -59,9 +59,9 @@ export default function NewFeatures({ releases }: NewFeaturesProps) {
                   {release.excerpt.split('\n').filter(Boolean).slice(0, 4).map((line, i) => (
                     <li
                       key={i}
-                      className="font-body text-xs text-anthropic-dark/70 flex items-start gap-2"
+                      className="font-body text-xs text-white/70 flex items-start gap-2"
                     >
-                      <span className="text-anthropic-mid-gray mt-0.5" aria-hidden="true">&bull;</span>
+                      <span className="text-white/40 mt-0.5" aria-hidden="true">&bull;</span>
                       <span>{line.replace(/^[-*]\s*/, '')}</span>
                     </li>
                   ))}

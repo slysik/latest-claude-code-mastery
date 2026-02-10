@@ -18,8 +18,10 @@ Usage:
     uv run gemini_review.py specs/drafts/my-plan-draft-2.md --review-type architecture
 """
 
+import json
 import os
 import sys
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -150,6 +152,7 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
 
         client = genai.Client(api_key=api_key)
 
+        start_time = time.time()
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=full_prompt,
@@ -162,6 +165,8 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
 
         review_text = response.text.strip()
 
+        duration_ms = int((time.time() - start_time) * 1000)
+
         # Include metadata
         result = f"""## Gemini Review ({review_type.title()})
 **Model**: gemini-2.5-flash
@@ -171,6 +176,25 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
 ---
 
 {review_text}"""
+
+        # Log telemetry
+        try:
+            project_dir = os.getenv("CLAUDE_PROJECT_DIR", ".")
+            telemetry_path = os.path.join(project_dir, "logs", "review_telemetry.jsonl")
+            os.makedirs(os.path.dirname(telemetry_path), exist_ok=True)
+            telemetry_entry = {
+                "plan_id": os.path.basename(plan_path).replace(".md", ""),
+                "review_id": "1C",
+                "model_name": "gemini-2.5-flash",
+                "review_type": review_type,
+                "duration_ms": duration_ms,
+                "raw_markdown": review_text,
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            }
+            with open(telemetry_path, "a", encoding="utf-8") as tf:
+                tf.write(json.dumps(telemetry_entry) + "\n")
+        except Exception as te:
+            print(f"Warning: Failed to write telemetry: {te}", file=sys.stderr)
 
         return result
 

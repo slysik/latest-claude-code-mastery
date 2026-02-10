@@ -14,6 +14,9 @@ interface ClassificationResult {
   one_line_quote: string | null;
   is_tip: boolean;
   tip_confidence: number | null;
+  community_action: string | null;
+  pattern_type: 'workflow' | 'context_strategy' | 'model_mix' | 'hook_pattern' | null;
+  pattern_recipe: string | null;
 }
 
 function toUnclassified(item: FetchedItem): ClassifiedItem {
@@ -25,6 +28,9 @@ function toUnclassified(item: FetchedItem): ClassifiedItem {
     oneLineQuote: null,
     isTip: false,
     tipConfidence: null,
+    communityAction: null,
+    patternType: null,
+    patternRecipe: null,
   };
 }
 
@@ -71,19 +77,31 @@ async function classifyBatch(
 4. Quote: one standout line from the content (or null)
 5. Is this an actionable tip? (true/false)
 6. Tip confidence: 0.0 to 1.0 (only if is_tip=true)
+7. Community action: A specific, actionable tip the reader can try RIGHT NOW based on this item. Include a copy-paste command, config snippet, or concrete step. Examples:
+   - "Run \`claude config set model opus-4-6\` to switch to the new model"
+   - "Add \`hooks: [pre-tool-use]\` to your .claude/settings.json to enable security checks"
+   - "Try the free tier at openrouter.ai/models to compare costs across providers"
+   If no concrete action is possible from the content, return null. NEVER return vague statements like "Users are seeking alternatives" — either give a specific action or null.
+8. Pattern type: Does this describe a reproducible workflow?
+   - "workflow": Multi-step dev process
+   - "context_strategy": Context window management technique
+   - "model_mix": Multi-model approach
+   - "hook_pattern": Hook-based automation
+   - null: Not a pattern
+9. Pattern recipe: If pattern_type is not null, write 3-5 numbered steps practitioners can follow. Otherwise null.
 
 Return ONLY a JSON array (no markdown fences). Each object must include the index field.
 
 Items:
 ${itemLines}
 
-Response format: [{"index": 1, "sentiment": "positive", "confidence": 0.9, "topic": "hooks", "one_line_quote": "...", "is_tip": false, "tip_confidence": null}, ...]`;
+Response format: [{"index": 1, "sentiment": "positive", "confidence": 0.9, "topic": "hooks", "one_line_quote": "...", "is_tip": false, "tip_confidence": null, "community_action": "...", "pattern_type": null, "pattern_recipe": null}, ...]`;
 
   for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
     try {
       const response = await client.messages.create({
         model: 'claude-3-5-haiku-20241022',
-        max_tokens: 2048,
+        max_tokens: 3072,
         messages: [{ role: 'user', content: prompt }],
       });
 
@@ -134,6 +152,11 @@ function mapResultToClassified(
     oneLineQuote: result.one_line_quote ?? null,
     isTip,
     tipConfidence: isTip && typeof result.tip_confidence === 'number' ? result.tip_confidence : null,
+    communityAction: typeof result.community_action === 'string' ? result.community_action : null,
+    patternType: ['workflow', 'context_strategy', 'model_mix', 'hook_pattern'].includes(result.pattern_type as string)
+      ? (result.pattern_type as ClassifiedItem['patternType'])
+      : null,
+    patternRecipe: typeof result.pattern_recipe === 'string' ? result.pattern_recipe : null,
   };
 }
 

@@ -6,18 +6,17 @@ interface YouTubeCarouselProps {
   videos: FetchedItem[]
 }
 
-function formatViewCount(raw: Record<string, number>): string {
-  const views = raw.views ?? raw.viewCount ?? 0
-  if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M views`
-  if (views >= 1_000) return `${(views / 1_000).toFixed(1)}K views`
-  return `${views} views`
+function formatCount(value: number, label: string): string {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M ${label}`
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K ${label}`
+  return `${value} ${label}`
 }
 
 export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
   if (videos.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="font-body text-anthropic-mid-gray italic">
+        <p className="font-body text-anthropic-dark/60 italic">
           Video recommendations coming soon.
         </p>
       </div>
@@ -64,7 +63,13 @@ export default function YouTubeCarousel({ videos }: YouTubeCarouselProps) {
             <div className="flex items-center gap-2 text-xs text-anthropic-mid-gray">
               {video.author && <span className="font-body">{video.author}</span>}
               {video.author && <span aria-hidden="true">&middot;</span>}
-              <span className="font-body">{formatViewCount(video.rawMetrics)}</span>
+              {(video.rawMetrics.likes ?? 0) > 0 && (
+                <>
+                  <span className="font-body">{formatCount(video.rawMetrics.likes, 'likes')}</span>
+                  <span aria-hidden="true">&middot;</span>
+                </>
+              )}
+              <span className="font-body">{formatCount(video.rawMetrics.views ?? 0, 'views')}</span>
             </div>
           </div>
         </a>

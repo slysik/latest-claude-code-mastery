@@ -8,7 +8,7 @@ export default function TopTips({ tips }: TopTipsProps) {
   if (tips.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="font-body text-anthropic-mid-gray italic">
+        <p className="font-body text-anthropic-dark/60 italic">
           Tips will be curated from the community after the first edition.
         </p>
       </div>

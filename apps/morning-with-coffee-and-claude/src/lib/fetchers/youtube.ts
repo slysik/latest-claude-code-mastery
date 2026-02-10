@@ -105,6 +105,8 @@ export async function fetchYouTube(): Promise<FetchedItem[]> {
     return uniqueItems.map((item) => {
       const stats = statsMap.get(item.id.videoId)
       const views = parseInt(stats?.statistics?.viewCount ?? '0', 10)
+      const likes = parseInt(stats?.statistics?.likeCount ?? '0', 10)
+      const comments = parseInt(stats?.statistics?.commentCount ?? '0', 10)
       const thumbnail =
         item.snippet.thumbnails.high?.url ??
         item.snippet.thumbnails.medium?.url ??
@@ -121,7 +123,7 @@ export async function fetchYouTube(): Promise<FetchedItem[]> {
         excerpt: stripTags(item.snippet.description?.slice(0, 300) || null),
         thumbnailUrl: thumbnail,
         engagementScore: 0,
-        rawMetrics: { views },
+        rawMetrics: { views, likes, comments },
         fetchedAt: now,
         createdAt: item.snippet.publishedAt,
       }

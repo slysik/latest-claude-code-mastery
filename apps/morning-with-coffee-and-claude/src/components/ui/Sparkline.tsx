@@ -13,7 +13,7 @@ export function Sparkline({
 }: SparklineProps) {
   if (data.length < 3) {
     return (
-      <span className="text-xs text-anthropic-mid-gray italic">
+      <span className="text-xs text-anthropic-dark/60 italic">
         Not enough data
       </span>
     )

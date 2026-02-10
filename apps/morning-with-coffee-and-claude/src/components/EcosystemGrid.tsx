@@ -14,6 +14,7 @@ const typeVariants: Record<EcosystemEntry['type'], NonNullable<'default' | 'oran
   plugin: 'blue',
   skill: 'green',
   mcp_server: 'default',
+  agent_config: 'orange',
 }
 
 function freshness(dateStr: string | null): string {
@@ -38,17 +39,19 @@ export default function EcosystemGrid({ entries }: EcosystemGridProps) {
   if (entries.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="font-body text-anthropic-mid-gray italic">
+        <p className="font-body text-anthropic-dark/60 italic">
           The ecosystem directory is being populated.
         </p>
       </div>
     )
   }
 
+  const PER_CATEGORY_LIMIT = 10
+
   const filtered =
     selectedCategory === 'All'
-      ? entries
-      : entries.filter((e) => e.type === selectedCategory)
+      ? entries.slice(0, PER_CATEGORY_LIMIT * categories.length)
+      : entries.filter((e) => e.type === selectedCategory).slice(0, PER_CATEGORY_LIMIT)
 
   return (
     <div className="space-y-6">
@@ -58,9 +61,9 @@ export default function EcosystemGrid({ entries }: EcosystemGridProps) {
         onChange={setSelectedCategory}
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filtered.map((entry) => (
+        {filtered.map((entry, idx) => (
           <div
-            key={entry.name}
+            key={entry.githubUrl ?? `${entry.name}-${idx}`}
             className="bg-anthropic-light-gray/30 border border-anthropic-light-gray rounded-lg p-5 flex flex-col gap-3"
           >
             <div className="flex items-center gap-2">
@@ -91,6 +94,19 @@ export default function EcosystemGrid({ entries }: EcosystemGridProps) {
               <p className="font-body text-xs text-anthropic-dark/70 line-clamp-2">
                 {entry.description}
               </p>
+            )}
+            {entry.agentMeta && (
+              <div className="flex flex-wrap gap-1.5">
+                <Badge variant="orange">{entry.agentMeta.configType}</Badge>
+                {entry.agentMeta.modelTier && (
+                  <Badge variant="default">{entry.agentMeta.modelTier}</Badge>
+                )}
+                {entry.agentMeta.toolRestrictions && entry.agentMeta.toolRestrictions.length > 0 && (
+                  <Badge variant="default">
+                    {entry.agentMeta.toolRestrictions.length} tools
+                  </Badge>
+                )}
+              </div>
             )}
             <div className="flex items-center gap-3 mt-auto text-xs text-anthropic-mid-gray">
               {entry.stars > 0 && (

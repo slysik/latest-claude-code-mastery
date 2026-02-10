@@ -7,6 +7,9 @@ import SentimentGauge from './SentimentGauge'
 import EcosystemGrid from './EcosystemGrid'
 import YouTubeCarousel from './YouTubeCarousel'
 import TopTips from './TopTips'
+import PatternOfTheDay from './PatternOfTheDay'
+import DiffOfTheDay from './DiffOfTheDay'
+import ModelMixMonitor from './ModelMixMonitor'
 
 function renderSection(fn: () => React.ReactNode) {
   try {
@@ -24,17 +27,26 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
     day: 'numeric',
   })
 
+  // 48-hour freshness filter
+  const cutoff48h = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
+  const freshItems = data.items.filter(
+    (i) => i.createdAt >= cutoff48h || i.date >= cutoff48h.split('T')[0]
+  )
+
   // Derive section data
-  const news = data.items.filter(
+  const news = freshItems.filter(
     (i) => i.category === 'news' || i.category === 'feature'
   )
-  const releases = data.items.filter(
+  const releases = freshItems.filter(
     (i) => i.source === 'github' && i.category === 'feature'
   )
-  const tips = data.items.filter(
+  const tips = freshItems.filter(
     (i) => i.isTip && (i.tipConfidence ?? 0) > 0.8
   )
-  const videos = data.items.filter((i) => i.category === 'video')
+  const videos = freshItems
+    .filter((i) => i.category === 'video')
+    .sort((a, b) => (b.rawMetrics.likes ?? 0) - (a.rawMetrics.likes ?? 0))
+    .slice(0, 10)
 
   // Staleness check
   const isStale = data.lastUpdated
@@ -50,6 +62,18 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
           Morning with Coffee &amp; Claude
         </h1>
         <p className="font-body text-anthropic-mid-gray mt-2">{today}</p>
+        {data.lastUpdated && (
+          <p className="font-body text-xs text-anthropic-mid-gray/70 mt-1">
+            Pipeline last run: {new Date(data.lastUpdated).toLocaleString('en-US', {
+              month: 'short',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              hour12: true,
+              timeZoneName: 'short',
+            })}
+          </p>
+        )}
       </header>
 
       {/* Staleness warning */}
@@ -81,6 +105,16 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
         </div>
       </div>
 
+      {/* Section divider + Release Intelligence */}
+      <div className="border-t-2 border-anthropic-light-gray pt-12 mt-12">
+        <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
+          RELEASE INTELLIGENCE
+        </p>
+        {renderSection(() => (
+          <DiffOfTheDay changelog={data.changelog} />
+        ))}
+      </div>
+
       {/* Section divider + Community Mood */}
       <div className="border-t-2 border-anthropic-light-gray pt-12 mt-12">
         <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
@@ -104,6 +138,16 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
         ))}
       </div>
 
+      {/* Section divider + Model Mix Monitor */}
+      <div className="border-t-2 border-anthropic-light-gray pt-12 mt-12">
+        <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
+          MODEL MIX MONITOR
+        </p>
+        {renderSection(() => (
+          <ModelMixMonitor telemetry={data.reviewTelemetry} />
+        ))}
+      </div>
+
       {/* Section divider + YouTube */}
       <div className="border-t-2 border-anthropic-light-gray pt-12 mt-12">
         <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
@@ -124,11 +168,21 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
         ))}
       </div>
 
+      {/* Section divider + Pattern of the Day */}
+      <div className="border-t-2 border-anthropic-light-gray pt-12 mt-12">
+        <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
+          PATTERN OF THE DAY
+        </p>
+        {renderSection(() => (
+          <PatternOfTheDay pattern={data.patternOfTheDay} />
+        ))}
+      </div>
+
       {/* Footer */}
       <footer className="text-center font-body text-anthropic-mid-gray text-sm py-12 border-t border-anthropic-light-gray mt-16">
         <p>Morning with Coffee &amp; Claude &middot; Updated daily at 12:00 PM UTC</p>
         <p className="mt-1">
-          Sources: Reddit &middot; YouTube &middot; GitHub &middot; Anthropic &middot; X &middot; Substack
+          Sources: Reddit &middot; YouTube &middot; GitHub &middot; Anthropic &middot; X &middot; Substack &middot; Hacker News &middot; Review Telemetry
         </p>
         <p className="mt-1">Curated by AI &middot; Built with Next.js + Claude Haiku</p>
       </footer>

@@ -18,8 +18,10 @@ Usage:
     uv run codex_review.py specs/drafts/my-plan-draft-1.md --review-type architecture
 """
 
+import json
 import os
 import sys
+import time
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -150,6 +152,7 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
 
         client = OpenAI(api_key=api_key)
 
+        start_time = time.time()
         response = client.responses.create(
             model="codex-mini-latest",
             instructions="You are a senior software engineer conducting a thorough plan review. Be specific, actionable, and critical. Reference exact sections and task IDs.",
@@ -158,6 +161,8 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
         )
 
         review_text = response.output_text.strip()
+
+        duration_ms = int((time.time() - start_time) * 1000)
 
         # Include metadata
         result = f"""## Codex Review ({review_type.title()})
@@ -168,6 +173,25 @@ Provide your review now. Be specific, actionable, and reference exact sections/t
 ---
 
 {review_text}"""
+
+        # Log telemetry
+        try:
+            project_dir = os.getenv("CLAUDE_PROJECT_DIR", ".")
+            telemetry_path = os.path.join(project_dir, "logs", "review_telemetry.jsonl")
+            os.makedirs(os.path.dirname(telemetry_path), exist_ok=True)
+            telemetry_entry = {
+                "plan_id": os.path.basename(plan_path).replace(".md", ""),
+                "review_id": "1A",
+                "model_name": "codex-mini-latest",
+                "review_type": review_type,
+                "duration_ms": duration_ms,
+                "raw_markdown": review_text,
+                "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            }
+            with open(telemetry_path, "a", encoding="utf-8") as tf:
+                tf.write(json.dumps(telemetry_entry) + "\n")
+        except Exception as te:
+            print(f"Warning: Failed to write telemetry: {te}", file=sys.stderr)
 
         return result
 

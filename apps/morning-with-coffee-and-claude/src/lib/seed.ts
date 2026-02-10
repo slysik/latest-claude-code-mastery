@@ -1,25 +1,108 @@
-import type { ClassifiedItem, EcosystemEntry } from './types'
+import type { ClassifiedItem, EcosystemEntry, ChangelogHighlight, ReviewTelemetryEntry } from './types'
 import {
   insertItems,
   upsertSentimentSnapshot,
   upsertEcosystemEntries,
+  upsertChangelogHighlights,
+  upsertReviewTelemetry,
   getLatestItems,
 } from './db'
+
+function getReleaseItems(today: string, now: string): ClassifiedItem[] {
+  return [
+    {
+      date: today,
+      source: 'github',
+      category: 'feature',
+      title: 'v2.1.32 — Claude Opus 4.6 & Agent Teams',
+      url: 'https://github.com/anthropics/claude-code/releases/tag/v2.1.32',
+      author: 'Anthropic',
+      excerpt:
+        'Claude Opus 4.6 is now available\nResearch preview agent teams for multi-agent collaboration\nAutomatic memory recording and recall\nSummarize from here for partial conversation summarization\nSkill character budget now scales with context window',
+      thumbnailUrl: null,
+      engagementScore: 0.97,
+      rawMetrics: { stars: 12400 },
+      sentiment: 'positive',
+      sentimentConfidence: 0.95,
+      topicTags: ['release', 'opus-4.6', 'agent-teams'],
+      oneLineQuote: null,
+      isTip: false,
+      tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
+      fetchedAt: now,
+      createdAt: now,
+    },
+    {
+      date: today,
+      source: 'github',
+      category: 'feature',
+      title: 'v2.1.36 — Fast Mode for Opus 4.6',
+      url: 'https://github.com/anthropics/claude-code/releases/tag/v2.1.36',
+      author: 'Anthropic',
+      excerpt:
+        'Fast mode is now available for Opus 4.6\nSame model with faster output\nToggle with /fast command',
+      thumbnailUrl: null,
+      engagementScore: 0.89,
+      rawMetrics: { stars: 12400 },
+      sentiment: 'positive',
+      sentimentConfidence: 0.92,
+      topicTags: ['release', 'fast-mode', 'opus-4.6'],
+      oneLineQuote: null,
+      isTip: false,
+      tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
+      fetchedAt: now,
+      createdAt: now,
+    },
+    {
+      date: today,
+      source: 'github',
+      category: 'feature',
+      title: 'v2.1.38 — Terminal Renderer & Permission Fixes',
+      url: 'https://github.com/anthropics/claude-code/releases/tag/v2.1.38',
+      author: 'Anthropic',
+      excerpt:
+        'Fixed VS Code terminal scroll-to-top regression\nFixed Tab key queueing slash commands instead of autocompleting\nFixed bash permission matching for env var wrappers\nImproved heredoc delimiter parsing',
+      thumbnailUrl: null,
+      engagementScore: 0.72,
+      rawMetrics: { stars: 12400 },
+      sentiment: 'positive',
+      sentimentConfidence: 0.88,
+      topicTags: ['release', 'bugfix', 'security'],
+      oneLineQuote: null,
+      isTip: false,
+      tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
+      fetchedAt: now,
+      createdAt: now,
+    },
+  ]
+}
 
 let seeded = false
 
 export async function seedDatabase(): Promise<void> {
   if (seeded) return
 
-  // Check if data already exists
+  const today = new Date().toISOString().split('T')[0]
+  const now = new Date().toISOString()
+
+  // Always upsert release items (ON CONFLICT is safe to re-run)
+  const releaseItems: ClassifiedItem[] = getReleaseItems(today, now)
+  await insertItems(releaseItems)
+
+  // Check if full seed data already exists
   const existing = await getLatestItems(undefined, 1)
-  if (existing.length > 0) {
+  if (existing.length > releaseItems.length) {
     seeded = true
     return
   }
-
-  const today = new Date().toISOString().split('T')[0]
-  const now = new Date().toISOString()
 
   const sampleItems: ClassifiedItem[] = [
     {
@@ -40,6 +123,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'Game changer for large refactors.',
       isTip: true,
       tipConfidence: 0.91,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -61,6 +147,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: null,
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -82,6 +171,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: null,
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -103,6 +195,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'Experimental agent teams are now available.',
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -124,6 +219,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'Perfect for backing up the full conversation.',
       isTip: true,
       tipConfidence: 0.88,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -145,6 +243,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'Claude Code leads in autonomous task completion.',
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -166,6 +267,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'Makes debugging team workflows way easier.',
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -187,6 +291,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: null,
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -208,6 +315,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: null,
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -229,6 +339,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: null,
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -250,6 +363,9 @@ export async function seedDatabase(): Promise<void> {
       oneLineQuote: 'No more re-exporting.',
       isTip: true,
       tipConfidence: 0.93,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
@@ -272,9 +388,37 @@ export async function seedDatabase(): Promise<void> {
         'Hooks turn Claude Code from a smart autocomplete into a programmable development platform.',
       isTip: false,
       tipConfidence: null,
+      communityAction: null,
+      patternType: null,
+      patternRecipe: null,
       fetchedAt: now,
       createdAt: now,
     },
+    {
+      date: today,
+      source: 'reddit',
+      category: 'tip',
+      title: 'Multi-model review pipeline: Kimi + Ollama + Codex + Gemini before Claude',
+      url: 'https://reddit.com/r/ClaudeAI/sample-pattern-1',
+      author: 'u/review_engineer',
+      excerpt:
+        'We run local models first (free + fast), then cross-model reviews, then Claude for architecture. Catches 90% of issues before spending API credits.',
+      thumbnailUrl: null,
+      engagementScore: 0.88,
+      rawMetrics: { upvotes: 523, comments: 112 },
+      sentiment: 'positive',
+      sentimentConfidence: 0.92,
+      topicTags: ['multi-model', 'review', 'workflow'],
+      oneLineQuote: 'Catches 90% of issues before spending API credits.',
+      isTip: true,
+      tipConfidence: 0.95,
+      communityAction: 'Set up plan_w_team_v3 with 7 review stages: 0A (Kimi), 0B (Ollama), 1A (Codex), 1C (Gemini), 1B (Claude), 2 (Implementation), 3 (Quality Gate)',
+      patternType: 'model_mix',
+      patternRecipe: '1. Run Kimi (local) for simplicity/architecture review\n2. Run Ollama (local) for security review\n3. Run Codex (API) for cross-model code review\n4. Run Gemini (API) for another cross-model perspective\n5. Run Claude for final architecture synthesis',
+      fetchedAt: now,
+      createdAt: now,
+    },
+    ...getReleaseItems(today, now),
   ]
 
   const ecosystemEntries: EcosystemEntry[] = [
@@ -289,6 +433,7 @@ export async function seedDatabase(): Promise<void> {
       lastUpdated: now,
       categoryTags: ['hooks', 'reference', 'agents'],
       mentionCount: 28,
+      agentMeta: null,
     },
     {
       name: 'mcp-server-sqlite',
@@ -301,6 +446,7 @@ export async function seedDatabase(): Promise<void> {
       lastUpdated: now,
       categoryTags: ['mcp', 'database', 'sqlite'],
       mentionCount: 156,
+      agentMeta: null,
     },
     {
       name: 'claude-code-action',
@@ -313,6 +459,7 @@ export async function seedDatabase(): Promise<void> {
       lastUpdated: now,
       categoryTags: ['ci-cd', 'github-actions', 'automation'],
       mentionCount: 89,
+      agentMeta: null,
     },
     {
       name: 'claude-code-router',
@@ -325,6 +472,7 @@ export async function seedDatabase(): Promise<void> {
       lastUpdated: now,
       categoryTags: ['routing', 'optimization', 'skill'],
       mentionCount: 34,
+      agentMeta: null,
     },
     {
       name: 'mcp-playwright',
@@ -337,6 +485,24 @@ export async function seedDatabase(): Promise<void> {
       lastUpdated: now,
       categoryTags: ['mcp', 'browser', 'automation'],
       mentionCount: 112,
+      agentMeta: null,
+    },
+    {
+      name: 'team-builder-validator',
+      type: 'agent_config',
+      author: 'slysik',
+      description:
+        'Builder/Validator agent team pattern — implementation agent with Ruff+Ty validation, paired with read-only verifier.',
+      githubUrl: 'https://github.com/slysik/claude-code-hooks-mastery',
+      stars: 342,
+      lastUpdated: now,
+      categoryTags: ['agents', 'teams', 'validation'],
+      mentionCount: 15,
+      agentMeta: {
+        configType: 'agent',
+        modelTier: 'opus',
+        toolRestrictions: ['Read', 'Glob', 'Grep', 'Bash'],
+      },
     },
   ]
 
@@ -360,6 +526,109 @@ export async function seedDatabase(): Promise<void> {
   })
 
   await upsertEcosystemEntries(ecosystemEntries)
+
+  // Changelog highlights sample data
+  const changelogHighlights: ChangelogHighlight[] = [
+    {
+      date: today,
+      releaseTag: 'v2.1.38',
+      prevReleaseTag: 'v2.1.36',
+      releaseUrl: 'https://github.com/anthropics/claude-code/releases/tag/v2.1.38',
+      hookRelevance: ['PreToolUse', 'PermissionRequest'],
+      highlights: [
+        'Fixed VS Code terminal scroll-to-top regression',
+        'Fixed Tab key queueing slash commands instead of autocompleting',
+        'Fixed bash permission matching for env var wrappers',
+        'Improved heredoc delimiter parsing',
+      ],
+      breakingChanges: [],
+      diffStats: { filesChanged: 23, additions: 412, deletions: 187 },
+      rawBody: 'Bug fixes and permission improvements.',
+      fetchedAt: now,
+    },
+    {
+      date: today,
+      releaseTag: 'v2.1.36',
+      prevReleaseTag: 'v2.1.32',
+      releaseUrl: 'https://github.com/anthropics/claude-code/releases/tag/v2.1.36',
+      hookRelevance: [],
+      highlights: [
+        'Fast mode now available for Opus 4.6',
+        'Same model with faster output',
+        'Toggle with /fast command',
+      ],
+      breakingChanges: [],
+      diffStats: { filesChanged: 8, additions: 156, deletions: 34 },
+      rawBody: 'Fast mode for Opus 4.6.',
+      fetchedAt: now,
+    },
+  ]
+  await upsertChangelogHighlights(changelogHighlights)
+
+  // Review telemetry sample data
+  const reviewTelemetryEntries: ReviewTelemetryEntry[] = [
+    {
+      date: today,
+      planId: 'sample-plan-001',
+      reviewId: '0A',
+      modelName: 'llama3.2:3b',
+      reviewType: 'simplicity',
+      criticalIssues: 1,
+      improvements: 3,
+      suggestions: 5,
+      strengths: 4,
+      verdict: 'PASS',
+      confidenceScore: 0.72,
+      durationMs: 2340,
+      fetchedAt: now,
+    },
+    {
+      date: today,
+      planId: 'sample-plan-001',
+      reviewId: '0B',
+      modelName: 'llama3.2:3b',
+      reviewType: 'security',
+      criticalIssues: 0,
+      improvements: 2,
+      suggestions: 4,
+      strengths: 3,
+      verdict: 'PASS',
+      confidenceScore: 0.68,
+      durationMs: 1890,
+      fetchedAt: now,
+    },
+    {
+      date: today,
+      planId: 'sample-plan-001',
+      reviewId: '1A',
+      modelName: 'codex-mini-latest',
+      reviewType: 'code-review',
+      criticalIssues: 2,
+      improvements: 5,
+      suggestions: 3,
+      strengths: 6,
+      verdict: 'CONDITIONAL PASS',
+      confidenceScore: 0.85,
+      durationMs: 8450,
+      fetchedAt: now,
+    },
+    {
+      date: today,
+      planId: 'sample-plan-001',
+      reviewId: '1C',
+      modelName: 'gemini-2.5-flash',
+      reviewType: 'cross-model',
+      criticalIssues: 1,
+      improvements: 4,
+      suggestions: 6,
+      strengths: 5,
+      verdict: 'CONDITIONAL PASS',
+      confidenceScore: 0.81,
+      durationMs: 6120,
+      fetchedAt: now,
+    },
+  ]
+  await upsertReviewTelemetry(reviewTelemetryEntries)
 
   seeded = true
 }
