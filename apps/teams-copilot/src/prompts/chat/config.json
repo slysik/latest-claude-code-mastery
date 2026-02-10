@@ -1,0 +1,15 @@
+{
+  "schema": 1.1,
+  "description": "Travel policy RAG assistant",
+  "type": "completion",
+  "completion": {
+    "model": "gpt-4o",
+    "completion_type": "chat",
+    "include_history": true,
+    "include_input": true,
+    "max_input_tokens": 4096,
+    "max_tokens": 1024,
+    "temperature": 0.3,
+    "top_p": 0.95
+  }
+}

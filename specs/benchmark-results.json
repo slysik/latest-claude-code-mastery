@@ -1,0 +1,108 @@
+{
+  "plan": "specs/benchmark-url-shortener.md",
+  "created_at": "2026-02-09T15:14:28Z",
+  "runs": {
+    "build_v1": {
+      "status": "completed",
+      "started_at": 1770668868,
+      "completed_at": 1770669171,
+      "wall_clock_seconds": 303,
+      "tokens": {
+        "total_tokens": 48232,
+        "tool_uses": 60,
+        "total_cost_usd": null
+      },
+      "correctness": {
+        "acceptance_criteria_passed": 12,
+        "acceptance_criteria_total": 12,
+        "tsc_clean": true,
+        "criteria": {
+          "package_json_exists": "pass",
+          "tsconfig_strict": "pass",
+          "all_14_files_exist": "pass",
+          "shorten_command": "pass",
+          "resolve_command": "pass",
+          "list_command": "pass",
+          "delete_command": "pass",
+          "stats_command": "pass",
+          "help_command": "pass",
+          "tsc_no_emit": "pass",
+          "error_handling": "pass",
+          "idempotent_shorten": "pass"
+        }
+      },
+      "performance": {
+        "tasks_created": 5,
+        "worker_deployments": 0,
+        "context_refreshes": 0,
+        "validation_cycles": 0,
+        "worker_errors": 0,
+        "notes": "Orchestrator executed all tasks directly — did not spawn sub-agent workers via Task tool"
+      },
+      "output": {
+        "files_created": 14,
+        "ts_files": 12,
+        "total_loc": 442,
+        "validator_triggers": 0
+      }
+    },
+    "build_v2": {
+      "status": "completed",
+      "started_at": 1770669348,
+      "completed_at": 1770670552,
+      "wall_clock_seconds": 1204,
+      "tokens": {
+        "total_tokens": 56407,
+        "tool_uses": 67,
+        "total_cost_usd": null
+      },
+      "correctness": {
+        "acceptance_criteria_passed": 12,
+        "acceptance_criteria_total": 12,
+        "tsc_clean": true,
+        "criteria": {
+          "package_json_exists": "pass",
+          "tsconfig_strict": "pass",
+          "all_14_files_exist": "pass",
+          "shorten_command": "pass",
+          "resolve_command": "pass",
+          "list_command": "pass",
+          "delete_command": "pass",
+          "stats_command": "pass",
+          "help_command": "pass",
+          "tsc_no_emit": "pass",
+          "error_handling": "pass",
+          "idempotent_shorten": "pass"
+        }
+      },
+      "performance": {
+        "tasks_created": 5,
+        "worker_deployments": 5,
+        "context_refreshes": 0,
+        "validation_cycles": 1,
+        "worker_errors": 1,
+        "notes": "Used TeamCreate/TeamDelete lifecycle. 4 builder + 1 validator deployment. 1 background retry on builder-integration (timeout). Validator ran inline due to pre_tool_use hook blocking prompt content.",
+        "refresh_detail": {
+          "builder-foundation": { "refreshes": 0, "deployments": 1 },
+          "builder-core": { "refreshes": 0, "deployments": 2 },
+          "builder-integration": { "refreshes": 0, "deployments": 1 },
+          "validator-final": { "refreshes": 0, "deployments": 0, "note": "ran inline" }
+        }
+      },
+      "output": {
+        "files_created": 14,
+        "ts_files": 12,
+        "total_loc": 467,
+        "validator_triggers": 0
+      }
+    }
+  },
+  "comparison": {
+    "generated_at": "2026-02-09T15:42:00Z",
+    "winner_cost": "v1",
+    "winner_speed": "v1",
+    "winner_correctness": "tie",
+    "winner_overall": "v1 for medium tasks, v2 expected advantage on large tasks",
+    "notes": "Both achieved 12/12 correctness. v1 was 4x faster and 15% cheaper on tokens. v2's context refresh protocol was not triggered (0 refreshes) because medium-effort tasks fit within single worker context windows. v2's overhead (TeamCreate/Delete, richer prompts, coordination protocol) added latency without benefit at this scale. The benchmark validates that v2's value proposition is for LARGER plans where workers would actually hit 30% context — this plan was too small to exercise the refresh mechanism."
+  }
+}

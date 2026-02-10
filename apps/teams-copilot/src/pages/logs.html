@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Policy Copilot - Interaction Logs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      background: #1A6FC4;
+      color: white;
+      padding: 30px 0;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .filter-bar {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: flex-end;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 180px;
+    }
+
+    .filter-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .filter-group input[type="text"],
+    .filter-group input[type="date"] {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .filter-group input[type="range"] {
+      width: 100%;
+    }
+
+    .confidence-value {
+      font-weight: 600;
+      color: #1A6FC4;
+    }
+
+    button {
+      background: #1A6FC4;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #155a9f;
+    }
+
+    button.secondary {
+      background: #666;
+    }
+
+    button.secondary:hover {
+      background: #555;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .auto-refresh {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .auto-refresh input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .table-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #f8f9fa;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+      color: #555;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+
+    tbody tr {
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: #f8f9fa;
+    }
+
+    tbody tr.expanded {
+      background: #e8f4fd;
+    }
+
+    .expanded-content {
+      display: none;
+      padding: 20px;
+      background: #f8f9fa;
+      border-top: 2px solid #1A6FC4;
+    }
+
+    .expanded-content.visible {
+      display: block;
+    }
+
+    .expanded-section {
+      margin-bottom: 15px;
+    }
+
+    .expanded-section h3 {
+      font-size: 14px;
+      font-weight: 600;
+      color: #1A6FC4;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .expanded-section p {
+      font-size: 14px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .sources-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .sources-list li {
+      padding: 8px;
+      background: white;
+      margin-bottom: 8px;
+      border-radius: 4px;
+      border-left: 3px solid #1A6FC4;
+      font-size: 13px;
+    }
+
+    .confidence-high {
+      color: #28a745;
+      font-weight: 600;
+    }
+
+    .confidence-medium {
+      color: #ffc107;
+      font-weight: 600;
+    }
+
+    .confidence-low {
+      color: #dc3545;
+      font-weight: 600;
+    }
+
+    .truncated {
+      max-width: 400px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #999;
+    }
+
+    .empty-state svg {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+
+    .empty-state h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #1A6FC4;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .filter-row {
+        flex-direction: column;
+      }
+
+      .filter-group {
+        width: 100%;
+      }
+
+      .truncated {
+        max-width: 200px;
+      }
+
+      th, td {
+        padding: 10px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Travel Policy Copilot - Interaction Logs</h1>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="filter-bar">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label for="startDate">Start Date</label>
+          <input type="date" id="startDate">
+        </div>
+        <div class="filter-group">
+          <label for="endDate">End Date</label>
+          <input type="date" id="endDate">
+        </div>
+        <div class="filter-group">
+          <label for="userSearch">User Search</label>
+          <input type="text" id="userSearch" placeholder="Search by user...">
+        </div>
+        <div class="filter-group">
+          <label for="minConfidence">
+            Min Confidence: <span class="confidence-value" id="confidenceValue">0.0</span>
+          </label>
+          <input type="range" id="minConfidence" min="0" max="1" step="0.1" value="0">
+        </div>
+        <div class="filter-group">
+          <button onclick="applyFilters()">Apply Filters</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="auto-refresh">
+        <input type="checkbox" id="autoRefresh" onchange="toggleAutoRefresh()">
+        <label for="autoRefresh">Auto-refresh (30s)</label>
+      </div>
+      <button class="secondary" onclick="exportCSV()">Export CSV</button>
+    </div>
+
+    <div class="table-container">
+      <div id="loading" class="loading">Loading interactions...</div>
+      <div id="emptyState" class="empty-state" style="display: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        </svg>
+        <h2>No interactions logged yet</h2>
+        <p>Interaction logs will appear here once users start chatting with the bot.</p>
+      </div>
+      <table id="logsTable" style="display: none;">
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Query</th>
+            <th>Response</th>
+            <th>Confidence</th>
+            <th>Response Time (ms)</th>
+          </tr>
+        </thead>
+        <tbody id="logsBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    let allInteractions = [];
+    let autoRefreshInterval = null;
+
+    // Update confidence slider value display
+    document.getElementById('minConfidence').addEventListener('input', (e) => {
+      document.getElementById('confidenceValue').textContent = parseFloat(e.target.value).toFixed(1);
+    });
+
+    // Load interactions
+    async function loadInteractions() {
+      try {
+        const response = await fetch('/api/logs/data');
+        allInteractions = await response.json();
+        displayInteractions(allInteractions);
+      } catch (error) {
+        console.error('Error loading interactions:', error);
+        const loadingEl = document.getElementById('loading');
+        loadingEl.textContent = 'Error loading interactions. Please refresh the page.';
+        loadingEl.style.color = '#dc3545';
+      }
+    }
+
+    // Apply filters
+    function applyFilters() {
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      const userSearch = document.getElementById('userSearch').value.toLowerCase();
+      const minConfidence = parseFloat(document.getElementById('minConfidence').value);
+
+      let filtered = allInteractions.filter(interaction => {
+        // Date filters
+        if (startDate && interaction.timestamp < startDate) return false;
+        if (endDate && interaction.timestamp > endDate + 'T23:59:59') return false;
+
+        // User search
+        if (userSearch && !interaction.userName.toLowerCase().includes(userSearch) &&
+            !interaction.userId.toLowerCase().includes(userSearch)) {
+          return false;
+        }
+
+        // Confidence filter
+        if (interaction.confidenceScore < minConfidence) return false;
+
+        return true;
+      });
+
+      displayInteractions(filtered);
+    }
+
+    // Display interactions in table
+    function displayInteractions(interactions) {
+      document.getElementById('loading').style.display = 'none';
+
+      if (interactions.length === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+        document.getElementById('logsTable').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('emptyState').style.display = 'none';
+      document.getElementById('logsTable').style.display = 'table';
+
+      const tbody = document.getElementById('logsBody');
+      tbody.textContent = ''; // Clear existing content safely
+
+      interactions.forEach((interaction, index) => {
+        // Main row
+        const row = document.createElement('tr');
+        row.onclick = () => toggleExpand(index);
+
+        // Create cells safely
+        const cells = [
+          new Date(interaction.timestamp).toLocaleString(),
+          interaction.userName,
+          interaction.query,
+          interaction.response.substring(0, 100) + (interaction.response.length > 100 ? '...' : ''),
+          interaction.confidenceScore.toFixed(3),
+          interaction.responseTimeMs.toString()
+        ];
+
+        cells.forEach((cellText, i) => {
+          const td = document.createElement('td');
+          td.textContent = cellText;
+
+          if (i === 2 || i === 3) { // Query and Response columns
+            td.className = 'truncated';
+            td.title = i === 2 ? interaction.query : interaction.response;
+          }
+
+          if (i === 4) { // Confidence column
+            td.className = getConfidenceClass(interaction.confidenceScore);
+          }
+
+          row.appendChild(td);
+        });
+
+        // Expanded row
+        const expandedRow = document.createElement('tr');
+        expandedRow.id = `expanded-${index}`;
+
+        const expandedCell = document.createElement('td');
+        expandedCell.colSpan = 6;
+
+        const expandedDiv = document.createElement('div');
+        expandedDiv.className = 'expanded-content';
+        expandedDiv.id = `content-${index}`;
+
+        // Full response section
+        const responseSection = createExpandedSection('Full Response', interaction.response);
+        expandedDiv.appendChild(responseSection);
+
+        // Sources section
+        const sourcesSection = document.createElement('div');
+        sourcesSection.className = 'expanded-section';
+        const sourcesTitle = document.createElement('h3');
+        sourcesTitle.textContent = `Source Chunks (${interaction.sources.length})`;
+        sourcesSection.appendChild(sourcesTitle);
+
+        const sourcesList = document.createElement('ul');
+        sourcesList.className = 'sources-list';
+        interaction.sources.forEach(source => {
+          const li = document.createElement('li');
+          li.textContent = source;
+          sourcesList.appendChild(li);
+        });
+        sourcesSection.appendChild(sourcesList);
+        expandedDiv.appendChild(sourcesSection);
+
+        // Metadata section
+        const metadataSection = document.createElement('div');
+        metadataSection.className = 'expanded-section';
+        const metadataTitle = document.createElement('h3');
+        metadataTitle.textContent = 'Metadata';
+        metadataSection.appendChild(metadataTitle);
+
+        const convIdP = document.createElement('p');
+        const convIdStrong = document.createElement('strong');
+        convIdStrong.textContent = 'Conversation ID: ';
+        convIdP.appendChild(convIdStrong);
+        convIdP.appendChild(document.createTextNode(interaction.conversationId));
+        metadataSection.appendChild(convIdP);
+
+        const userIdP = document.createElement('p');
+        const userIdStrong = document.createElement('strong');
+        userIdStrong.textContent = 'User ID: ';
+        userIdP.appendChild(userIdStrong);
+        userIdP.appendChild(document.createTextNode(interaction.userId));
+        metadataSection.appendChild(userIdP);
+
+        expandedDiv.appendChild(metadataSection);
+
+        expandedCell.appendChild(expandedDiv);
+        expandedRow.appendChild(expandedCell);
+
+        tbody.appendChild(row);
+        tbody.appendChild(expandedRow);
+      });
+    }
+
+    // Create expanded section helper
+    function createExpandedSection(title, content) {
+      const section = document.createElement('div');
+      section.className = 'expanded-section';
+
+      const h3 = document.createElement('h3');
+      h3.textContent = title;
+      section.appendChild(h3);
+
+      const p = document.createElement('p');
+      p.textContent = content;
+      section.appendChild(p);
+
+      return section;
+    }
+
+    // Toggle expanded row
+    function toggleExpand(index) {
+      const row = document.getElementById(`content-${index}`);
+      const parentRow = row.closest('tr').previousElementSibling;
+
+      if (row.classList.contains('visible')) {
+        row.classList.remove('visible');
+        parentRow.classList.remove('expanded');
+      } else {
+        // Close all other expanded rows
+        document.querySelectorAll('.expanded-content.visible').forEach(el => {
+          el.classList.remove('visible');
+          el.closest('tr').previousElementSibling.classList.remove('expanded');
+        });
+
+        row.classList.add('visible');
+        parentRow.classList.add('expanded');
+      }
+    }
+
+    // Get confidence CSS class
+    function getConfidenceClass(score) {
+      if (score > 0.8) return 'confidence-high';
+      if (score > 0.5) return 'confidence-medium';
+      return 'confidence-low';
+    }
+
+    // Toggle auto-refresh
+    function toggleAutoRefresh() {
+      const enabled = document.getElementById('autoRefresh').checked;
+
+      if (enabled) {
+        autoRefreshInterval = setInterval(loadInteractions, 30000);
+      } else {
+        if (autoRefreshInterval) {
+          clearInterval(autoRefreshInterval);
+          autoRefreshInterval = null;
+        }
+      }
+    }
+
+    // Export to CSV
+    function exportCSV() {
+      const headers = ['Timestamp', 'User', 'Query', 'Response', 'Confidence', 'Response Time (ms)', 'Sources'];
+      const rows = allInteractions.map(interaction => [
+        interaction.timestamp,
+        interaction.userName,
+        interaction.query,
+        interaction.response,
+        interaction.confidenceScore,
+        interaction.responseTimeMs,
+        interaction.sources.join(' | ')
+      ]);
+
+      const csv = [headers, ...rows]
+        .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+        .join('\n');
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `copilot-logs-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+
+    // Initialize
+    loadInteractions();
+  </script>
+</body>
+</html>

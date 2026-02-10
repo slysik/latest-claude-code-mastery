@@ -1,0 +1,42 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "{{BOT_ID}}",
+  "developer": {
+    "name": "Gates Foundation IT",
+    "websiteUrl": "https://www.gatesfoundation.org",
+    "privacyUrl": "https://www.gatesfoundation.org/privacy",
+    "termsOfUseUrl": "https://www.gatesfoundation.org/terms"
+  },
+  "name": {
+    "short": "Travel Policy Copilot",
+    "full": "Gates Foundation Travel Policy Assistant"
+  },
+  "description": {
+    "short": "Ask questions about India travel guidelines",
+    "full": "AI-powered assistant that answers questions about the Gates Foundation's India travel policy using retrieval-augmented generation from SharePoint documents."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#1A6FC4",
+  "bots": [
+    {
+      "botId": "{{BOT_ID}}",
+      "scopes": ["personal", "team", "groupChat"],
+      "commandLists": [
+        {
+          "scopes": ["personal"],
+          "commands": [
+            { "title": "help", "description": "Show available topics and commands" },
+            { "title": "sources", "description": "Show sources from last answer" }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": ["token.botframework.com", "{{BOT_DOMAIN}}"]
+}

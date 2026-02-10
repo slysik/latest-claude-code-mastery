@@ -1,0 +1,41 @@
+{
+  "name": "teams-copilot-travel-policy",
+  "version": "1.0.0",
+  "description": "Microsoft Teams Copilot for Travel Policy with Azure AI Search and RAG",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "ingest": "tsx src/scripts/ingest.ts",
+    "package": "mkdir -p dist && cd appPackage && zip -r ../dist/teams-copilot.zip ."
+  },
+  "dependencies": {
+    "@microsoft/teams-ai": "^1.7.4",
+    "botbuilder": "^4.23.0",
+    "@microsoft/microsoft-graph-client": "^3.0.0",
+    "@azure/msal-node": "^2.0.0",
+    "@azure/search-documents": "^12.0.0",
+    "@azure/openai": "^2.0.0",
+    "@azure/cosmos": "^4.0.0",
+    "applicationinsights": "^3.0.0",
+    "express": "^4.18.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "@types/express": "^4.17.0",
+    "@types/node": "^20.0.0",
+    "tsx": "^4.0.0"
+  },
+  "keywords": [
+    "teams",
+    "copilot",
+    "azure",
+    "ai",
+    "search",
+    "rag"
+  ],
+  "author": "",
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "A CLI URL shortener built with Bun",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.6",
+    "typescript": "^5.9.3"
+  }
+}

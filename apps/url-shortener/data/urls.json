@@ -1,0 +1,15 @@
+{
+  "mappings": {
+    "gDAsDR": {
+      "id": "1ec37fea-232e-4ede-bdae-a4a93f451e6c",
+      "originalUrl": "https://test-idempotent.com",
+      "shortCode": "gDAsDR",
+      "createdAt": "2026-02-09T20:55:10.754Z",
+      "accessCount": 0
+    }
+  },
+  "metadata": {
+    "totalShortenedCount": 3,
+    "totalAccessCount": 2
+  }
+}
