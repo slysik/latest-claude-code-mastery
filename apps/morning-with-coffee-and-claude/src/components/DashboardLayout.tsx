@@ -2,7 +2,7 @@ import type { DashboardData } from '@/lib/types'
 import { SectionErrorFallback } from './SectionErrorFallback'
 import PulseSummary from './PulseSummary'
 import LatestNews from './LatestNews'
-import NewFeatures from './NewFeatures'
+
 import SentimentGauge from './SentimentGauge'
 import EcosystemGrid from './EcosystemGrid'
 import YouTubeCarousel from './YouTubeCarousel'
@@ -37,9 +37,7 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
   const news = freshItems.filter(
     (i) => i.category === 'news' || i.category === 'feature'
   )
-  const releases = freshItems.filter(
-    (i) => i.source === 'github' && i.category === 'feature'
-  )
+
   const tips = freshItems.filter(
     (i) => i.isTip && (i.tipConfidence ?? 0) > 0.8
   )
@@ -95,14 +93,9 @@ export default function DashboardLayout({ data }: { data: DashboardData }) {
         <p className="font-heading text-anthropic-mid-gray text-xs uppercase tracking-[0.2em] mb-6">
           ABOVE THE FOLD
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {renderSection(() => (
-            <LatestNews items={news} />
-          ))}
-          {renderSection(() => (
-            <NewFeatures releases={releases} />
-          ))}
-        </div>
+        {renderSection(() => (
+          <LatestNews items={news} />
+        ))}
       </div>
 
       {/* Section divider + Release Intelligence */}

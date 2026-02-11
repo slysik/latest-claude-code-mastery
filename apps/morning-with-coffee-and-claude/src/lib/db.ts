@@ -9,6 +9,11 @@ import type {
   ReviewTelemetryEntry,
   ReviewTelemetrySummary,
   AgentConfigMeta,
+  Briefing,
+  BriefingSlot,
+  BriefingTldr,
+  UpcomingSlot,
+  TimelineData,
 } from './types'
 
 // ---------------------------------------------------------------------------
@@ -278,6 +283,27 @@ async function initSchema(): Promise<void> {
     'CREATE INDEX IF NOT EXISTS idx_telemetry_model ON review_telemetry(model_name)',
   )
 
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS briefings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      slot TEXT NOT NULL,
+      date TEXT NOT NULL,
+      run_at TEXT NOT NULL,
+      tldr_facts TEXT DEFAULT '[]',
+      tldr_try_today TEXT,
+      tldr_insight TEXT,
+      item_ids TEXT DEFAULT '[]',
+      item_count INTEGER DEFAULT 0,
+      sentiment_snapshot TEXT,
+      fetcher_status TEXT DEFAULT '{}',
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `)
+
+  await db.execute(
+    'CREATE UNIQUE INDEX IF NOT EXISTS idx_briefings_slot_date ON briefings(slot, date)',
+  )
+
   // Migrations for existing databases
   try {
     await db.execute('ALTER TABLE items ADD COLUMN community_action TEXT')
@@ -365,6 +391,14 @@ export async function runPipelineTransaction(
     topNegativeUrl: string | null
     summary: string
   },
+  briefingInput?: {
+    slot: BriefingSlot
+    date: string
+    runAt: string
+    tldr: BriefingTldr
+    itemCount: number
+    fetcherStatus: Record<string, string>
+  },
 ): Promise<void> {
   await initSchema()
   const db = getDb()
@@ -433,6 +467,56 @@ export async function runPipelineTransaction(
             snapshotInput.summary,
           ],
         })
+
+        // Step 4: Save briefing if provided (atomic with items + sentiment)
+        if (briefingInput) {
+          // Collect item IDs that were just upserted
+          const itemIdResults = await tx.execute({
+            sql: `SELECT id FROM items WHERE date = ? ORDER BY id DESC LIMIT ?`,
+            args: [briefingInput.date, items.length],
+          })
+          const itemIds = itemIdResults.rows.map((r) => (r as unknown as Record<string, unknown>).id as number)
+
+          // Build sentiment snapshot from current batch
+          const sentimentSnapshot: SentimentDailySnapshot | null = snapshotInput.sampleSize > 0 ? {
+            date: snapshotInput.date,
+            positivePct: snapshotInput.positivePct,
+            neutralPct: snapshotInput.neutralPct,
+            negativePct: snapshotInput.negativePct,
+            sampleSize: snapshotInput.sampleSize,
+            topPositive: null,
+            topNegative: null,
+            summary: snapshotInput.summary,
+          } : null
+
+          await tx.execute({
+            sql: `
+              INSERT INTO briefings (slot, date, run_at, tldr_facts, tldr_try_today, tldr_insight, item_ids, item_count, sentiment_snapshot, fetcher_status)
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              ON CONFLICT(slot, date) DO UPDATE SET
+                run_at = excluded.run_at,
+                tldr_facts = excluded.tldr_facts,
+                tldr_try_today = excluded.tldr_try_today,
+                tldr_insight = excluded.tldr_insight,
+                item_ids = excluded.item_ids,
+                item_count = excluded.item_count,
+                sentiment_snapshot = excluded.sentiment_snapshot,
+                fetcher_status = excluded.fetcher_status
+            `,
+            args: [
+              briefingInput.slot,
+              briefingInput.date,
+              briefingInput.runAt,
+              JSON.stringify(briefingInput.tldr.facts),
+              briefingInput.tldr.tryToday,
+              briefingInput.tldr.insight,
+              JSON.stringify(itemIds),
+              briefingInput.itemCount,
+              sentimentSnapshot ? JSON.stringify(sentimentSnapshot) : null,
+              JSON.stringify(briefingInput.fetcherStatus),
+            ],
+          })
+        }
 
         await tx.commit()
         return // Success
@@ -1039,6 +1123,207 @@ export async function getReviewTelemetrySummary(
       rowToReviewTelemetryEntry(row as unknown as Record<string, unknown>),
     ),
   }
+}
+
+// ---------------------------------------------------------------------------
+// Briefings
+// ---------------------------------------------------------------------------
+
+export async function saveBriefing(briefing: {
+  slot: BriefingSlot
+  date: string
+  runAt: string
+  tldr: BriefingTldr
+  itemIds: number[]
+  itemCount: number
+  sentimentSnapshot: SentimentDailySnapshot | null
+  fetcherStatus: Record<string, string>
+}): Promise<void> {
+  await initSchema()
+  const db = getDb()
+  await db.execute({
+    sql: `
+      INSERT INTO briefings (slot, date, run_at, tldr_facts, tldr_try_today, tldr_insight, item_ids, item_count, sentiment_snapshot, fetcher_status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(slot, date) DO UPDATE SET
+        run_at = excluded.run_at,
+        tldr_facts = excluded.tldr_facts,
+        tldr_try_today = excluded.tldr_try_today,
+        tldr_insight = excluded.tldr_insight,
+        item_ids = excluded.item_ids,
+        item_count = excluded.item_count,
+        sentiment_snapshot = excluded.sentiment_snapshot,
+        fetcher_status = excluded.fetcher_status
+    `,
+    args: [
+      briefing.slot,
+      briefing.date,
+      briefing.runAt,
+      JSON.stringify(briefing.tldr.facts),
+      briefing.tldr.tryToday,
+      briefing.tldr.insight,
+      JSON.stringify(briefing.itemIds),
+      briefing.itemCount,
+      briefing.sentimentSnapshot ? JSON.stringify(briefing.sentimentSnapshot) : null,
+      JSON.stringify(briefing.fetcherStatus),
+    ],
+  })
+}
+
+export async function getBriefing(date: string, slot: BriefingSlot): Promise<Briefing | null> {
+  await initSchema()
+  const db = getDb()
+  const result = await db.execute({
+    sql: 'SELECT * FROM briefings WHERE date = ? AND slot = ?',
+    args: [date, slot],
+  })
+  if (result.rows.length === 0) return null
+  const row = result.rows[0] as unknown as Record<string, unknown>
+  return {
+    id: row.id as number,
+    slot: row.slot as BriefingSlot,
+    date: row.date as string,
+    runAt: row.run_at as string,
+    tldr: {
+      facts: safeParseJson<string[]>(row.tldr_facts as string | null, []),
+      tryToday: (row.tldr_try_today as string) ?? null,
+      insight: (row.tldr_insight as string) ?? null,
+    },
+    itemCount: (row.item_count as number) ?? 0,
+    items: [],        // Not hydrated here — use getTimelineData() for full hydration
+    sentiment: safeParseJson<SentimentDailySnapshot | null>(row.sentiment_snapshot as string | null, null),
+    changelog: [],
+    ecosystem: [],
+    patternOfTheDay: null,
+    reviewTelemetry: null,
+  }
+}
+
+export async function getItemsByIds(ids: number[]): Promise<ClassifiedItem[]> {
+  if (ids.length === 0) return []
+  await initSchema()
+  const db = getDb()
+  const placeholders = ids.map(() => '?').join(', ')
+  const result = await db.execute({
+    sql: `SELECT * FROM items WHERE id IN (${placeholders})`,
+    args: ids,
+  })
+  return result.rows.map((row) =>
+    rowToClassifiedItem(row as unknown as Record<string, unknown>),
+  )
+}
+
+export async function getTimelineData(days = 7): Promise<TimelineData> {
+  try {
+    await initSchema()
+    const db = getDb()
+
+    const result = await db.execute({
+      sql: `
+        SELECT * FROM briefings
+        WHERE date >= date('now', ?)
+        ORDER BY date DESC,
+          CASE slot
+            WHEN 'evening' THEN 1
+            WHEN 'midday' THEN 2
+            WHEN 'morning' THEN 3
+          END
+      `,
+      args: [`-${days} days`],
+    })
+
+    const briefings: Briefing[] = []
+
+    for (const row of result.rows) {
+      const r = row as unknown as Record<string, unknown>
+      const itemIds = safeParseJson<number[]>(r.item_ids as string | null, [])
+      const date = r.date as string
+      const slot = r.slot as BriefingSlot
+
+      // Hydrate items by stored IDs
+      const items = await getItemsByIds(itemIds)
+
+      // Hydrate sentiment from snapshot
+      const sentiment = safeParseJson<SentimentDailySnapshot | null>(
+        r.sentiment_snapshot as string | null,
+        null,
+      )
+
+      // Fetch changelog by date
+      const changelogResult = await db.execute({
+        sql: 'SELECT * FROM changelog_highlights WHERE date = ? ORDER BY date DESC',
+        args: [date],
+      })
+      const changelog = changelogResult.rows.map((cr) =>
+        rowToChangelogHighlight(cr as unknown as Record<string, unknown>),
+      )
+
+      // Fetch ecosystem by date (important for midday briefings)
+      const ecosystem = await getEcosystemEntries()
+
+      // Get pattern of the day
+      const patternOfTheDay = await getPatternOfTheDay(date)
+
+      // Get review telemetry
+      const reviewTelemetry = await getReviewTelemetrySummary()
+
+      briefings.push({
+        id: r.id as number,
+        slot,
+        date,
+        runAt: r.run_at as string,
+        tldr: {
+          facts: safeParseJson<string[]>(r.tldr_facts as string | null, []),
+          tryToday: (r.tldr_try_today as string) ?? null,
+          insight: (r.tldr_insight as string) ?? null,
+        },
+        itemCount: (r.item_count as number) ?? 0,
+        items,
+        sentiment,
+        changelog,
+        ecosystem,
+        patternOfTheDay,
+        reviewTelemetry,
+      })
+    }
+
+    const upcomingSlots = await getUpcomingSlots(new Date().toISOString().split('T')[0])
+
+    return {
+      briefings,
+      upcomingSlots,
+      lastUpdated: new Date().toISOString(),
+    }
+  } catch (err) {
+    console.error('[getTimelineData] Error:', err)
+    return {
+      briefings: [],
+      upcomingSlots: [],
+      lastUpdated: null,
+    }
+  }
+}
+
+export async function getUpcomingSlots(date: string): Promise<UpcomingSlot[]> {
+  await initSchema()
+  const db = getDb()
+
+  const result = await db.execute({
+    sql: 'SELECT slot FROM briefings WHERE date = ?',
+    args: [date],
+  })
+
+  const completedSlots = new Set(result.rows.map((r) => (r as unknown as Record<string, unknown>).slot as string))
+
+  const allSlots: Array<{ slot: BriefingSlot; scheduledAt: string }> = [
+    { slot: 'morning', scheduledAt: `${date}T12:00:00Z` },
+    { slot: 'midday', scheduledAt: `${date}T18:00:00Z` },
+    { slot: 'evening', scheduledAt: `${new Date(new Date(date).getTime() + 86400000).toISOString().split('T')[0]}T00:00:00Z` },
+  ]
+
+  return allSlots
+    .filter((s) => !completedSlots.has(s.slot))
+    .map(({ slot, scheduledAt }) => ({ slot, scheduledAt }))
 }
 
 // ---------------------------------------------------------------------------

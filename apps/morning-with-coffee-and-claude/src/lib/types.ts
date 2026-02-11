@@ -109,3 +109,37 @@ export interface DashboardData {
   reviewTelemetry: ReviewTelemetrySummary | null;
   lastUpdated: string | null;
 }
+
+export type BriefingSlot = 'morning' | 'midday' | 'evening'
+
+export interface BriefingTldr {
+  facts: string[]              // 3-5 bullet points
+  tryToday: string | null      // One actionable experiment
+  insight: string | null       // One opinionated take
+}
+
+export interface Briefing {
+  id?: number
+  slot: BriefingSlot
+  date: string                 // YYYY-MM-DD (editorial date — see getEditorialDate())
+  runAt: string                // ISO timestamp
+  tldr: BriefingTldr
+  itemCount: number
+  items: ClassifiedItem[]      // Hydrated from items table via stored item_ids
+  sentiment: SentimentDailySnapshot | null
+  changelog: ChangelogHighlight[]
+  ecosystem: EcosystemEntry[]  // Loaded from ecosystem table (NOT from item_ids)
+  patternOfTheDay: ClassifiedItem | null
+  reviewTelemetry: ReviewTelemetrySummary | null
+}
+
+export interface UpcomingSlot {
+  slot: BriefingSlot
+  scheduledAt: string          // ISO timestamp (e.g., "2026-02-10T18:00:00Z")
+}
+
+export interface TimelineData {
+  briefings: Briefing[]        // Ordered newest-first
+  upcomingSlots: UpcomingSlot[] // Slots not yet run today, server-computed
+  lastUpdated: string | null
+}
